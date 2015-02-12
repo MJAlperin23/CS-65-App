@@ -4,5 +4,14 @@
     <string name="app_name">MyParkinsons</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="welcomeMessage">Welcome to MyParkinson\'s!</string>
+    <string name="exerciseButton">Exercise!</string>
+    <string name="speechButton">Speech!</string>
+    <string name="title_activity_exercise_log">ExerciseLogActivity</string>
+    <string name="speechCheckBox">Speech Training Done</string>
+    <string name="title_activity_speech">SpeechActivity</string>
+    <string name="phraseTitle">Read this phrase aloud:</string>
+    <string name="buttonStart">Start Recording</string>
+    <string name="buttonPlay">Play Recording</string>
 
 </resources>
