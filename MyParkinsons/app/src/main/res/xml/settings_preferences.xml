@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory android:title="Account Preferences">
+
+        <PreferenceScreen
+            android:key="user_profile_activity"
+            android:title="@string/user_profile_title"
+            android:summary="@string/user_profile_summary">
+
+            <intent android:action="edu.dartmouth.cs.myruns.SettingsTab" />
+        </PreferenceScreen>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/addsettings_title">
+
+        <edu.dartmouth.cs.myparkinsons.TimePickerFragment
+            android:key="prefKey"
+            android:summary="@string/pref_summary"
+            android:title="@string/pref_title" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/misc_preference_title">
+
+        <PreferenceScreen
+            android:key="homepage_intent_preference"
+            android:title="@string/intent_preference_title"
+            android:summary="@string/intent_preference_summary">
+
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:data="http://myparkinsonsapp.weebly.com/" />
+
+        </PreferenceScreen>
+
+    </PreferenceCategory>
+
+
+</PreferenceScreen>
