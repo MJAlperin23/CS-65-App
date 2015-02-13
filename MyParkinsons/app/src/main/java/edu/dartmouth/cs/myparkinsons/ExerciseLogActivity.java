@@ -31,7 +31,7 @@ public class ExerciseLogActivity extends Activity {
         graphButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(getApplicationContext(), GraphActivity.class);
+                Intent i = new Intent(getApplicationContext(), ProfileActivity.class);
                 startActivity(i);
             }
         });

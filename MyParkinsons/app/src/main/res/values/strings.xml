@@ -15,5 +15,24 @@
     <string name="buttonPlay">Play Recording</string>
     <string name="newphrase">Generate a new phrase</string>
     <string name="title_activity_graph">GraphActivity</string>
+    <string name="profile_photo_file_name">profile_photo</string>
+    <string name="profilePhoto">Profile Photo</string>
+    <string name="change">CHANGE</string>
+    <string name="name">Name</string>
+    <string name="nameFiller">Your Name Here</string>
+    <string name="email">Email</string>
+    <string name="emailFiller">Your Email Here</string>
+    <string name="phone">Phone</string>
+    <string name="phoneFiller">Your Phone Number Here</string>
+    <string name="gender">Gender</string>
+    <string name="male">Male</string>
+    <string name="Female">Female</string>
+    <string name="dartmouthClass">Dartmouth Class</string>
+    <string name="classFiller">Your Class Year</string>
+    <string name="major">Major</string>
+    <string name="majorFiller">Your Major Here</string>
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
+    <string name="dialog_camera">Camera</string>
 
 </resources>

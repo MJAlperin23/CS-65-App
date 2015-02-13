@@ -30,6 +30,10 @@
             android:name=".GraphActivity"
             android:label="@string/title_activity_graph" >
         </activity>
+        <activity
+            android:name=".ProfileActivity"
+            android:label="@string/title_activity_graph" >
+        </activity>
     </application>
 
 </manifest>
