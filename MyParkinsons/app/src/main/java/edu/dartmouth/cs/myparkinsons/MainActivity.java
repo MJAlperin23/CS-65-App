@@ -13,12 +13,14 @@ import android.widget.TextView;
 
 public class MainActivity extends Activity {
 
+
+    private static final int SETTINGS_ACTIVITY_KEY = 1;
+
     private Button exerciseButton;
     private Button speechButton;
 
     private ProgressBar progressBar;
     private TextView progressBarTextView;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +72,8 @@ public class MainActivity extends Activity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            Intent settingsActivity = new Intent(this, SettingsActivity.class);
+            startActivityForResult(settingsActivity, SETTINGS_ACTIVITY_KEY);
             return true;
         }
 

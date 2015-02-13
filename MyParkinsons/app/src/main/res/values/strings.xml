@@ -13,6 +13,15 @@
     <string name="phraseTitle">Read this phrase aloud:</string>
     <string name="buttonStart">Start Recording</string>
     <string name="buttonPlay">Play Recording</string>
+    <string name="title_activity_settings">SettingsActivity</string>
+    <string name="intent_preference_title">MyParkinson\'s Webpage</string>
+    <string name="intent_preference_summary">http://myparkinsonsapp.weebly.com/</string>
+    <string name="misc_preference_title">Misc.</string>
+    <string name="user_profile_title">User Profile</string>
+    <string name="user_profile_summary">Name, Personal Info, etc</string>
+    <string name="addsettings_title">Additional Settings</string>
+    <string name="pref_summary">Set Time for Speech Activity Reminder</string>
+    <string name="pref_title">Speech Activity Reminder</string>
     <string name="newphrase">Generate a new phrase</string>
     <string name="title_activity_graph">GraphActivity</string>
     <string name="profile_photo_file_name">profile_photo</string>
@@ -34,5 +43,16 @@
     <string name="save">Save</string>
     <string name="cancel">Cancel</string>
     <string name="dialog_camera">Camera</string>
+    <string name="alert_dialog_two_buttons_title">title</string>
+    <string name="alert_dialog_cancel">Cancel</string>
+    <string name="alert_dialog_ok">Ok</string>
+    <string name="alert_dialog_delete">Delete</string>
+    <string name="title_activity_dialog_helper">DialogHelper</string>
+    <string name="title_activity_dialogview">DialogView</string>
+    <string name="title_save_data">Store Activity Data</string>
+    <string name="summary_save_data">Save the daily activity data recorded by the app.</string>
+    <string name="title_child_preference">Delete All Data</string>
+    <string name="summary_child_preference">This should eventually launch a dialog fragment.</string>
+    <string name="comment_edittext_dialogtitlesettings">stuff</string>
 
 </resources>
