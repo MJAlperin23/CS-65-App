@@ -17,7 +17,7 @@
 
         <edu.dartmouth.cs.myparkinsons.TimePickerFragment
             android:key="prefKey"
-            android:title="@string/pref_title"
+            android:title="hi"
             android:summary="@string/pref_summary" />
 
         <CheckBoxPreference
