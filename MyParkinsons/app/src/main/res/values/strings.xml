@@ -13,5 +13,7 @@
     <string name="phraseTitle">Read this phrase aloud:</string>
     <string name="buttonStart">Start Recording</string>
     <string name="buttonPlay">Play Recording</string>
+    <string name="newphrase">Generate a new phrase</string>
+    <string name="title_activity_graph">GraphActivity</string>
 
 </resources>
