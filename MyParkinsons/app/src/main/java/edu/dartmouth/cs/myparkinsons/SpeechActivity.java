@@ -31,49 +31,62 @@ import java.util.List;
 public class SpeechActivity extends Activity {
 
     private static final int VOICE_REC_CODE = 0;
-    private Button button;
+    private Button recordButton;
+    private Button replayButton;
     private TextView phrase;
+
+    private Uri audioUri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_speech);
 
-        button = (Button)findViewById(R.id.button);
+        recordButton = (Button)findViewById(R.id.recordButton);
+        replayButton = (Button)findViewById(R.id.playbackButton);
+
         phrase = (TextView)findViewById(R.id.phraseToRead);
 
-        phrase.setText("This is a phrase to read to make my speech better");
-        button.setText(R.string.buttonStart);
+        phrase.setText("Can you read this");
+        recordButton.setText(R.string.buttonStart);
+
+        replayButton.setText(R.string.buttonPlay);
+        replayButton.setEnabled(false);
 
         checkVoiceRecognition();
 
-        button.setOnClickListener(new View.OnClickListener() {
+        recordButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String text = recordButton.getText().toString();
 
-                //Button theButton = (Button) v.findViewById(R.id.button);
-                String buttonText = button.getText().toString();
-
-                if (buttonText.equals(getString(R.string.buttonStart))) {
-                    button.setText("");
+                if (text.equals(getString(R.string.buttonStart))) {
                     recordSpeech();
-                } else if (buttonText.equals("")) {
-                    button.setText(R.string.buttonStart);
-
+                } else if (text.equals(getString(R.string.newphrase))) {
+                    generateNewPhrase();
                 }
-
-
-
             }
         });
+
+        replayButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                playBackAudio();
+            }
+        });
+    }
+
+    private void generateNewPhrase() {
+        phrase.setText("New Phrase!");
+        recordButton.setText(R.string.buttonStart);
     }
 
     private void checkVoiceRecognition() {
         PackageManager packageManager = getPackageManager();
         List<ResolveInfo> activities = packageManager.queryIntentActivities(new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH), 0);
         if (activities.size() == 0) {
-            button.setEnabled(false);
-            button.setText("Voice Recognition not availible");
+            recordButton.setEnabled(false);
+            recordButton.setText("Voice Recognition not available");
         }
     }
 
@@ -86,7 +99,7 @@ public class SpeechActivity extends Activity {
 
         i.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
 
-        i.putExtra(RecognizerIntent.EXTRA_MAX_RESULTS, 5);
+        i.putExtra(RecognizerIntent.EXTRA_MAX_RESULTS, 20);
 
         //provide audio url in the result
         i.putExtra("android.speech.extra.GET_AUDIO_FORMAT", "audio/AMR");
@@ -99,35 +112,26 @@ public class SpeechActivity extends Activity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == VOICE_REC_CODE) {
             if (resultCode == RESULT_OK) {
+                recordButton.setText(R.string.newphrase);
+
                 ArrayList<String> results = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
                 boolean understood = false;
                 for (String aPhrase : results) {
                     if (aPhrase.toLowerCase().equals(phrase.getText().toString().toLowerCase())) {
-                        phrase.setText("Great job! We understood what you said!");
+                        Toast.makeText(getApplicationContext(), "Great job! We understood what you said!", Toast.LENGTH_SHORT).show();
+                        understood = true;
                         break;
                     }
                 }
                 if (!understood) {
-                    phrase.setText("Try again. We couldn't understand you.");
+                    Toast.makeText(getApplicationContext(), "Try again. We couldn't understand you.", Toast.LENGTH_SHORT).show();
                 }
 
                 //http://stackoverflow.com/questions/23047433/record-save-audio-from-voice-recognition-intent
-                Uri audioUri = data.getData();
-//                ContentResolver contentResolver = getContentResolver();
-//                try {
-//                    InputStream filestream = contentResolver.openInputStream(audioUri);
-//                } catch (FileNotFoundException e) {
-//                    e.printStackTrace();
-//                }
-                // TODO: read audio file from inputstream
+                audioUri = data.getData();
 
-                MediaPlayer mediaPlayer = new MediaPlayer();
-                try {
-                    mediaPlayer.setDataSource(this, audioUri);
-                    mediaPlayer.prepare();
-                    mediaPlayer.start();
-                } catch (IOException e) {
-                    e.printStackTrace();
+                if (audioUri != null) {
+                    replayButton.setEnabled(true);
                 }
 
             }
@@ -160,6 +164,25 @@ public class SpeechActivity extends Activity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_speech, menu);
         return true;
+    }
+
+    public void playBackAudio() {
+
+        //TODO Playback bar
+
+        //make sure we have an audio file
+        if (audioUri == null) {
+            return;
+        }
+
+        MediaPlayer mediaPlayer = new MediaPlayer();
+        try {
+            mediaPlayer.setDataSource(this, audioUri);
+            mediaPlayer.prepare();
+            mediaPlayer.start();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

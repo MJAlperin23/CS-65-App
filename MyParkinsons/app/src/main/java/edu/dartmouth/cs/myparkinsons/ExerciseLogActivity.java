@@ -1,9 +1,12 @@
 package edu.dartmouth.cs.myparkinsons;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ListView;
 
 import java.util.Calendar;
@@ -14,6 +17,7 @@ import java.util.Random;
 public class ExerciseLogActivity extends Activity {
 
     private ListView listView;
+    private Button graphButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,6 +25,16 @@ public class ExerciseLogActivity extends Activity {
         setContentView(R.layout.activity_exercise_log);
 
         listView = (ListView)findViewById(R.id.exerciseListView);
+
+        graphButton = (Button)findViewById(R.id.graphButton);
+
+        graphButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getApplicationContext(), GraphActivity.class);
+                startActivity(i);
+            }
+        });
 
         ExerciseItem[] items = new ExerciseItem[20];
 
