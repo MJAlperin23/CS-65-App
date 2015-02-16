@@ -26,15 +26,15 @@ public class ExerciseLogActivity extends Activity {
 
         listView = (ListView)findViewById(R.id.exerciseListView);
 
-        graphButton = (Button)findViewById(R.id.graphButton);
+//        graphButton = (Button)findViewById(R.id.graphButton);
 
-        graphButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(getApplicationContext(), ProfileActivity.class);
-                startActivity(i);
-            }
-        });
+//        graphButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent i = new Intent(getApplicationContext(), GraphActivity.class);
+//                startActivity(i);
+//            }
+//        });
 
         ExerciseItem[] items = new ExerciseItem[20];
 

@@ -36,9 +36,9 @@ public class ProfileActivity extends Activity {
     private static final String PREFERENCES_KEY = "PREFERENCES_KEY";
     private static final String NAME_KEY = "NAME_KEY";
     private static final String EMAIL_KEY = "EMAIL_KEY";
-    private static final String PHONE_KEY = "PHONE_KEY";
-    private static final String CLASS_KEY = "CLASS_KEY";
-    private static final String MAJOR_KEY = "MAJOR_KEY";
+    private static final String AGE_KEY = "AGE_KEY";
+    private static final String CITY_KEY = "CITY_KEY";
+    private static final String STATE_KEY = "STATE_KEY";
     private static final String RADIO_GROUP_KEY = "RADIO_GROUP_KEY";
     private static final String URI_KEY = "URI_KEY";
 
@@ -47,15 +47,17 @@ public class ProfileActivity extends Activity {
     private static final int GALLERY_ITEM = 1;
     private static final String CHANGE_PIC_TAG = "CHANGE_PIC_DIALOG";
 
+
     private Button changePicButton;
     private Button saveButton;
     private Button cancelButton;
 
     private EditText nameText;
     private EditText emailText;
-    private EditText phoneText;
-    private EditText classText;
-    private EditText majorText;
+    private EditText ageText;
+    private EditText cityText;
+    private EditText stateText;
+
 
     private ImageView profilePic;
 
@@ -72,9 +74,10 @@ public class ProfileActivity extends Activity {
 
         nameText = (EditText)findViewById(R.id.nameTextField);
         emailText = (EditText)findViewById(R.id.emailTextField);
-        phoneText = (EditText)findViewById(R.id.phoneTextField);
-        classText = (EditText)findViewById(R.id.classTextField);
-        majorText = (EditText)findViewById(R.id.majorTextField);
+        ageText = (EditText)findViewById(R.id.ageTextField);
+        cityText = (EditText)findViewById(R.id.cityTextField);
+        stateText = (EditText)findViewById(R.id.stateTextField);
+
 
         profilePic = (ImageView)findViewById(R.id.profileImageView);
 
@@ -173,11 +176,12 @@ public class ProfileActivity extends Activity {
 
         preferencesEditor.putString(EMAIL_KEY, emailText.getText().toString());
 
-        preferencesEditor.putString(PHONE_KEY, phoneText.getText().toString());
+        preferencesEditor.putString(AGE_KEY, ageText.getText().toString());
 
-        preferencesEditor.putString(CLASS_KEY, classText.getText().toString());
+        preferencesEditor.putString(CITY_KEY, cityText.getText().toString());
 
-        preferencesEditor.putString(MAJOR_KEY, majorText.getText().toString());
+        preferencesEditor.putString(STATE_KEY, stateText.getText().toString());
+
 
 
         // Read which index the radio is checked.
@@ -209,14 +213,14 @@ public class ProfileActivity extends Activity {
         String email = preferences.getString(EMAIL_KEY, "");
         emailText.setText(email);
 
-        String phone = preferences.getString(PHONE_KEY, "");
-        phoneText.setText(phone);
+        String age = preferences.getString(AGE_KEY, "");
+        ageText.setText(age);
 
-        String classYear = preferences.getString(CLASS_KEY, "");
-        classText.setText(classYear);
+        String city = preferences.getString(CITY_KEY, "");
+        cityText.setText(city);
 
-        String major = preferences.getString(MAJOR_KEY, "");
-        majorText.setText(major);
+        String state = preferences.getString(STATE_KEY, "");
+        stateText.setText(state);
 
         // Please Load gender info and set radio box
         int mIntValue = preferences.getInt(RADIO_GROUP_KEY, -1);

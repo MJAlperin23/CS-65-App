@@ -47,7 +47,7 @@ public class SpeechActivity extends Activity {
 
         phrase = (TextView)findViewById(R.id.phraseToRead);
 
-        phrase.setText("Can you read this");
+        phrase.setText("This app helps improve my speech");
         recordButton.setText(R.string.buttonStart);
 
         replayButton.setText(R.string.buttonPlay);
@@ -77,7 +77,7 @@ public class SpeechActivity extends Activity {
     }
 
     private void generateNewPhrase() {
-        phrase.setText("New Phrase!");
+        phrase.setText("New Phrase");
         recordButton.setText(R.string.buttonStart);
     }
 

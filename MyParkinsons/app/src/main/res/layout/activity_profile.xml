@@ -75,6 +75,23 @@
                 android:inputType="textPersonName" />
 
             <TextView
+                android:id="@+id/ageLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/age"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            <EditText
+                android:id="@+id/ageTextField"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:ems="10"
+                android:hint="@string/ageFiller"
+                android:phoneNumber="true"
+                android:inputType="number" />
+
+            <TextView
                 android:id="@+id/emailLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -90,21 +107,39 @@
                 android:inputType="textEmailAddress" />
 
             <TextView
-                android:id="@+id/phoneLabel"
+                android:id="@+id/cityLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/phone"
+                android:text="@string/city"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <EditText
-                android:id="@+id/phoneTextField"
+                android:id="@+id/cityTextField"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:ems="10"
-                android:hint="@string/phoneFiller"
-                android:inputType="phone"
-                android:phoneNumber="true" />
+                android:hint="@string/cityFiller"
+                android:inputType="textCapWords" />
+
+            <TextView
+                android:id="@+id/stateLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/state"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            <EditText
+                android:id="@+id/stateTextField"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:ems="10"
+                android:hint="@string/stateFiller"
+                android:inputType="textCapCharacters" />
+
+
+
 
             <TextView
                 android:id="@+id/genderLabel"
@@ -142,33 +177,7 @@
                     android:text="@string/Female" />
             </RadioGroup>
 
-            <TextView
-                android:id="@+id/classLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/dartmouthClass"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
 
-            <EditText
-                android:id="@+id/classTextField"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="@string/classFiller"
-                android:inputType="number" />
-
-            <TextView
-                android:id="@+id/majorLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/major"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
-
-            <EditText
-                android:id="@+id/majorTextField"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/majorFiller" />
 
 
             <LinearLayout

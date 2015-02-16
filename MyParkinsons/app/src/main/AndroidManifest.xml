@@ -22,23 +22,23 @@
 
         <activity
             android:name=".ExerciseLogActivity"
-            android:label="@string/title_activity_exercise_log" />
+            android:label="@string/app_name" />
 
         <activity
             android:name=".SpeechActivity"
-            android:label="@string/title_activity_speech" />
+            android:label="@string/app_name" />
 
         <activity
             android:name=".SettingsActivity"
-            android:label="@string/title_activity_settings" />
+            android:label="@string/app_name" />
 
         <activity
             android:name=".GraphActivity"
-            android:label="@string/title_activity_graph" >
+            android:label="@string/app_name" >
         </activity>
         <activity
             android:name=".ProfileActivity"
-            android:label="@string/title_activity_graph" >
+            android:label="@string/app_name" >
         </activity>
 
     </application>
