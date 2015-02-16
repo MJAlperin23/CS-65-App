@@ -60,5 +60,6 @@
     <string name="cityFiller">Your City Here</string>
     <string name="state">State</string>
     <string name="stateFiller">Your State Here</string>
+    <string name="app_name_special">My Parkinson\'s</string>
 
 </resources>

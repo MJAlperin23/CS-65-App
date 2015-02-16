@@ -10,6 +10,25 @@
         android:id="@+id/textview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello" />
+        android:text="Account Preferences"
+        android:textStyle="bold"
+        android:textSize="15dp"
+        android:textColor="#008AE6"
+        android:layout_marginTop="2dp"
+        android:layout_marginBottom="5dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="User Profile"
+        android:textStyle="bold"
+        android:layout_marginLeft="3dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Name, Age, email, etc."
+        android:layout_marginLeft="7dp" />
+
 
 </LinearLayout>
