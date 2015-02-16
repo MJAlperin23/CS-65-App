@@ -54,5 +54,6 @@
     <string name="title_child_preference">Delete All Data</string>
     <string name="summary_child_preference">This should eventually launch a dialog fragment.</string>
     <string name="comment_edittext_dialogtitlesettings">stuff</string>
+    <string name="app_name_special">My Parkinsons</string>
 
 </resources>
