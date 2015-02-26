@@ -5,14 +5,18 @@ import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.media.Image;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.AlphaAnimation;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,6 +26,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 
@@ -34,8 +39,11 @@ public class SpeechActivity extends Activity {
     private Button recordButton;
     private Button replayButton;
     private TextView phrase;
+    private ImageView resultView;
 
     private Uri audioUri;
+
+    private HashMap<String, ArrayList<SentenceMaker.GrammarRule>> grammar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +60,8 @@ public class SpeechActivity extends Activity {
 
         replayButton.setText(R.string.buttonPlay);
         replayButton.setEnabled(false);
+
+        resultView = (ImageView)findViewById(R.id.resultImageView);
 
         checkVoiceRecognition();
 
@@ -72,12 +82,25 @@ public class SpeechActivity extends Activity {
             @Override
             public void onClick(View v) {
                 playBackAudio();
+
             }
         });
+
+
+        SentenceMaker sentenceMaker = new SentenceMaker();
+        grammar = sentenceMaker.makeGrammarRule(this);
+        sentenceMaker.generateRandomSentence(grammar, phrase);
     }
 
     private void generateNewPhrase() {
-        phrase.setText("New Phrase");
+        AlphaAnimation animation1 = new AlphaAnimation(1.0f, 0.0f);
+        animation1.setDuration(1000);
+        animation1.setStartOffset(0);
+        animation1.setFillAfter(true);
+        resultView.startAnimation(animation1);
+        SentenceMaker sentenceMaker = new SentenceMaker();
+        sentenceMaker.generateRandomSentence(grammar, phrase);
+        
         recordButton.setText(R.string.buttonStart);
     }
 
@@ -97,9 +120,9 @@ public class SpeechActivity extends Activity {
 
         i.putExtra(RecognizerIntent.EXTRA_PROMPT, phrase.getText().toString());
 
-        i.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+        i.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_WEB_SEARCH);
 
-        i.putExtra(RecognizerIntent.EXTRA_MAX_RESULTS, 20);
+        i.putExtra(RecognizerIntent.EXTRA_MAX_RESULTS, 30);
 
         //provide audio url in the result
         i.putExtra("android.speech.extra.GET_AUDIO_FORMAT", "audio/AMR");
@@ -117,14 +140,30 @@ public class SpeechActivity extends Activity {
                 ArrayList<String> results = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
                 boolean understood = false;
                 for (String aPhrase : results) {
-                    if (aPhrase.toLowerCase().equals(phrase.getText().toString().toLowerCase())) {
-                        Toast.makeText(getApplicationContext(), "Great job! We understood what you said!", Toast.LENGTH_SHORT).show();
+                    Log.d("LOG", aPhrase.toLowerCase());
+                    String thePhrase = phrase.getText().toString().toLowerCase();
+                    thePhrase = thePhrase.substring(0, thePhrase.length() - 1);
+                    Log.d("LOG", thePhrase);
+                    if (aPhrase.toLowerCase().equals(thePhrase)) {
+                        //Toast.makeText(getApplicationContext(), "Great job! We understood what you said!", Toast.LENGTH_SHORT).show();
+                        resultView.setImageResource(R.drawable.check);
+                        AlphaAnimation animation1 = new AlphaAnimation(0.0f, 1.0f);
+                        animation1.setDuration(1000);
+                        animation1.setStartOffset(0);
+                        animation1.setFillAfter(true);
+                        resultView.startAnimation(animation1);
                         understood = true;
                         break;
                     }
                 }
                 if (!understood) {
-                    Toast.makeText(getApplicationContext(), "Try again. We couldn't understand you.", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getApplicationContext(), "Try again. We couldn't understand you.", Toast.LENGTH_SHORT).show();
+                    resultView.setImageResource(R.drawable.wrong);
+                    AlphaAnimation animation1 = new AlphaAnimation(0.0f, 1.0f);
+                    animation1.setDuration(1000);
+                    animation1.setStartOffset(0);
+                    animation1.setFillAfter(true);
+                    resultView.startAnimation(animation1);
                 }
 
                 //http://stackoverflow.com/questions/23047433/record-save-audio-from-voice-recognition-intent
