@@ -206,6 +206,8 @@ public class SpeechActivity extends Activity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            Intent settingsActivity = new Intent(this, SettingsActivity.class);
+            startActivityForResult(settingsActivity, SettingsActivity.SETTINGS_ACTIVITY_KEY);
             return true;
         }
 

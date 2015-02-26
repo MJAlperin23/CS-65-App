@@ -61,5 +61,8 @@
     <string name="state">State</string>
     <string name="stateFiller">Your State Here</string>
     <string name="app_name_special">My Parkinson\'s</string>
+    <string name="delete_alert_dialog_title">Delete all saved data?</string>
+    <string name="delete_data_title">Delete Stored Data</string>
+    <string name="delete_data_summary">Delete all exercise and speech data stored in the app.</string>
 
 </resources>
