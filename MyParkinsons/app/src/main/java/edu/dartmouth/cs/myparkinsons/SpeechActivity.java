@@ -23,6 +23,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 
@@ -37,6 +38,8 @@ public class SpeechActivity extends Activity {
     private TextView phrase;
 
     private Uri audioUri;
+
+    private HashMap<String, ArrayList<SentenceMaker.GrammarRule>> grammar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,12 +82,13 @@ public class SpeechActivity extends Activity {
 
 
         SentenceMaker sentenceMaker = new SentenceMaker();
-        sentenceMaker.generateRandomSentence(getApplicationContext(), phrase);
+        grammar = sentenceMaker.makeGrammarRule(this);
+        sentenceMaker.generateRandomSentence(grammar, phrase);
     }
 
     private void generateNewPhrase() {
         SentenceMaker sentenceMaker = new SentenceMaker();
-        sentenceMaker.generateRandomSentence(getApplicationContext(), phrase);
+        sentenceMaker.generateRandomSentence(grammar, phrase);
         
         recordButton.setText(R.string.buttonStart);
     }

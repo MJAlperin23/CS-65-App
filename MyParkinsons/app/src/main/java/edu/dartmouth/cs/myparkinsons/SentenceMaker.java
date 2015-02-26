@@ -3,11 +3,6 @@ package edu.dartmouth.cs.myparkinsons;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -15,8 +10,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.Random;
 import java.util.StringTokenizer;
 
@@ -26,15 +19,9 @@ import java.util.StringTokenizer;
 public class SentenceMaker {
 
 
-    private String sentence;
-    private Context context;
     private TextView text;
 
-    public String generateRandomSentence(Context context, TextView text) {
-
-        this.context = context;
-        this.text = text;
-
+    public HashMap<String, ArrayList<GrammarRule>>makeGrammarRule(Context context) {
         HashMap<String, ArrayList<GrammarRule>> grammar = new HashMap<>();
 
         InputStream is = context.getResources().openRawResource(R.raw.englishfile);
@@ -47,7 +34,6 @@ public class SentenceMaker {
                 if (sCurrentLine.length() == 0 || sCurrentLine.substring(0,1).equals("#") || sCurrentLine.substring(0,1).equals("\n")) {
                     continue;
                 } else {
-                    //System.out.println(sCurrentLine);
                     sCurrentLine.replace("\n", "");
 
 
@@ -76,7 +62,6 @@ public class SentenceMaker {
                         ArrayList<GrammarRule> list = grammar.get(key);
                         list.add(rule);
 
-                        //grammar.put(key, list);
                     } else {
                         ArrayList<GrammarRule> list = new ArrayList<>();
                         list.add(rule);
@@ -93,15 +78,17 @@ public class SentenceMaker {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return grammar;
+    }
+
+    public void generateRandomSentence(HashMap<String, ArrayList<GrammarRule>> grammar, TextView text) {
+        this.text = text;
 
         makeSentence(grammar);
-
-        return "";
     }
 
     private void getSentence(HashMap<String, ArrayList<GrammarRule>> grammar, String key, ArrayList<GrammarRule> ruleList) {
         if (!grammar.containsKey(key)) {
-            //System.out.print(key);
             return;
         }
 
@@ -144,14 +131,12 @@ public class SentenceMaker {
 
             @Override
             protected void onPostExecute(String res) {
-                //Toast.makeText(context, res, Toast.LENGTH_SHORT).show();
                 text.setText(res);
-                sentence = res;
             }
         }.execute(grammar);
     }
 
-    private class GrammarRule {
+    public class GrammarRule {
 
         public String current;
         public ArrayList<String> others;
@@ -164,33 +149,3 @@ public class SentenceMaker {
 }
 
 
-
-////using the grammar, consturct a list of rules to make a sentence and save those rules in ruleList
-////Method should be used recursivly
-//-(void) printSentenceWith: (NSMutableDictionary*) grammar startingWith: (NSString*) word andArray: (NSMutableArray*) ruleList {
-//
-//    //base case, if the word is not in the grammar, return
-//    if (![grammar objectForKey:word]) {
-//        NSLog(@"%@", word);
-//
-//    //if the word is in the grammar, then get the rules out of the grammar for that word
-//    } else {
-//        NSMutableArray* nextKeys = [grammar objectForKey:word];
-//
-//        //randomly select one of the rules
-//        int randomKey = arc4random() % [nextKeys count];
-//        GrammarRule* newRule = [nextKeys objectAtIndex:randomKey];
-//        //If the rule has nonterminals, recurse for all of the nonterminals
-//        if (newRule.nonTerminals != NULL) {
-//            for (NSString* key in newRule.nonTerminals) {
-//                [self printSentenceWith:grammar startingWith:key andArray:ruleList];
-//            }
-//        }
-//        //If the rule has terminals, add the rule to the list.
-//        if (newRule.terminal != NULL) {
-//            [ruleList addObject:newRule];
-//        }
-//
-//    }
-//
-//}
