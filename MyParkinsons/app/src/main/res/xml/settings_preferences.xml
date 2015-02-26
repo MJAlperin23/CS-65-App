@@ -8,24 +8,33 @@
             android:title="@string/user_profile_title"
             android:summary="@string/user_profile_summary">
 
-            <intent android:action="edu.dartmouth.cs.myruns.SettingsTab" />
+            <intent android:action="edu.dartmouth.cs.myparkinsons.ProfileActivity" />
         </PreferenceScreen>
 
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/addsettings_title">
 
-        <edu.dartmouth.cs.myparkinsons.TimePickerFragment
-            android:key="prefKey"
-            android:title="hi"
+        <Preference
+            android:key="time_select_key"
+            android:title="Speech Reminder Time"
             android:summary="@string/pref_summary" />
 
-        <CheckBoxPreference
-            android:key="parent_checkbox_savedata"
+    </PreferenceCategory>
+
+
+    <PreferenceCategory android:title="Data Storage Options">
+
+        <SwitchPreference
+            android:key="store_data_switch"
             android:title="@string/title_save_data"
-            android:summary="@string/summary_save_data" />
+            android:summary="@string/summary_save_data"
+            android:defaultValue="true"/>
 
-
+        <Preference
+            android:key="delete_data_key"
+            android:title="@string/delete_data_title"
+            android:summary="@string/delete_data_summary" />
 
     </PreferenceCategory>
 

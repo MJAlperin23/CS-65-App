@@ -14,7 +14,7 @@ import android.widget.TextView;
 public class MainActivity extends Activity {
 
 
-    private static final int SETTINGS_ACTIVITY_KEY = 1;
+
 
     private Button exerciseButton;
     private Button speechButton;
@@ -65,15 +65,12 @@ public class MainActivity extends Activity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
+
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             Intent settingsActivity = new Intent(this, SettingsActivity.class);
-            startActivityForResult(settingsActivity, SETTINGS_ACTIVITY_KEY);
+            startActivityForResult(settingsActivity, SettingsActivity.SETTINGS_ACTIVITY_KEY);
             return true;
         }
 
