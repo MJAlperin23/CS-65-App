@@ -5,6 +5,7 @@ import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.media.Image;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
@@ -13,7 +14,9 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.AlphaAnimation;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,6 +39,7 @@ public class SpeechActivity extends Activity {
     private Button recordButton;
     private Button replayButton;
     private TextView phrase;
+    private ImageView resultView;
 
     private Uri audioUri;
 
@@ -56,6 +60,8 @@ public class SpeechActivity extends Activity {
 
         replayButton.setText(R.string.buttonPlay);
         replayButton.setEnabled(false);
+
+        resultView = (ImageView)findViewById(R.id.resultImageView);
 
         checkVoiceRecognition();
 
@@ -87,6 +93,11 @@ public class SpeechActivity extends Activity {
     }
 
     private void generateNewPhrase() {
+        AlphaAnimation animation1 = new AlphaAnimation(1.0f, 0.0f);
+        animation1.setDuration(1000);
+        animation1.setStartOffset(0);
+        animation1.setFillAfter(true);
+        resultView.startAnimation(animation1);
         SentenceMaker sentenceMaker = new SentenceMaker();
         sentenceMaker.generateRandomSentence(grammar, phrase);
         
@@ -134,13 +145,25 @@ public class SpeechActivity extends Activity {
                     thePhrase = thePhrase.substring(0, thePhrase.length() - 1);
                     Log.d("LOG", thePhrase);
                     if (aPhrase.toLowerCase().equals(thePhrase)) {
-                        Toast.makeText(getApplicationContext(), "Great job! We understood what you said!", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(getApplicationContext(), "Great job! We understood what you said!", Toast.LENGTH_SHORT).show();
+                        resultView.setImageResource(R.drawable.check);
+                        AlphaAnimation animation1 = new AlphaAnimation(0.0f, 1.0f);
+                        animation1.setDuration(1000);
+                        animation1.setStartOffset(0);
+                        animation1.setFillAfter(true);
+                        resultView.startAnimation(animation1);
                         understood = true;
                         break;
                     }
                 }
                 if (!understood) {
-                    Toast.makeText(getApplicationContext(), "Try again. We couldn't understand you.", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getApplicationContext(), "Try again. We couldn't understand you.", Toast.LENGTH_SHORT).show();
+                    resultView.setImageResource(R.drawable.wrong);
+                    AlphaAnimation animation1 = new AlphaAnimation(0.0f, 1.0f);
+                    animation1.setDuration(1000);
+                    animation1.setStartOffset(0);
+                    animation1.setFillAfter(true);
+                    resultView.startAnimation(animation1);
                 }
 
                 //http://stackoverflow.com/questions/23047433/record-save-audio-from-voice-recognition-intent
