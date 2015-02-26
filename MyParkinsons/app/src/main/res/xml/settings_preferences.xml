@@ -26,7 +26,7 @@
     <PreferenceCategory android:title="Data Storage Options">
 
         <SwitchPreference
-            android:key="store_data_switch"
+            android:key="store_data_toggle_switch"
             android:title="@string/title_save_data"
             android:summary="@string/summary_save_data"
             android:defaultValue="true"/>
