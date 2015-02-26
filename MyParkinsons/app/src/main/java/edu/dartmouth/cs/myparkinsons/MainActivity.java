@@ -5,6 +5,7 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.util.Log;
@@ -62,6 +63,7 @@ public class MainActivity extends Activity {
         });
 
         // set up periodic notification requests
+        SharedPreferences prefs = getSharedPreferences(SettingsActivity.SHARED_PREFERENCES_KEY, MODE_PRIVATE);
         setReminder(0L, "Hey Mickey", "You so fine, you so fine you blow my mind");
 
     }
@@ -90,6 +92,9 @@ public class MainActivity extends Activity {
 
     public void setReminder(long time, String title, String message) {
 
+        long bootTime = Calendar.getInstance().getTimeInMillis() - SystemClock.elapsedRealtime();
+        long targetRealtime = time - bootTime;
+
         Intent alarmIntent = new Intent(this, SpeechReminderReceiver.class);
         alarmIntent.putExtra("message", message);
         alarmIntent.putExtra("title", title);
@@ -102,7 +107,7 @@ public class MainActivity extends Activity {
 
         //TODO: For demo set after 5 seconds.
         alarmManager.setRepeating(
-                AlarmManager.ELAPSED_REALTIME, SystemClock.elapsedRealtime() + 5 * 1000,
+                AlarmManager.ELAPSED_REALTIME, targetRealtime,
                 MS_PER_DAY, pendingIntent
         );
 
