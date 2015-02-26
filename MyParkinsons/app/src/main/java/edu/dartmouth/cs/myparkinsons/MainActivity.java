@@ -1,8 +1,13 @@
 package edu.dartmouth.cs.myparkinsons;
 
 import android.app.Activity;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.SystemClock;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -10,11 +15,13 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import java.util.Calendar;
+
 
 public class MainActivity extends Activity {
 
 
-
+    private static final long MS_PER_DAY = 86400000;
 
     private Button exerciseButton;
     private Button speechButton;
@@ -54,6 +61,8 @@ public class MainActivity extends Activity {
             }
         });
 
+        // set up periodic notification requests
+        setReminder(0L, "Hey Mickey", "You so fine, you so fine you blow my mind");
 
     }
 
@@ -77,5 +86,25 @@ public class MainActivity extends Activity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void setReminder(long time, String title, String message) {
+
+        Intent alarmIntent = new Intent(this, SpeechReminderReceiver.class);
+        alarmIntent.putExtra("message", message);
+        alarmIntent.putExtra("title", title);
+
+        int NOTIFICATION_REQUEST_CODE = 0;
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, NOTIFICATION_REQUEST_CODE, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+
+        Log.d("setReminder()", "Setting a reminder");
+
+        //TODO: For demo set after 5 seconds.
+        alarmManager.setRepeating(
+                AlarmManager.ELAPSED_REALTIME, SystemClock.elapsedRealtime() + 5 * 1000,
+                MS_PER_DAY, pendingIntent
+        );
+
     }
 }
