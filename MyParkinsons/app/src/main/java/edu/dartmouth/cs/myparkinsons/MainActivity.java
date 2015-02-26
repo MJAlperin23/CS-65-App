@@ -54,8 +54,7 @@ public class MainActivity extends Activity {
             }
         });
 
-        SentenceMaker sentenceMaker = new SentenceMaker();
-        sentenceMaker.generateRandomSentence(this);
+
     }
 
 

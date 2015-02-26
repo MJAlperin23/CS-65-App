@@ -9,6 +9,7 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -72,12 +73,19 @@ public class SpeechActivity extends Activity {
             @Override
             public void onClick(View v) {
                 playBackAudio();
+
             }
         });
+
+
+        SentenceMaker sentenceMaker = new SentenceMaker();
+        sentenceMaker.generateRandomSentence(getApplicationContext(), phrase);
     }
 
     private void generateNewPhrase() {
-        phrase.setText("New Phrase");
+        SentenceMaker sentenceMaker = new SentenceMaker();
+        sentenceMaker.generateRandomSentence(getApplicationContext(), phrase);
+        
         recordButton.setText(R.string.buttonStart);
     }
 
@@ -97,9 +105,9 @@ public class SpeechActivity extends Activity {
 
         i.putExtra(RecognizerIntent.EXTRA_PROMPT, phrase.getText().toString());
 
-        i.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+        i.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_WEB_SEARCH);
 
-        i.putExtra(RecognizerIntent.EXTRA_MAX_RESULTS, 20);
+        i.putExtra(RecognizerIntent.EXTRA_MAX_RESULTS, 30);
 
         //provide audio url in the result
         i.putExtra("android.speech.extra.GET_AUDIO_FORMAT", "audio/AMR");
@@ -117,7 +125,11 @@ public class SpeechActivity extends Activity {
                 ArrayList<String> results = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
                 boolean understood = false;
                 for (String aPhrase : results) {
-                    if (aPhrase.toLowerCase().equals(phrase.getText().toString().toLowerCase())) {
+                    Log.d("LOG", aPhrase.toLowerCase());
+                    String thePhrase = phrase.getText().toString().toLowerCase();
+                    thePhrase = thePhrase.substring(0, thePhrase.length() - 1);
+                    Log.d("LOG", thePhrase);
+                    if (aPhrase.toLowerCase().equals(thePhrase)) {
                         Toast.makeText(getApplicationContext(), "Great job! We understood what you said!", Toast.LENGTH_SHORT).show();
                         understood = true;
                         break;

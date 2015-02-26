@@ -2,6 +2,8 @@ package edu.dartmouth.cs.myparkinsons;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -24,8 +26,14 @@ import java.util.StringTokenizer;
 public class SentenceMaker {
 
 
+    private String sentence;
+    private Context context;
+    private TextView text;
 
-    public String generateRandomSentence(Context context) {
+    public String generateRandomSentence(Context context, TextView text) {
+
+        this.context = context;
+        this.text = text;
 
         HashMap<String, ArrayList<GrammarRule>> grammar = new HashMap<>();
 
@@ -93,7 +101,7 @@ public class SentenceMaker {
 
     private void getSentence(HashMap<String, ArrayList<GrammarRule>> grammar, String key, ArrayList<GrammarRule> ruleList) {
         if (!grammar.containsKey(key)) {
-            System.out.print(key);
+            //System.out.print(key);
             return;
         }
 
@@ -102,7 +110,7 @@ public class SentenceMaker {
         Random rand = new Random();
         int index = Math.abs(rand.nextInt());
         index = index % nextKeys.size();
-        
+
 
         GrammarRule rule = nextKeys.get(index);
 
@@ -123,18 +131,22 @@ public class SentenceMaker {
             @Override
             protected String doInBackground(HashMap<String, ArrayList<GrammarRule>>... arg0) {
                 ArrayList<GrammarRule> list = new ArrayList<>();
-                getSentence(arg0[0], "ROOT", list);
+                getSentence(arg0[0], "S", list);
+                StringBuilder builder = new StringBuilder();
                 for (GrammarRule rule : list) {
-                    System.out.print(rule.terminal);
+                    builder.append(rule.terminal);
+                    builder.append(" ");
+
                 }
 
-                return "";
+                return builder.toString();
             }
 
             @Override
             protected void onPostExecute(String res) {
-                //mPostText.setText("");
-                //refreshPostHistory();
+                //Toast.makeText(context, res, Toast.LENGTH_SHORT).show();
+                text.setText(res);
+                sentence = res;
             }
         }.execute(grammar);
     }

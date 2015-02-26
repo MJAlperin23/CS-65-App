@@ -32,8 +32,8 @@ ROOT	S ?
 S	NP VP 
 VP	Verb NP
 NP	Det Noun
-NP	NP PP
-PP	Prep NP
+#NP	NP PP
+#PP	Prep NP
 Noun	Adj Noun
 
 # Vocabulary.  Your program can see that "ate" is a terminal
@@ -47,6 +47,12 @@ Verb	wanted
 Verb	kissed
 Verb	understood
 Verb	pickled
+Verb	flew
+Verb	dug
+Verb	registered
+Verb	drove
+Verb	reproduced
+Verb	strengthened
 
 Det	the
 Det	a
@@ -57,11 +63,36 @@ Noun	sandwich
 Noun	pickle
 Noun	chief of staff
 Noun	floor
+Noun	land
+Noun	donkey
+Noun	cactus
+Noun	hen
+Noun	boot
+Noun	gold
+Noun	suggestion
+Noun	wheel
+Noun	dust
+Noun	selection
+Noun	shade
+Noun	station
+Noun	needle
 
 Adj	fine
 Adj	delicious
 Adj	perplexed
 Adj	pickled
+Adj	squishy
+Adj	excited
+Adj	macho
+Adj	loving
+Adj	elastic
+Adj	spicy
+Adj	noxious
+Adj	fancy
+Adj	sophisticated
+Adj	plucky
+Adj	humorous
+Adj	disgusting
 
 Prep	with
 Prep	on
