@@ -33,26 +33,35 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import java.sql.Time;
 import java.util.Calendar;
 
 
-public class SettingsActivity extends Activity implements TimePickerDialog.OnTimeSetListener{
+public class SettingsActivity extends Activity implements TimePickerDialog.OnTimeSetListener {
 
     public static final int SETTINGS_ACTIVITY_KEY = 1;
-
+    public static final String ALLOW_TIME_ALERT_KEY = "allowtimealert_settingsactivity";
+    public static final String TIME_OF_ALERT_KEY = "timeofalertkey_settingsactivity";
+    public static final String SAVE_DATA_KEY = "timeofalertkey_settingsactivity";
+    public static final String SHARED_PREFERENCES_KEY = "preferenceskey";
+    public SharedPreferences settingData;
+    public static SharedPreferences.Editor spEdit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         getFragmentManager().beginTransaction()
-				.replace(android.R.id.content, new PrefsFragment()).commit();
+                .replace(android.R.id.content, new PrefsFragment()).commit();
+
+        settingData = getSharedPreferences(SHARED_PREFERENCES_KEY, MODE_PRIVATE);
+        spEdit = settingData.edit();
 
         PreferenceManager.setDefaultValues(this, R.xml.settings_preferences, false);
     }
 
     public static class PrefsFragment extends PreferenceFragment {
-        private SwitchPreference storeDataSwitch;
+
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
@@ -63,15 +72,32 @@ public class SettingsActivity extends Activity implements TimePickerDialog.OnTim
         @Override
         public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen, Preference preference) {
 
-            if(preference.getKey().equals("delete_data_key")) {
-                DialogFragment newFragment = MyAlertDialogFragment
-                        .newInstance(R.string.delete_alert_dialog_title);
-                newFragment.show(getFragmentManager(), "dialog");
-            }
+            switch (preference.getKey()) {
 
-            if(preference.getKey().equals("time_select_key")) {
-                DialogFragment timeFragment = new TimePickerFragment();
-                timeFragment.show(getFragmentManager(), "timePicker");
+                case "delete_data_key":
+                    DialogFragment newFragment = MyAlertDialogFragment
+                            .newInstance(R.string.delete_alert_dialog_title);
+                    newFragment.show(getFragmentManager(), "dialog");
+                    break;
+
+                case "time_select_key":
+                    DialogFragment timeFragment = new TimePickerFragment();
+                    timeFragment.show(getFragmentManager(), "timePicker");
+                    break;
+
+                //TODO: get the correct values for enabled disable
+                case "speech_alert_toggle_switch":
+                    spEdit.putBoolean(SettingsActivity.ALLOW_TIME_ALERT_KEY, preference.isEnabled());
+                    spEdit.commit();
+                    System.out.println(preference.isEnabled());
+                    break;
+
+                //TODO: get the correct values for enabled disable
+                case "store_data_toggle_switch":
+                    spEdit.putBoolean(SettingsActivity.SAVE_DATA_KEY, preference.isEnabled());
+                    spEdit.commit();
+                    System.out.println(preference.isEnabled());
+                    break;
             }
 
             return super.onPreferenceTreeClick(preferenceScreen, preference);
@@ -127,8 +153,23 @@ public class SettingsActivity extends Activity implements TimePickerDialog.OnTim
 
     @Override
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.HOUR, hourOfDay);
+        cal.set(Calendar.MINUTE, minute);
+
+        if (cal.before(Calendar.getInstance())) {
+            cal.add(Calendar.DAY_OF_YEAR, 1);
+        }
+        long timeSelectionMillis = cal.getTimeInMillis();
+
+        SharedPreferences settingData = getSharedPreferences(SHARED_PREFERENCES_KEY, MODE_PRIVATE);
+        SharedPreferences.Editor spEdit = settingData.edit();
+        spEdit.putLong(TIME_OF_ALERT_KEY, timeSelectionMillis);
+        spEdit.commit();
 
     }
+
+
 }
 
 
