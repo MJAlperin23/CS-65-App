@@ -9,7 +9,35 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".MainActivity">
-    
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="20dp">
+
+        <edu.dartmouth.cs.myparkinsons.CircleButton
+            android:id="@+id/exercise_button_id"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@drawable/exercise_pic"
+            app:cb_color="#FF29A629"
+            app:cb_pressedRingWidth="10dip"
+            android:layout_weight="1"
+            android:layout_gravity="left"
+            android:layout_marginLeft="0dp"/>
+
+        <edu.dartmouth.cs.myparkinsons.CircleButton
+            android:id="@+id/speech_button_id"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@drawable/speech_pic"
+            app:cb_color="#FF0066FF"
+            app:cb_pressedRingWidth="10dip"
+            android:layout_weight="1"
+            android:layout_gravity="right"/>
+
+    </LinearLayout>
+
 
     <ViewFlipper
         android:id="@+id/viewFlipper"
@@ -44,20 +72,20 @@
     </ViewFlipper>
 
 
-    <Button
-        android:id="@+id/exerciseButton"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="0"
-        android:text="@string/exerciseButton"
-        android:textAlignment="center" />
+    <!--<Button-->
+        <!--android:id="@+id/exerciseButton"-->
+        <!--android:layout_width="fill_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_weight="0"-->
+        <!--android:text="@string/exerciseButton"-->
+        <!--android:textAlignment="center" />-->
 
-    <Button
-        android:id="@+id/speechButton"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="0"
-        android:text="@string/speechButton"
-        android:textAlignment="center" />
+    <!--<Button-->
+        <!--android:id="@+id/speechButton"-->
+        <!--android:layout_width="fill_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_weight="0"-->
+        <!--android:text="@string/speechButton"-->
+        <!--android:textAlignment="center" />-->
 
 </LinearLayout>

@@ -31,6 +31,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ViewFlipper;
 
 import java.util.Calendar;
@@ -77,9 +78,8 @@ public class MainActivity extends FragmentActivity implements ServiceConnection 
         cpf = new CircleProgressFragment();
         scpf = new SpeechCircleProgressFragment();
 
-        exerciseButton = (Button)findViewById(R.id.exerciseButton);
-        speechButton = (Button)findViewById(R.id.speechButton);
-
+        CircleButton exerciseButton = (CircleButton) findViewById(R.id.exercise_button_id);
+        CircleButton speechButton = (CircleButton) findViewById(R.id.speech_button_id);
 
         exerciseButton.setOnClickListener(new View.OnClickListener() {
             @Override
