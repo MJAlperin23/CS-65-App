@@ -114,7 +114,7 @@ public class MainActivity extends FragmentActivity implements ServiceConnection 
 
     @Override
     protected void onResume() {
-        cpf.setCircleProgress(50);
+        CircleProgressFragment.setCircleProgress(40);
         super.onResume();
     }
 
@@ -162,7 +162,7 @@ public class MainActivity extends FragmentActivity implements ServiceConnection 
     //TODO: write method to set progress bar
     public static class CircleProgressFragment extends Fragment {
 
-        public CircleProgressBar circleProgressBar;
+        public static CircleProgressBar circleProgressBar;
 
         public CircleProgressFragment() {
         }
@@ -182,7 +182,7 @@ public class MainActivity extends FragmentActivity implements ServiceConnection 
             return rootView;
         }
 
-        public void setCircleProgress(int value) {
+        public static void setCircleProgress(int value) {
             circleProgressBar.setProgressWithAnimation(value);
         }
     }
