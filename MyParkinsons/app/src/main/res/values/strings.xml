@@ -69,5 +69,6 @@
     <string name="allow_tracking_summery">Enable/Disable the accelerometer exercise tracking.</string>
     <string name="speech_alert_title">Speech Reminder Notification</string>
     <string name="speech_alert_summery">Enable/Disable the daily speech activity reminder.</string>
+    <string name="exerciseMessage">Todays Exersice Progress:</string>
 
 </resources>

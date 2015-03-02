@@ -90,4 +90,14 @@ public class DataSource {
         return item;
     }
 
+    public void deleteAllData() {
+
+        List<ExerciseItem> itemsList = fetchItems();
+
+        open();
+        for(ExerciseItem entry: itemsList) {
+            removeItem(entry.getId());
+        }
+        close();
+    }
 }
