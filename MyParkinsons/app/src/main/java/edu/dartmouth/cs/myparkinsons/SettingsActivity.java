@@ -36,7 +36,7 @@ import android.widget.Toast;
 import java.sql.Time;
 import java.util.Calendar;
 
-//TODO: add optio to turn off accel tracking
+
 public class SettingsActivity extends Activity implements TimePickerDialog.OnTimeSetListener {
 
     public static final int SETTINGS_ACTIVITY_KEY = 1;
@@ -85,18 +85,18 @@ public class SettingsActivity extends Activity implements TimePickerDialog.OnTim
                     timeFragment.show(getFragmentManager(), "timePicker");
                     break;
 
-                //TODO: get the correct values for enabled disable
                 case "speech_alert_toggle_switch":
-                    spEdit.putBoolean(SettingsActivity.ALLOW_TIME_ALERT_KEY, preference.isEnabled());
+                    spEdit.putBoolean(SettingsActivity.ALLOW_TIME_ALERT_KEY, ((SwitchPreference) preference).isChecked());
                     spEdit.commit();
-                    System.out.println(preference.isEnabled());
                     break;
 
-                //TODO: get the correct values for enabled disable
                 case "store_data_toggle_switch":
-                    spEdit.putBoolean(SettingsActivity.SAVE_DATA_KEY, preference.isEnabled());
+                    spEdit.putBoolean(SettingsActivity.SAVE_DATA_KEY, ((SwitchPreference) preference).isChecked());
                     spEdit.commit();
-                    System.out.println(preference.isEnabled());
+                    break;
+
+                //TODO: create method call to disable accel tracking service
+                case "allow_accel_tracking_toggle":
                     break;
             }
 
@@ -143,9 +143,10 @@ public class SettingsActivity extends Activity implements TimePickerDialog.OnTim
     }
 
     private void doNegativeClick() {
-
+        //nothing needs to be done here
     }
 
+    //TODO: method call to remove all things from database
     private void doPositiveClick() {
 
     }

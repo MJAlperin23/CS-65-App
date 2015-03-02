@@ -15,6 +15,18 @@
 
     <PreferenceCategory android:title="@string/addsettings_title">
 
+        <SwitchPreference
+            android:key="allow_accel_tracking_toggle"
+            android:title="@string/allow_tracking_title"
+            android:summary="@string/allow_tracking_summery"
+            android:defaultValue="true"/>
+
+        <SwitchPreference
+            android:key="speech_alert_toggle_switch"
+            android:title="@string/speech_alert_title"
+            android:summary="@string/speech_alert_summery"
+            android:defaultValue="true"/>
+
         <Preference
             android:key="time_select_key"
             android:title="Speech Reminder Time"
