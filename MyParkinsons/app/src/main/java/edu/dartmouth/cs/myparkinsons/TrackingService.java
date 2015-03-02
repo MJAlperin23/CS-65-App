@@ -17,11 +17,13 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.os.Messenger;
+import android.os.PowerManager;
 import android.os.RemoteException;
 import android.util.Log;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Queue;
@@ -46,11 +48,18 @@ public class TrackingService extends Service implements SensorEventListener {
 
     private WekaTask wekaTask;
 
+    private long dailyExerciseTime;
+    private long lastExerciseChangedTime;
+    private boolean isExercising;
+
     @Override
     public void onCreate() {
         super.onCreate();
         appContext = getApplicationContext();
 
+        dailyExerciseTime = 0;
+        lastExerciseChangedTime = 0;
+        isExercising = false;
 
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION);
@@ -68,18 +77,7 @@ public class TrackingService extends Service implements SensorEventListener {
     }
 
     public void reportClassification(Double value) {
-        String string;
-        if (value == 0) {
-            string = "Standing";
-        } else if (value == 1) {
-            string = "Walking";
-        } else {
-            string = "Running";
-        }
-        Toast.makeText(getBaseContext(), string, Toast.LENGTH_SHORT).show();
-        Log.d("TAG", string);
-
-        sendActivityTypeForMap(value);
+        sendActivityType(value);
     }
 
     @Override
@@ -87,8 +85,6 @@ public class TrackingService extends Service implements SensorEventListener {
 
         return super.onUnbind(intent);
     }
-
-
 
     @Override
     public void onSensorChanged(SensorEvent event) {
@@ -106,10 +102,10 @@ public class TrackingService extends Service implements SensorEventListener {
             int size = accQueue.size();
             if (size == 0) {
                 //Sometimes queue size is zero. Make it 64 in that case
-                accQueue = new ArrayBlockingQueue<Double>(64);
+                accQueue = new ArrayBlockingQueue<>(64);
                 accQueue.add(new Double(m));
             } else {
-                ArrayBlockingQueue<Double> newBuf = new ArrayBlockingQueue<Double>(
+                ArrayBlockingQueue<Double> newBuf = new ArrayBlockingQueue<>(
                         accQueue.size() * 2);
 
                 accQueue.drainTo(newBuf);
@@ -133,9 +129,6 @@ public class TrackingService extends Service implements SensorEventListener {
 
     }
 
-
-
-
     @Override
     public void onDestroy() {
         sensorManager.unregisterListener(this);
@@ -144,11 +137,9 @@ public class TrackingService extends Service implements SensorEventListener {
 
     }
 
-
-
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        sensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_FASTEST);
+        sensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
         wekaTask.execute();
         return START_NOT_STICKY;
     }
@@ -158,8 +149,7 @@ public class TrackingService extends Service implements SensorEventListener {
         return messenger.getBinder();
     }
 
-
-    private void sendActivityTypeForMap(Double type) {
+    private void sendActivityType(Double type) {
 
         Iterator<Messenger> messengerIterator = clients.iterator();
         while (messengerIterator.hasNext()) {
@@ -176,8 +166,6 @@ public class TrackingService extends Service implements SensorEventListener {
         }
     }
 
-
-
     /**
      * Handle incoming messages from MainActivity
      */
@@ -189,10 +177,8 @@ public class TrackingService extends Service implements SensorEventListener {
             switch (msg.what) {
                 case MSG_REGISTER_CLIENT:
                     clients.add(msg.replyTo);
-                    // registerTheReceiver();
                     break;
                 case MSG_UNREGISTER_CLIENT:
-                    //unregisterReciever();
                     clients.remove(msg.replyTo);
                     break;
                 default:
@@ -200,9 +186,6 @@ public class TrackingService extends Service implements SensorEventListener {
             }
         }
     }
-
-
-
 
     private class WekaTask extends AsyncTask<Void, Double, Void> {
 
@@ -265,7 +248,7 @@ public class TrackingService extends Service implements SensorEventListener {
         protected Void doInBackground(Void... params) {
 
             while(true) {
-                if (isCancelled() == true) {
+                if (isCancelled()) {
                     return null;
                 }
 
@@ -285,7 +268,52 @@ public class TrackingService extends Service implements SensorEventListener {
 
         @Override
         protected void onProgressUpdate(Double... values) {
-            reportClassification(values[0]);
+
+            PowerManager powerManager = (PowerManager) getSystemService(POWER_SERVICE);
+            // If you use API20 or more:
+            if (powerManager.isInteractive()){
+                if (isExercising) {
+                    System.out.println("Switched to not exercising!!");
+                    long time = Calendar.getInstance().getTimeInMillis();
+                    long difference = time - lastExerciseChangedTime;
+                    dailyExerciseTime += difference;
+                    isExercising = false;
+                }
+                return;
+            }
+            // If you use less than API20:
+//            if (powerManager.isScreenOn()){
+//
+//            }
+
+            double type = values[0];
+            if (isExercising) {
+                if (type == 0) {
+                    System.out.println("Switched to not exercising!!");
+                    Calendar c = Calendar.getInstance();
+                    Calendar old = Calendar.getInstance();
+                    old.setTimeInMillis(lastExerciseChangedTime);
+
+                    long time = c.getTimeInMillis();
+                    long difference = time - lastExerciseChangedTime;
+                    dailyExerciseTime += difference;
+                    isExercising = false;
+                    if (c.get(Calendar.DAY_OF_YEAR) != old.get(Calendar.DAY_OF_YEAR)) {
+                        //TODO add to database
+                        ExerciseItem item = new ExerciseItem(old, false, dailyExerciseTime);
+                        dailyExerciseTime = 0;
+
+                    }
+                }
+            } else {
+                if (type == 1 || type == 2) {       //walking or running
+                    System.out.println("Switched to exercising!!");
+                    isExercising = true;
+                    lastExerciseChangedTime = Calendar.getInstance().getTimeInMillis();
+                }
+            }
+
+            //reportClassification(values[0]);
             super.onProgressUpdate(values);
         }
 

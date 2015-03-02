@@ -11,6 +11,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by Andrew on 2/2/15.
@@ -40,8 +42,7 @@ public class ExerciseLogArrayAdapter extends ArrayAdapter<ExerciseItem> {
 
             holder = new ExerciseItemHolder();
             holder.date = (TextView) row.findViewById(R.id.dateText);
-            holder.running = (TextView) row.findViewById(R.id.runningText);
-            holder.walking = (TextView) row.findViewById(R.id.walkingText);
+            holder.time = (TextView) row.findViewById(R.id.exerciseTimeText);
             holder.didSpeech = (CheckBox)row.findViewById(R.id.speechDoneCheckBox);
 
             row.setTag(holder);
@@ -51,10 +52,19 @@ public class ExerciseLogArrayAdapter extends ArrayAdapter<ExerciseItem> {
 
         ExerciseItem entry = data[position];
         SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
-        String date = format.format(entry.getDate());
+        Date theDate = entry.getDate().getTime();
+        String date = format.format(theDate);
         holder.date.setText(date);
-        holder.walking.setText(String.format("Walking: %.2f miles", entry.getWalkingMiles()));
-        holder.running.setText(String.format("Running: %.2f miles", entry.getRunningMiles()));
+
+        String time = String.format("%02d hrs, %02d min, %02d sec",
+                TimeUnit.MILLISECONDS.toHours(entry.getExerciseTime()),
+                TimeUnit.MILLISECONDS.toMinutes(entry.getExerciseTime()) -
+                        TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(entry.getExerciseTime())),
+                TimeUnit.MILLISECONDS.toSeconds(entry.getExerciseTime()) -
+                        TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(entry.getExerciseTime())));
+
+
+        holder.time.setText("Exercise Time: " + time);
         holder.didSpeech.setChecked(entry.isSpeechDone());
 
         return row;
@@ -65,8 +75,7 @@ public class ExerciseLogArrayAdapter extends ArrayAdapter<ExerciseItem> {
     static class ExerciseItemHolder
     {
         TextView date;
-        TextView walking;
-        TextView running;
+        TextView time;
         CheckBox didSpeech;
     }
 }
