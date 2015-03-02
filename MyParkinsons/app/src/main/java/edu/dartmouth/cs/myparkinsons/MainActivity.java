@@ -42,8 +42,6 @@ public class MainActivity extends FragmentActivity implements ServiceConnection 
     private Button exerciseButton;
     private Button speechButton;
 
-    private TextView progressBarTextView;
-
 
     private Messenger serviceMessenger = null;
     boolean isBound;
@@ -82,9 +80,6 @@ public class MainActivity extends FragmentActivity implements ServiceConnection 
         exerciseButton = (Button)findViewById(R.id.exerciseButton);
         speechButton = (Button)findViewById(R.id.speechButton);
 
-        progressBarTextView = (TextView)findViewById(R.id.progressBarText);
-
-        progressBarTextView.setText("20 minutes out of 60 minute goal");
 
         exerciseButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -200,6 +195,8 @@ public class MainActivity extends FragmentActivity implements ServiceConnection 
     public static class CircleProgressFragment extends Fragment {
 
         public static CircleProgressBar circleProgressBar;
+        public static TextView textView;
+
 
         public CircleProgressFragment() {
         }
@@ -211,7 +208,11 @@ public class MainActivity extends FragmentActivity implements ServiceConnection 
 
             circleProgressBar = (CircleProgressBar) rootView.findViewById(R.id.custom_progressBar);
             circleProgressBar.setColor(0xFF29A629);
-            circleProgressBar.setStrokeWidth(25);
+            circleProgressBar.setStrokeWidth(50);
+
+            textView = (TextView) rootView.findViewById(R.id.percentView);
+            textView.setText("33%");
+            textView.setTextColor(0xFF29A629);
 
             return rootView;
         }
@@ -225,6 +226,7 @@ public class MainActivity extends FragmentActivity implements ServiceConnection 
     public static class SpeechCircleProgressFragment extends Fragment {
 
         public static CircleProgressBar circleProgressBar;
+        public static TextView textView;
 
         public SpeechCircleProgressFragment() {
         }
@@ -235,8 +237,13 @@ public class MainActivity extends FragmentActivity implements ServiceConnection 
             View rootView = inflater.inflate(R.layout.fragment_cirlce_progress, container, false);
 
             circleProgressBar = (CircleProgressBar) rootView.findViewById(R.id.custom_progressBar);
-            circleProgressBar.setColor(0xFF0000FF);
-            circleProgressBar.setStrokeWidth(25);
+            circleProgressBar.setColor(0xFF0066FF);
+            circleProgressBar.setStrokeWidth(50);
+
+            textView = (TextView) rootView.findViewById(R.id.percentView);
+            textView.setText("67%");
+            textView.setTextColor(0xFF0066FF);
+
 
             return rootView;
         }
