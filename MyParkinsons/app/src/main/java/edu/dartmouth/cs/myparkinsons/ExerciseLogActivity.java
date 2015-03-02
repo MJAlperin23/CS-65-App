@@ -51,9 +51,10 @@ public class ExerciseLogActivity extends Activity {
             calendar.set(Calendar.DAY_OF_MONTH, day);
             calendar.set(Calendar.YEAR, year);
 
-            boolean checked = (rand.nextBoolean());
+            int totalSpeech = (Math.abs(rand.nextInt()) % 12) + 1;
+            int totalCorrect = Math.abs(rand.nextInt()) % totalSpeech;
 
-            items[i] = new ExerciseItem(calendar, checked, walking);
+            items[i] = new ExerciseItem(calendar, totalSpeech, totalCorrect, walking);
             dataSource.insert(items[i]);
         }
         List<ExerciseItem> list=dataSource.fetchItems();
