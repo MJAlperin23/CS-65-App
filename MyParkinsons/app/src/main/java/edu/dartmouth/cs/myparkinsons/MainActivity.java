@@ -9,6 +9,7 @@ import android.graphics.Color;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.ServiceConnection;
 import android.location.Location;
 import android.os.Bundle;
@@ -88,7 +89,14 @@ public class MainActivity extends FragmentActivity implements ServiceConnection 
         });
 
         // set up periodic notification requests
-        setReminder(0L, "Hey Mickey", "You so fine, you so fine you blow my mind");
+        SharedPreferences prefs = getSharedPreferences(SettingsActivity.SHARED_PREFERENCES_KEY, MODE_PRIVATE);
+        setReminder(
+                prefs.getLong(
+                        SettingsActivity.TIME_OF_ALERT_KEY,
+                        Calendar.getInstance().getTimeInMillis()
+                ),
+                "Hey Mickey",
+                "You so fine, you so fine you blow my mind");
 
         System.out.println("Why");
         startService(new Intent(MainActivity.this, TrackingService.class));
@@ -124,7 +132,11 @@ public class MainActivity extends FragmentActivity implements ServiceConnection 
         return super.onOptionsItemSelected(item);
     }
 
+    // TODO: this currently fires when ativity is started (move to settings activity, clear and reset)
     public void setReminder(long time, String title, String message) {
+
+        long bootTime = Calendar.getInstance().getTimeInMillis() - SystemClock.elapsedRealtime();
+        long targetRealtime = time - bootTime;
 
         Intent alarmIntent = new Intent(this, SpeechReminderReceiver.class);
         alarmIntent.putExtra("message", message);
@@ -138,7 +150,7 @@ public class MainActivity extends FragmentActivity implements ServiceConnection 
 
         //TODO: For demo set after 5 seconds.
         alarmManager.setRepeating(
-                AlarmManager.ELAPSED_REALTIME, SystemClock.elapsedRealtime() + 5 * 1000,
+                AlarmManager.ELAPSED_REALTIME, targetRealtime,
                 MS_PER_DAY, pendingIntent
         );
 
