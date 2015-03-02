@@ -36,7 +36,7 @@ import android.widget.Toast;
 import java.sql.Time;
 import java.util.Calendar;
 
-
+//TODO: add optio to turn off accel tracking
 public class SettingsActivity extends Activity implements TimePickerDialog.OnTimeSetListener {
 
     public static final int SETTINGS_ACTIVITY_KEY = 1;
@@ -150,7 +150,7 @@ public class SettingsActivity extends Activity implements TimePickerDialog.OnTim
 
     }
 
-
+    //TODO: call alarmmanager setup message
     @Override
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
         Calendar cal = Calendar.getInstance();

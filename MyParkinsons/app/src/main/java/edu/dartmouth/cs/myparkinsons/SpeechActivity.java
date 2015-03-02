@@ -219,6 +219,7 @@ public class SpeechActivity extends Activity {
             mediaPlayer.setDataSource(this, audioUri);
             mediaPlayer.prepare();
             mediaPlayer.start();
+
         } catch (IOException e) {
             e.printStackTrace();
         }

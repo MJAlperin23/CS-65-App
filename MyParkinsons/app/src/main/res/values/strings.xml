@@ -64,5 +64,6 @@
     <string name="delete_alert_dialog_title">Delete all saved data?</string>
     <string name="delete_data_title">Delete Stored Data</string>
     <string name="delete_data_summary">Delete all exercise and speech data stored in the app.</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>
