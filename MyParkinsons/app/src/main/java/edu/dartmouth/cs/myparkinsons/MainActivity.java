@@ -165,7 +165,7 @@ public class MainActivity extends FragmentActivity implements ServiceConnection 
             final CircleProgressBar circleProgressBar = (CircleProgressBar) rootView.findViewById(R.id.custom_progressBar);
             circleProgressBar.setColor(0xFF29A629);
             circleProgressBar.setStrokeWidth(25);
-            circleProgressBar.setProgressWithAnimation(50);
+            circleProgressBar.setProgressWithAnimation(40);
 
 
             return rootView;
