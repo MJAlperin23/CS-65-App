@@ -122,7 +122,7 @@ public class SpeechActivity extends Activity {
 
         i.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_WEB_SEARCH);
 
-        i.putExtra(RecognizerIntent.EXTRA_MAX_RESULTS, 30);
+        i.putExtra(RecognizerIntent.EXTRA_MAX_RESULTS, 20);
 
         //provide audio url in the result
         i.putExtra("android.speech.extra.GET_AUDIO_FORMAT", "audio/AMR");

@@ -40,8 +40,7 @@ public class ExerciseLogActivity extends Activity {
 
         for (int i = 0; i < 20; i++) {
             Random rand = new Random();
-            double walking = rand.nextDouble();
-            double running = rand.nextDouble();
+            long walking = rand.nextLong();
             int month = (rand.nextInt() % 12) + 1;
             int day = (rand.nextInt() % 28) + 1;
             int year = (rand.nextInt() % 2015) + 1;
@@ -49,10 +48,10 @@ public class ExerciseLogActivity extends Activity {
             calendar.set(Calendar.MONTH, month);
             calendar.set(Calendar.DAY_OF_MONTH, day);
             calendar.set(Calendar.YEAR, year);
-            Date date = calendar.getTime();
+
             boolean checked = (rand.nextBoolean());
 
-            items[i] = new ExerciseItem(date, checked, walking, running);
+            items[i] = new ExerciseItem(calendar, checked, walking);
         }
 
         ExerciseLogArrayAdapter adapter = new ExerciseLogArrayAdapter(this, R.layout.exercise_log_row, items);
