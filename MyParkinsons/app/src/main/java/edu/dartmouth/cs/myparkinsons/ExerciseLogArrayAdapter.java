@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by Andrew on 2/2/15.
@@ -54,7 +55,16 @@ public class ExerciseLogArrayAdapter extends ArrayAdapter<ExerciseItem> {
         Date theDate = entry.getDate().getTime();
         String date = format.format(theDate);
         holder.date.setText(date);
-        holder.time.setText(String.format("Exercise Time: %d minutes", entry.getExerciseTime()));
+
+        String time = String.format("%02d hrs, %02d min, %02d sec",
+                TimeUnit.MILLISECONDS.toHours(entry.getExerciseTime()),
+                TimeUnit.MILLISECONDS.toMinutes(entry.getExerciseTime()) -
+                        TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(entry.getExerciseTime())),
+                TimeUnit.MILLISECONDS.toSeconds(entry.getExerciseTime()) -
+                        TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(entry.getExerciseTime())));
+
+
+        holder.time.setText("Exercise Time: " + time);
         holder.didSpeech.setChecked(entry.isSpeechDone());
 
         return row;

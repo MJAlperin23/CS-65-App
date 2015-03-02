@@ -40,7 +40,7 @@ public class ExerciseLogActivity extends Activity {
 
         for (int i = 0; i < 20; i++) {
             Random rand = new Random();
-            long walking = rand.nextLong();
+            long walking = Math.abs(rand.nextLong()) % 86400000;
             int month = (rand.nextInt() % 12) + 1;
             int day = (rand.nextInt() % 28) + 1;
             int year = (rand.nextInt() % 2015) + 1;
