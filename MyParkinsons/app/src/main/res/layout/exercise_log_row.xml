@@ -19,19 +19,7 @@
         android:text="date"
          />
 
-    <TextView android:id="@+id/walkingText"
-        android:layout_width="wrap_content"
-        android:layout_height="fill_parent"
-        android:gravity="center_vertical|right"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp"
-        android:layout_weight="1"
-        android:text="walking"
-         />
-
-    <TextView android:id="@+id/runningText"
+    <TextView android:id="@+id/exerciseTimeText"
         android:layout_width="wrap_content"
         android:layout_height="fill_parent"
         android:gravity="center_vertical|right"

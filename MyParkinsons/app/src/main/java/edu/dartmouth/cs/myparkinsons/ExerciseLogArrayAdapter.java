@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Created by Andrew on 2/2/15.
@@ -40,8 +41,7 @@ public class ExerciseLogArrayAdapter extends ArrayAdapter<ExerciseItem> {
 
             holder = new ExerciseItemHolder();
             holder.date = (TextView) row.findViewById(R.id.dateText);
-            holder.running = (TextView) row.findViewById(R.id.runningText);
-            holder.walking = (TextView) row.findViewById(R.id.walkingText);
+            holder.time = (TextView) row.findViewById(R.id.exerciseTimeText);
             holder.didSpeech = (CheckBox)row.findViewById(R.id.speechDoneCheckBox);
 
             row.setTag(holder);
@@ -51,10 +51,10 @@ public class ExerciseLogArrayAdapter extends ArrayAdapter<ExerciseItem> {
 
         ExerciseItem entry = data[position];
         SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
-        String date = format.format(entry.getDate());
+        Date theDate = entry.getDate().getTime();
+        String date = format.format(theDate);
         holder.date.setText(date);
-        holder.walking.setText(String.format("Walking: %.2f miles", entry.getWalkingMiles()));
-        holder.running.setText(String.format("Running: %.2f miles", entry.getRunningMiles()));
+        holder.time.setText(String.format("Exercise Time: %d minutes", entry.getExerciseTime()));
         holder.didSpeech.setChecked(entry.isSpeechDone());
 
         return row;
@@ -65,8 +65,7 @@ public class ExerciseLogArrayAdapter extends ArrayAdapter<ExerciseItem> {
     static class ExerciseItemHolder
     {
         TextView date;
-        TextView walking;
-        TextView running;
+        TextView time;
         CheckBox didSpeech;
     }
 }

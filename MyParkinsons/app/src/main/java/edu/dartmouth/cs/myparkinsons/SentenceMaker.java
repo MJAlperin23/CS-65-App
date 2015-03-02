@@ -84,7 +84,19 @@ public class SentenceMaker {
     public void generateRandomSentence(HashMap<String, ArrayList<GrammarRule>> grammar, TextView text) {
         this.text = text;
 
-        makeSentence(grammar);
+        ArrayList<GrammarRule> list = new ArrayList<>();
+        getSentence(grammar, "S", list);
+        StringBuilder builder = new StringBuilder();
+        for (GrammarRule rule : list) {
+            builder.append(rule.terminal);
+            builder.append(" ");
+
+        }
+
+        text.setText(builder.toString());
+
+
+        //makeSentence(grammar);
     }
 
     private void getSentence(HashMap<String, ArrayList<GrammarRule>> grammar, String key, ArrayList<GrammarRule> ruleList) {
@@ -112,29 +124,29 @@ public class SentenceMaker {
         }
     }
 
-    private void makeSentence(final HashMap<String, ArrayList<GrammarRule>> grammar) {
-        new AsyncTask<HashMap<String, ArrayList<GrammarRule>>, Void, String>() {
-
-            @Override
-            protected String doInBackground(HashMap<String, ArrayList<GrammarRule>>... arg0) {
-                ArrayList<GrammarRule> list = new ArrayList<>();
-                getSentence(arg0[0], "S", list);
-                StringBuilder builder = new StringBuilder();
-                for (GrammarRule rule : list) {
-                    builder.append(rule.terminal);
-                    builder.append(" ");
-
-                }
-
-                return builder.toString();
-            }
-
-            @Override
-            protected void onPostExecute(String res) {
-                text.setText(res);
-            }
-        }.execute(grammar);
-    }
+//    private void makeSentence(final HashMap<String, ArrayList<GrammarRule>> grammar) {
+//        new AsyncTask<HashMap<String, ArrayList<GrammarRule>>, Void, String>() {
+//
+//            @Override
+//            protected String doInBackground(HashMap<String, ArrayList<GrammarRule>>... arg0) {
+//                ArrayList<GrammarRule> list = new ArrayList<>();
+//                getSentence(arg0[0], "S", list);
+//                StringBuilder builder = new StringBuilder();
+//                for (GrammarRule rule : list) {
+//                    builder.append(rule.terminal);
+//                    builder.append(" ");
+//
+//                }
+//
+//                return builder.toString();
+//            }
+//
+//            @Override
+//            protected void onPostExecute(String res) {
+//                text.setText(res);
+//            }
+//        }.execute(grammar);
+//    }
 
     public class GrammarRule {
 

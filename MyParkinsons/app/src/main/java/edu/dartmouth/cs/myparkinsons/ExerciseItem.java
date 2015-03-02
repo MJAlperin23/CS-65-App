@@ -1,5 +1,6 @@
 package edu.dartmouth.cs.myparkinsons;
 
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -7,19 +8,17 @@ import java.util.Date;
  */
 public class ExerciseItem {
 
-    private Date date;
+    private Calendar date;
     private boolean speechDone;
-    private double walkingMiles;
-    private double runningMiles;
+    private long exerciseTime;
 
-    public ExerciseItem(Date date, boolean speechDone, double walkingMiles, double runningMiles) {
+    public ExerciseItem(Calendar date, boolean speechDone, long time) {
         this.date = date;
         this.speechDone = speechDone;
-        this.walkingMiles = walkingMiles;
-        this.runningMiles = runningMiles;
+        this.exerciseTime = time;
     }
 
-    public Date getDate() {
+    public Calendar getDate() {
         return date;
     }
 
@@ -27,11 +26,7 @@ public class ExerciseItem {
         return speechDone;
     }
 
-    public double getWalkingMiles() {
-        return walkingMiles;
-    }
-
-    public double getRunningMiles() {
-        return runningMiles;
+    public long getExerciseTime() {
+        return exerciseTime;
     }
 }
