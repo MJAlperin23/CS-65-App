@@ -116,9 +116,9 @@ public class MainActivity extends FragmentActivity implements ServiceConnection 
     }
 
     @Override
-    protected void onResume() {
+    protected void onPostResume() {
+        super.onPostResume();
         CircleProgressFragment.setCircleProgress(33);
-        super.onResume();
     }
 
     @Override
@@ -183,6 +183,7 @@ public class MainActivity extends FragmentActivity implements ServiceConnection 
         }
 
         public static void setCircleProgress(int value) {
+            circleProgressBar.setProgress(0);
             circleProgressBar.setProgressWithAnimation(value);
         }
     }
