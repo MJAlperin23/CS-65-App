@@ -8,13 +8,15 @@ import java.util.Calendar;
 public class ExerciseItem {
     private long id;
     private Calendar date;
-    private boolean speechDone;
+    private int speechDoneCount;
+    private int speechCorrectCount;
     private long exerciseTime;
 
-    public ExerciseItem(Calendar date, boolean speechDone, long time) {
+    public ExerciseItem(Calendar date, int speechDoneCount, int speechCorrectCount, long time) {
         this.date = date;
-        this.speechDone = speechDone;
         this.exerciseTime = time;
+        this.speechCorrectCount = speechCorrectCount;
+        this.speechDoneCount = speechDoneCount;
     }
     public long getId () {return id;};
     public void setId(long id){this.id = id;};
@@ -22,8 +24,16 @@ public class ExerciseItem {
         return date;
     }
 
-    public boolean isSpeechDone() {
-        return speechDone;
+    public float getSpeechPercent() {
+        return speechCorrectCount / (float)speechDoneCount;
+    }
+
+    public int getSpeechDoneCount() {
+        return speechDoneCount;
+    }
+
+    public int getSpeechCorrectCount() {
+        return speechCorrectCount;
     }
 
     public long getExerciseTime() {

@@ -43,7 +43,8 @@ public class ExerciseLogArrayAdapter extends ArrayAdapter<ExerciseItem> {
             holder = new ExerciseItemHolder();
             holder.date = (TextView) row.findViewById(R.id.dateText);
             holder.time = (TextView) row.findViewById(R.id.exerciseTimeText);
-            holder.didSpeech = (CheckBox)row.findViewById(R.id.speechDoneCheckBox);
+            holder.speech = (TextView) row.findViewById(R.id.speechPercentText);
+            //holder.didSpeech = (CheckBox)row.findViewById(R.id.speechDoneCheckBox);
 
             row.setTag(holder);
         } else {
@@ -65,7 +66,8 @@ public class ExerciseLogArrayAdapter extends ArrayAdapter<ExerciseItem> {
 
 
         holder.time.setText("Exercise Time: " + time);
-        holder.didSpeech.setChecked(entry.isSpeechDone());
+        holder.speech.setText(String.format("Speech: %d out of %d", entry.getSpeechCorrectCount(), entry.getSpeechDoneCount()));
+        //holder.didSpeech.setChecked(entry.isSpeechDone());
 
         return row;
     }
@@ -79,6 +81,7 @@ public class ExerciseLogArrayAdapter extends ArrayAdapter<ExerciseItem> {
     {
         TextView date;
         TextView time;
-        CheckBox didSpeech;
+        TextView speech;
+        //CheckBox didSpeech;
     }
 }

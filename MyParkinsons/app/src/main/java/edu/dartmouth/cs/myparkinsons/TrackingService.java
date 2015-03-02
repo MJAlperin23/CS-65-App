@@ -300,7 +300,7 @@ public class TrackingService extends Service implements SensorEventListener {
                     isExercising = false;
                     if (c.get(Calendar.DAY_OF_YEAR) != old.get(Calendar.DAY_OF_YEAR)) {
                         //TODO add to database
-                        ExerciseItem item = new ExerciseItem(old, false, dailyExerciseTime);
+                        ExerciseItem item = new ExerciseItem(old, 0, 0, dailyExerciseTime);
                         dailyExerciseTime = 0;
 
                     }

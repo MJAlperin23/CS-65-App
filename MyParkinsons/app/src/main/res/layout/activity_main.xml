@@ -3,66 +3,61 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:orientation="vertical"
     tools:context=".MainActivity">
+    
 
-    <TextView
-        android:text="@string/welcomeMessage"
+    <ViewFlipper
+        android:id="@+id/viewFlipper"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="0"
-        android:paddingBottom="30dp"
-        style="@android:style/TextAppearance.Material.Headline" />
-
-    <TextView
-        android:text="@string/exerciseMessage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="0"
-        android:textStyle="bold"
-        android:textColor="#000000"
-        android:paddingBottom="30dp" />
-
-    <RelativeLayout
-        android:id="@+id/container"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_weight="1"
-        tools:context=".MainActivity"
-        tools:ignore="MergeRootFrame" />
+        android:layout_weight="1">
 
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="0"
-        android:id="@+id/progressBarText"
-        android:textAlignment="center"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="30dp"
-        android:text="hello" />
+        <RelativeLayout
+            android:id="@+id/container"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="0dp"
+            android:layout_marginRight="0dp"
+            android:layout_weight="1"
+            tools:context=".MainActivity"
+            tools:ignore="MergeRootFrame" />
 
-    <!-- TODO: add speech activity completion indicatior-->
+        <RelativeLayout
+            android:id="@+id/container2"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="0dp"
+            android:layout_marginRight="0dp"
+            android:layout_weight="1"
+            tools:context=".MainActivity"
+            tools:ignore="MergeRootFrame" />
+
+
+    </ViewFlipper>
+
 
     <Button
+        android:id="@+id/exerciseButton"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_weight="0"
         android:text="@string/exerciseButton"
-        android:textAlignment="center"
-        android:id="@+id/exerciseButton" />
+        android:textAlignment="center" />
 
     <Button
+        android:id="@+id/speechButton"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_weight="0"
         android:text="@string/speechButton"
-        android:textAlignment="center"
-        android:id="@+id/speechButton" />
+        android:textAlignment="center" />
 
 </LinearLayout>

@@ -32,11 +32,8 @@ public class DataSource {
         ContentValues values = new ContentValues();
         values.put(DbHelper.COLUMN_DATE, item.getDate().getTimeInMillis());
         values.put(DbHelper.COLUMN_EXERCISE_TIME, item.getExerciseTime());
-        if (item.isSpeechDone()){
-            values.put(DbHelper.COLUMN_SPEECH_DONE, 1);
-        }else {
-            values.put(DbHelper.COLUMN_SPEECH_DONE, 0);
-        }
+        values.put(DbHelper.COLUMN_SPEECH_DONE, item.getSpeechDoneCount());
+        values.put(DbHelper.COLUMN_SPEECH_CORRECT, item.getSpeechCorrectCount());
 
         long id = database.insert(DbHelper.TABLE,null,values);
         item.setId(id);
@@ -73,18 +70,14 @@ public class DataSource {
     private ExerciseItem cursorToExerciseItem(Cursor cursor) {
         long id =  cursor.getLong(cursor.getColumnIndex(DbHelper.COLUMN_ID));
         long time = cursor.getLong(cursor.getColumnIndex(DbHelper.COLUMN_EXERCISE_TIME));
-        int speech = cursor.getInt(cursor.getColumnIndex(DbHelper.COLUMN_SPEECH_DONE));
-        String date = cursor.getString(cursor.getColumnIndex(DbHelper.COLUMN_DATE));
+        int speechTotal = cursor.getInt(cursor.getColumnIndex(DbHelper.COLUMN_SPEECH_DONE));
+        int speechCorrect = cursor.getInt(cursor.getColumnIndex(DbHelper.COLUMN_SPEECH_CORRECT));
+        long date = cursor.getLong(cursor.getColumnIndex(DbHelper.COLUMN_DATE));
         //TODO save and store the correct date
         Calendar cal = Calendar.getInstance();
-        boolean s;
-        if (speech == 0){
-            s = false;
-        }
-        else {
-            s = true;
-        }
-        ExerciseItem item = new ExerciseItem(cal,s, time);
+        cal.setTimeInMillis(date);
+
+        ExerciseItem item = new ExerciseItem(cal, speechTotal, speechCorrect, time);
         item.setId(id);
 
         return item;

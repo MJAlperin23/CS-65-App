@@ -31,12 +31,24 @@
         android:text="running"
         />
 
-    <CheckBox
+    <TextView android:id="@+id/speechPercentText"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/speechCheckBox"
-        android:id="@+id/speechDoneCheckBox"
-        android:clickable="false" />
+        android:layout_height="fill_parent"
+        android:gravity="center_vertical|right"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:layout_weight="1"
+        android:text="running"
+        />
+
+    <!--<CheckBox-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="@string/speechCheckBox"-->
+        <!--android:id="@+id/speechDoneCheckBox"-->
+        <!--android:clickable="false" />-->
 
 
 </LinearLayout>

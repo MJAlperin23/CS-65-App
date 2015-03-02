@@ -6,9 +6,18 @@
 
     <edu.dartmouth.cs.myparkinsons.CircleProgressBar
         android:id="@+id/custom_progressBar"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
+        android:layout_width="2600dp"
+        android:layout_height="260dp"
         android:layout_gravity="center"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="New Text"
+        android:textStyle="bold"
+        android:textSize="40sp"
+        android:id="@+id/percentView"
+        android:layout_gravity="center" />
 
 
 </FrameLayout>
