@@ -1,13 +1,12 @@
 package edu.dartmouth.cs.myparkinsons;
 
 import java.util.Calendar;
-import java.util.Date;
 
 /**
  * Created by Andrew on 2/10/15.
  */
 public class ExerciseItem {
-
+    private long id;
     private Calendar date;
     private boolean speechDone;
     private long exerciseTime;
@@ -17,7 +16,8 @@ public class ExerciseItem {
         this.speechDone = speechDone;
         this.exerciseTime = time;
     }
-
+    public long getId () {return id;};
+    public void setId(long id){this.id = id;};
     public Calendar getDate() {
         return date;
     }

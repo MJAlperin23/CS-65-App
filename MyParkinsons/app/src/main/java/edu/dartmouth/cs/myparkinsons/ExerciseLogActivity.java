@@ -5,12 +5,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
 
 import java.util.Calendar;
-import java.util.Date;
+import java.util.List;
 import java.util.Random;
 
 
@@ -18,12 +17,14 @@ public class ExerciseLogActivity extends Activity {
 
     private ListView listView;
     private Button graphButton;
+    private DataSource dataSource;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_exercise_log);
-
+        dataSource = new DataSource(this);
+        dataSource.open();
         listView = (ListView)findViewById(R.id.exerciseListView);
 
 //        graphButton = (Button)findViewById(R.id.graphButton);
@@ -36,9 +37,10 @@ public class ExerciseLogActivity extends Activity {
 //            }
 //        });
 
-        ExerciseItem[] items = new ExerciseItem[20];
 
-        for (int i = 0; i < 20; i++) {
+        ExerciseItem[] items = new ExerciseItem[10];
+
+        for (int i = 0; i < 10; i++) {
             Random rand = new Random();
             long walking = Math.abs(rand.nextLong()) % 86400000;
             int month = (rand.nextInt() % 12) + 1;
@@ -52,9 +54,10 @@ public class ExerciseLogActivity extends Activity {
             boolean checked = (rand.nextBoolean());
 
             items[i] = new ExerciseItem(calendar, checked, walking);
+            dataSource.insert(items[i]);
         }
-
-        ExerciseLogArrayAdapter adapter = new ExerciseLogArrayAdapter(this, R.layout.exercise_log_row, items);
+        List<ExerciseItem> list=dataSource.fetchItems();
+        ExerciseLogArrayAdapter adapter = new ExerciseLogArrayAdapter(this, R.layout.exercise_log_row, list);
 
         listView.setAdapter(adapter);
     }

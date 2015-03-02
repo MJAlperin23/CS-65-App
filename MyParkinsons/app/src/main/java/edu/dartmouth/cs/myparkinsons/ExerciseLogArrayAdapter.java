@@ -7,11 +7,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -21,10 +21,10 @@ public class ExerciseLogArrayAdapter extends ArrayAdapter<ExerciseItem> {
 
     Context context;
     int layoutResourceId;
-    ExerciseItem data[] = null;
+    List<ExerciseItem> data = null;
 
 
-    public ExerciseLogArrayAdapter(Context context, int layoutResourceId, ExerciseItem[] data) {
+    public ExerciseLogArrayAdapter(Context context, int layoutResourceId, List<ExerciseItem> data) {
         super(context, layoutResourceId, data);
         this.layoutResourceId = layoutResourceId;
         this.context = context;
@@ -50,7 +50,7 @@ public class ExerciseLogArrayAdapter extends ArrayAdapter<ExerciseItem> {
             holder = (ExerciseItemHolder) row.getTag();
         }
 
-        ExerciseItem entry = data[position];
+        ExerciseItem entry = getItem(position);
         SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
         Date theDate = entry.getDate().getTime();
         String date = format.format(theDate);
@@ -71,7 +71,10 @@ public class ExerciseLogArrayAdapter extends ArrayAdapter<ExerciseItem> {
     }
 
 
-
+    @Override
+    public ExerciseItem getItem(int position) {
+        return data.get(position);
+    }
     static class ExerciseItemHolder
     {
         TextView date;
