@@ -1,6 +1,7 @@
 package edu.dartmouth.cs.myparkinsons;
 
 import android.app.Activity;
+import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
@@ -8,10 +9,14 @@ import android.app.DialogFragment;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.app.PendingIntent;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
@@ -39,6 +44,7 @@ import java.util.Calendar;
 //TODO: add optio to turn off accel tracking
 public class SettingsActivity extends Activity implements TimePickerDialog.OnTimeSetListener {
 
+    private static final long MS_PER_DAY = 86400000;
     public static final int SETTINGS_ACTIVITY_KEY = 1;
     public static final String ALLOW_TIME_ALERT_KEY = "allowtimealert_settingsactivity";
     public static final String TIME_OF_ALERT_KEY = "timeofalertkey_settingsactivity";
@@ -150,7 +156,6 @@ public class SettingsActivity extends Activity implements TimePickerDialog.OnTim
 
     }
 
-    //TODO: call alarmmanager setup message
     @Override
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
         Calendar cal = Calendar.getInstance();
@@ -162,10 +167,33 @@ public class SettingsActivity extends Activity implements TimePickerDialog.OnTim
         }
         long timeSelectionMillis = cal.getTimeInMillis();
 
-        SharedPreferences settingData = getSharedPreferences(SHARED_PREFERENCES_KEY, MODE_PRIVATE);
-        SharedPreferences.Editor spEdit = settingData.edit();
-        spEdit.putLong(TIME_OF_ALERT_KEY, timeSelectionMillis);
-        spEdit.commit();
+        setReminder(
+            timeSelectionMillis,
+            "MyParkinsons Update Needed",
+            "Please proceed to provide a voice recognition sample"
+        );
+    }
+
+    public void setReminder(long time, String title, String message) {
+
+        long bootTime = Calendar.getInstance().getTimeInMillis() - SystemClock.elapsedRealtime();
+        long targetRealtime = time - bootTime;
+
+        Intent alarmIntent = new Intent(this, SpeechReminderReceiver.class);
+        alarmIntent.putExtra("message", message);
+        alarmIntent.putExtra("title", title);
+
+        int NOTIFICATION_REQUEST_CODE = 0;
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, NOTIFICATION_REQUEST_CODE, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+
+        Log.d("setReminder()", "Setting a reminder");
+
+        alarmManager.cancel(pendingIntent);
+        alarmManager.setRepeating(
+                AlarmManager.ELAPSED_REALTIME, targetRealtime,
+                MS_PER_DAY, pendingIntent
+        );
 
     }
 

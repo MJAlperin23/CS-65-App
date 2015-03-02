@@ -36,8 +36,6 @@ import java.util.Calendar;
 public class MainActivity extends FragmentActivity implements ServiceConnection {
 
 
-    private static final long MS_PER_DAY = 86400000;
-
     private Button exerciseButton;
     private Button speechButton;
 
@@ -89,14 +87,6 @@ public class MainActivity extends FragmentActivity implements ServiceConnection 
 
         // set up periodic notification requests
         SharedPreferences prefs = getSharedPreferences(SettingsActivity.SHARED_PREFERENCES_KEY, MODE_PRIVATE);
-        setReminder(
-                prefs.getLong(
-                        SettingsActivity.TIME_OF_ALERT_KEY,
-                        Calendar.getInstance().getTimeInMillis()
-                ),
-                "Hey Mickey",
-                "You so fine, you so fine you blow my mind");
-
 
         startService(new Intent(MainActivity.this, TrackingService.class));
         doBindService();
@@ -123,30 +113,6 @@ public class MainActivity extends FragmentActivity implements ServiceConnection 
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    // TODO: this currently fires when ativity is started (move to settings activity, clear and reset)
-    public void setReminder(long time, String title, String message) {
-
-        long bootTime = Calendar.getInstance().getTimeInMillis() - SystemClock.elapsedRealtime();
-        long targetRealtime = time - bootTime;
-
-        Intent alarmIntent = new Intent(this, SpeechReminderReceiver.class);
-        alarmIntent.putExtra("message", message);
-        alarmIntent.putExtra("title", title);
-
-        int NOTIFICATION_REQUEST_CODE = 0;
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, NOTIFICATION_REQUEST_CODE, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-
-        Log.d("setReminder()", "Setting a reminder");
-
-        //TODO: For demo set after 5 seconds.
-        alarmManager.setRepeating(
-                AlarmManager.ELAPSED_REALTIME, targetRealtime,
-                MS_PER_DAY, pendingIntent
-        );
-
     }
 
     /**
