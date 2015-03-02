@@ -57,6 +57,7 @@ public class ExerciseLogActivity extends Activity {
             dataSource.insert(items[i]);
         }
         List<ExerciseItem> list=dataSource.fetchItems();
+        dataSource.close();
         ExerciseLogArrayAdapter adapter = new ExerciseLogArrayAdapter(this, R.layout.exercise_log_row, list);
 
         listView.setAdapter(adapter);
