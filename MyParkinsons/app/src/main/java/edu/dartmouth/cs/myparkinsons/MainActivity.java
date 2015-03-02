@@ -64,7 +64,13 @@ public class MainActivity extends Activity {
 
         // set up periodic notification requests
         SharedPreferences prefs = getSharedPreferences(SettingsActivity.SHARED_PREFERENCES_KEY, MODE_PRIVATE);
-        setReminder(0L, "Hey Mickey", "You so fine, you so fine you blow my mind");
+        setReminder(
+                prefs.getLong(
+                        SettingsActivity.TIME_OF_ALERT_KEY,
+                        Calendar.getInstance().getTimeInMillis()
+                ),
+                "Hey Mickey",
+                "You so fine, you so fine you blow my mind");
 
     }
 
@@ -90,6 +96,7 @@ public class MainActivity extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
+    // TODO: this currently fires when ativity is started (move to settings activity, clear and reset)
     public void setReminder(long time, String title, String message) {
 
         long bootTime = Calendar.getInstance().getTimeInMillis() - SystemClock.elapsedRealtime();
