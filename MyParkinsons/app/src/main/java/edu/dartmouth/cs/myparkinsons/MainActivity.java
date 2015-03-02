@@ -46,7 +46,7 @@ public class MainActivity extends FragmentActivity implements ServiceConnection 
 
     private Messenger serviceMessenger = null;
     boolean isBound;
-
+    public CircleProgressFragment cpf;
     private final Messenger messenger = new Messenger(
             new IncomingMessageHandler());
 
@@ -60,9 +60,10 @@ public class MainActivity extends FragmentActivity implements ServiceConnection 
 
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container, new PlaceholderFragment())
+                    .add(R.id.container, new CircleProgressFragment())
                     .commit();
         }
+        cpf = new CircleProgressFragment();
 
         exerciseButton = (Button)findViewById(R.id.exerciseButton);
         speechButton = (Button)findViewById(R.id.speechButton);
@@ -97,7 +98,7 @@ public class MainActivity extends FragmentActivity implements ServiceConnection 
                 "Hey Mickey",
                 "You so fine, you so fine you blow my mind");
 
-
+        System.out.println("Why");
         startService(new Intent(MainActivity.this, TrackingService.class));
         doBindService();
 
@@ -109,6 +110,12 @@ public class MainActivity extends FragmentActivity implements ServiceConnection 
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
+    }
+
+    @Override
+    protected void onResume() {
+        cpf.setCircleProgress(50);
+        super.onResume();
     }
 
     @Override
@@ -150,11 +157,14 @@ public class MainActivity extends FragmentActivity implements ServiceConnection 
     }
 
     /**
-     * A placeholder fragment containing a simple view.
+     * fragement holding/controlling the circle progress bar on the main page
      */
-    public static class PlaceholderFragment extends Fragment {
+    //TODO: write method to set progress bar
+    public static class CircleProgressFragment extends Fragment {
 
-        public PlaceholderFragment() {
+        public CircleProgressBar circleProgressBar;
+
+        public CircleProgressFragment() {
         }
 
         @Override
@@ -162,13 +172,18 @@ public class MainActivity extends FragmentActivity implements ServiceConnection 
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_cirlce_progress, container, false);
 
-            final CircleProgressBar circleProgressBar = (CircleProgressBar) rootView.findViewById(R.id.custom_progressBar);
+            circleProgressBar = (CircleProgressBar) rootView.findViewById(R.id.custom_progressBar);
             circleProgressBar.setColor(0xFF29A629);
             circleProgressBar.setStrokeWidth(25);
-            circleProgressBar.setProgressWithAnimation(40);
 
+            //circleProgressBar.setProgressWithAnimation(50);
+           // setCircleProgress(50);
 
             return rootView;
+        }
+
+        public void setCircleProgress(int value) {
+            circleProgressBar.setProgressWithAnimation(value);
         }
     }
 
@@ -233,6 +248,7 @@ public class MainActivity extends FragmentActivity implements ServiceConnection 
             switch (msg.what) {
                 case TrackingService.MSG_SET_TYPE_VALUE:
                     sendNewType(msg.getData().getDouble(TrackingService.TYPE_KEY));
+
                     break;
             }
         }
@@ -242,4 +258,4 @@ public class MainActivity extends FragmentActivity implements ServiceConnection 
 
     }
 
-}
+ }

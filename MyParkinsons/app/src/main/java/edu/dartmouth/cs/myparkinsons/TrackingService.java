@@ -68,17 +68,6 @@ public class TrackingService extends Service implements SensorEventListener {
     }
 
     public void reportClassification(Double value) {
-        String string;
-        if (value == 0) {
-            string = "Standing";
-        } else if (value == 1) {
-            string = "Walking";
-        } else {
-            string = "Running";
-        }
-        Toast.makeText(getBaseContext(), string, Toast.LENGTH_SHORT).show();
-        Log.d("TAG", string);
-
         sendActivityTypeForMap(value);
     }
 
@@ -87,8 +76,6 @@ public class TrackingService extends Service implements SensorEventListener {
 
         return super.onUnbind(intent);
     }
-
-
 
     @Override
     public void onSensorChanged(SensorEvent event) {
@@ -133,9 +120,6 @@ public class TrackingService extends Service implements SensorEventListener {
 
     }
 
-
-
-
     @Override
     public void onDestroy() {
         sensorManager.unregisterListener(this);
@@ -143,8 +127,6 @@ public class TrackingService extends Service implements SensorEventListener {
         super.onDestroy();
 
     }
-
-
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
@@ -157,7 +139,6 @@ public class TrackingService extends Service implements SensorEventListener {
     public IBinder onBind(Intent intent) {
         return messenger.getBinder();
     }
-
 
     private void sendActivityTypeForMap(Double type) {
 
@@ -176,8 +157,6 @@ public class TrackingService extends Service implements SensorEventListener {
         }
     }
 
-
-
     /**
      * Handle incoming messages from MainActivity
      */
@@ -189,10 +168,8 @@ public class TrackingService extends Service implements SensorEventListener {
             switch (msg.what) {
                 case MSG_REGISTER_CLIENT:
                     clients.add(msg.replyTo);
-                    // registerTheReceiver();
                     break;
                 case MSG_UNREGISTER_CLIENT:
-                    //unregisterReciever();
                     clients.remove(msg.replyTo);
                     break;
                 default:
@@ -200,9 +177,6 @@ public class TrackingService extends Service implements SensorEventListener {
             }
         }
     }
-
-
-
 
     private class WekaTask extends AsyncTask<Void, Double, Void> {
 
@@ -265,7 +239,7 @@ public class TrackingService extends Service implements SensorEventListener {
         protected Void doInBackground(Void... params) {
 
             while(true) {
-                if (isCancelled() == true) {
+                if (isCancelled()) {
                     return null;
                 }
 
