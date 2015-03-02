@@ -102,7 +102,6 @@ public class MainActivity extends FragmentActivity implements ServiceConnection 
                 "Hey Mickey",
                 "You so fine, you so fine you blow my mind");
 
-        System.out.println("Why");
         startService(new Intent(MainActivity.this, TrackingService.class));
         doBindService();
 
@@ -179,9 +178,6 @@ public class MainActivity extends FragmentActivity implements ServiceConnection 
             circleProgressBar = (CircleProgressBar) rootView.findViewById(R.id.custom_progressBar);
             circleProgressBar.setColor(0xFF29A629);
             circleProgressBar.setStrokeWidth(25);
-
-            //circleProgressBar.setProgressWithAnimation(50);
-           // setCircleProgress(50);
 
             return rootView;
         }
