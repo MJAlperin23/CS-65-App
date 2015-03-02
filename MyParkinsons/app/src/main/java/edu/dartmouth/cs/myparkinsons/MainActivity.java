@@ -74,7 +74,7 @@ public class MainActivity extends FragmentActivity implements ServiceConnection 
 
         progressBarTextView = (TextView)findViewById(R.id.progressBarText);
 
-        progressBarTextView.setText("2 miles out of 5 mile goal");
+        progressBarTextView.setText("20 minutes out of 60 minute goal");
 
         exerciseButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -117,7 +117,7 @@ public class MainActivity extends FragmentActivity implements ServiceConnection 
 
     @Override
     protected void onResume() {
-        CircleProgressFragment.setCircleProgress(40);
+        CircleProgressFragment.setCircleProgress(33);
         super.onResume();
     }
 
