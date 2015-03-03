@@ -61,6 +61,11 @@ public class MainActivity extends FragmentActivity implements ServiceConnection 
     //http://www.learn-android-easily.com/2013/06/android-viewflipper-example.html
 //    private ViewFlipper viewFlipper;
     private float lastX;
+    private float lastY;
+
+
+    private CircleButton exerciseButton;
+    private CircleButton speechButton;
 
 
     private ListView listView;
@@ -89,21 +94,7 @@ public class MainActivity extends FragmentActivity implements ServiceConnection 
 //        speechButton = (Button)findViewById(R.id.speechButton);
 
 
-//        exerciseButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent i = new Intent(getApplicationContext(), ExerciseLogActivity.class);
-//                startActivity(i);
-//            }
-//        });
-//
-//        speechButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent i = new Intent(getApplicationContext(), SpeechActivity.class);
-//                startActivity(i);
-//            }
-//        });
+
 
         // set up periodic notification requests
         SharedPreferences prefs = getSharedPreferences(SettingsActivity.SHARED_PREFERENCES_KEY, MODE_PRIVATE);
@@ -135,8 +126,8 @@ public class MainActivity extends FragmentActivity implements ServiceConnection 
         listView = (ListView) findViewById(R.id.card_listView);
 
         listView.setAdapter(adapter);
-        CircleButton exerciseButton = (CircleButton) findViewById(R.id.exercise_button_id);
-        CircleButton speechButton = (CircleButton) findViewById(R.id.speech_button_id);
+
+
 
         listView.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -144,14 +135,22 @@ public class MainActivity extends FragmentActivity implements ServiceConnection 
                     ListView listview1 = (ListView) v;
                     View view = getViewByPosition(0, listView);
                     ViewFlipper viewFlipper = (ViewFlipper)view.findViewById(R.id.viewFlipper);
+
+
                     switch (event.getAction()) {
                         // when user first touches the screen to swap
                         case MotionEvent.ACTION_DOWN: {
                             lastX = event.getX();
+                            lastY = event.getY();
                             break;
                         }
                         case MotionEvent.ACTION_UP: {
                             float currentX = event.getX();
+                            float currentY = event.getY();
+
+                            if (Math.abs(currentY - lastY) > Math.abs(currentX - lastX)) {
+                                return false;
+                            }
 
                             // if left to right swipe on screen
                             if (lastX < currentX) {

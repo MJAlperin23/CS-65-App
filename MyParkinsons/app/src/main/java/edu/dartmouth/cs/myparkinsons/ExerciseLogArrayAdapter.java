@@ -2,6 +2,7 @@ package edu.dartmouth.cs.myparkinsons;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -64,6 +65,25 @@ public class ExerciseLogArrayAdapter extends ArrayAdapter<ExerciseItem> {
                 circleHolder.progress1.setText("33%");
                 circleHolder.progress1.setTextColor(0xFF29A629);
 
+                circleHolder.exerciseButton = (CircleButton) row.findViewById(R.id.exercise_button_id);
+                circleHolder.speechButton = (CircleButton) row.findViewById(R.id.speech_button_id);
+
+                circleHolder.exerciseButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent i = new Intent(context, ExerciseLogActivity.class);
+                        context.startActivity(i);
+                    }
+                });
+
+                circleHolder.speechButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent i = new Intent(context, SpeechActivity.class);
+                        context.startActivity(i);
+                    }
+                });
+
 
 
             } else {
@@ -124,5 +144,7 @@ public class ExerciseLogArrayAdapter extends ArrayAdapter<ExerciseItem> {
         CircleProgressBar bar2;
         TextView progress1;
         TextView progress2;
+        CircleButton exerciseButton;
+        CircleButton speechButton;
     }
 }

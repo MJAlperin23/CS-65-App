@@ -10,33 +10,33 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".MainActivity">
 
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:paddingBottom="20dp">
+    <!--<LinearLayout-->
+        <!--android:layout_width="fill_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:paddingBottom="20dp">-->
 
-        <edu.dartmouth.cs.myparkinsons.CircleButton
-            android:id="@+id/exercise_button_id"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:src="@drawable/exercise_pic"
-            app:cb_color="#FF29A629"
-            app:cb_pressedRingWidth="10dip"
-            android:layout_weight="1"
-            android:layout_gravity="left"
-            android:layout_marginLeft="0dp"/>
+        <!--<edu.dartmouth.cs.myparkinsons.CircleButton-->
+            <!--android:id="@+id/exercise_button_id"-->
+            <!--android:layout_width="100dp"-->
+            <!--android:layout_height="100dp"-->
+            <!--android:src="@drawable/exercise_pic"-->
+            <!--app:cb_color="#FF29A629"-->
+            <!--app:cb_pressedRingWidth="10dip"-->
+            <!--android:layout_weight="1"-->
+            <!--android:layout_gravity="left"-->
+            <!--android:layout_marginLeft="0dp"/>-->
 
-        <edu.dartmouth.cs.myparkinsons.CircleButton
-            android:id="@+id/speech_button_id"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:src="@drawable/speech_pic"
-            app:cb_color="#FF0066FF"
-            app:cb_pressedRingWidth="10dip"
-            android:layout_weight="1"
-            android:layout_gravity="right"/>
+        <!--<edu.dartmouth.cs.myparkinsons.CircleButton-->
+            <!--android:id="@+id/speech_button_id"-->
+            <!--android:layout_width="100dp"-->
+            <!--android:layout_height="100dp"-->
+            <!--android:src="@drawable/speech_pic"-->
+            <!--app:cb_color="#FF0066FF"-->
+            <!--app:cb_pressedRingWidth="10dip"-->
+            <!--android:layout_weight="1"-->
+            <!--android:layout_gravity="right"/>-->
 
-    </LinearLayout>
+    <!--</LinearLayout>-->
 
 
     <ListView
