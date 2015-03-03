@@ -2,12 +2,16 @@ package edu.dartmouth.cs.myparkinsons;
 
 import android.app.Activity;
 import android.content.Context;
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.TextView;
+import android.widget.ViewFlipper;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -23,6 +27,8 @@ public class ExerciseLogArrayAdapter extends ArrayAdapter<ExerciseItem> {
     int layoutResourceId;
     List<ExerciseItem> data = null;
 
+    private float lastX;
+
 
     public ExerciseLogArrayAdapter(Context context, int layoutResourceId, List<ExerciseItem> data) {
         super(context, layoutResourceId, data);
@@ -35,42 +41,69 @@ public class ExerciseLogArrayAdapter extends ArrayAdapter<ExerciseItem> {
     public View getView(int position, View convertView, ViewGroup parent) {
         View row = convertView;
         ExerciseItemHolder holder = null;
+        CircleCardHolder circleHolder = null;
+//        if (row == null) {
+            if (position == 0) {
+                LayoutInflater inflater = ((Activity) context).getLayoutInflater();
+                row = inflater.inflate(R.layout.circle_progress_row, parent, false);
 
-        if (row == null) {
-            LayoutInflater inflater = ((Activity) context).getLayoutInflater();
-            row = inflater.inflate(layoutResourceId, parent, false);
+                circleHolder = new CircleCardHolder();
+                circleHolder.flipper = (ViewFlipper) row.findViewById(R.id.viewFlipper);
+                circleHolder.bar1 = (CircleProgressBar) row.findViewById(R.id.custom_progressBar);
+                circleHolder.bar2 = (CircleProgressBar) row.findViewById(R.id.custom_progressBar2);
+                circleHolder.progress1 = (TextView) row.findViewById(R.id.percentView);
+                circleHolder.progress2 = (TextView) row.findViewById(R.id.percentView2);
 
-            holder = new ExerciseItemHolder();
-            holder.date = (TextView) row.findViewById(R.id.dateText);
-            holder.time = (TextView) row.findViewById(R.id.exerciseTimeText);
-            holder.speech = (TextView) row.findViewById(R.id.speechPercentText);
-            //holder.didSpeech = (CheckBox)row.findViewById(R.id.speechDoneCheckBox);
+                circleHolder.bar2.setColor(0xFF0066FF);
+                circleHolder.bar2.setStrokeWidth(50);
+                circleHolder.progress2.setText("67%");
+                circleHolder.progress2.setTextColor(0xFF0066FF);
 
-            row.setTag(holder);
-        } else {
-            holder = (ExerciseItemHolder) row.getTag();
-        }
-
-        ExerciseItem entry = getItem(position);
-        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
-        Date theDate = entry.getDate().getTime();
-        String date = format.format(theDate);
-        holder.date.setText(date);
-
-        String time = String.format("%02d hrs, %02d min, %02d sec",
-                TimeUnit.MILLISECONDS.toHours(entry.getExerciseTime()),
-                TimeUnit.MILLISECONDS.toMinutes(entry.getExerciseTime()) -
-                        TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(entry.getExerciseTime())),
-                TimeUnit.MILLISECONDS.toSeconds(entry.getExerciseTime()) -
-                        TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(entry.getExerciseTime())));
+                circleHolder.bar1.setColor(0xFF29A629);
+                circleHolder.bar1.setStrokeWidth(50);
+                circleHolder.progress1.setText("33%");
+                circleHolder.progress1.setTextColor(0xFF29A629);
 
 
-        holder.time.setText("Exercise Time: " + time);
-        holder.speech.setText(String.format("Speech: %d out of %d", entry.getSpeechCorrectCount(), entry.getSpeechDoneCount()));
-        //holder.didSpeech.setChecked(entry.isSpeechDone());
+
+            } else {
+                LayoutInflater inflater = ((Activity) context).getLayoutInflater();
+                row = inflater.inflate(layoutResourceId, parent, false);
+
+                holder = new ExerciseItemHolder();
+                holder.date = (TextView) row.findViewById(R.id.dateText);
+                holder.time = (TextView) row.findViewById(R.id.exerciseTimeText);
+                holder.speech = (TextView) row.findViewById(R.id.speechPercentText);
+                //holder.didSpeech = (CheckBox)row.findViewById(R.id.speechDoneCheckBox);
+
+                ExerciseItem entry = getItem(position);
+                SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+                Date theDate = entry.getDate().getTime();
+                String date = format.format(theDate);
+                holder.date.setText(date);
+
+                String time = String.format("%02d hrs, %02d min, %02d sec",
+                        TimeUnit.MILLISECONDS.toHours(entry.getExerciseTime()),
+                        TimeUnit.MILLISECONDS.toMinutes(entry.getExerciseTime()) -
+                                TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(entry.getExerciseTime())),
+                        TimeUnit.MILLISECONDS.toSeconds(entry.getExerciseTime()) -
+                                TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(entry.getExerciseTime())));
+
+
+                holder.time.setText("Exercise Time: " + time);
+                holder.speech.setText(String.format("Speech: %d out of %d", entry.getSpeechCorrectCount(), entry.getSpeechDoneCount()));
+                //holder.didSpeech.setChecked(entry.isSpeechDone());
+
+            }
+
+
+
+
 
         return row;
     }
+
+
 
 
     @Override
@@ -82,6 +115,14 @@ public class ExerciseLogArrayAdapter extends ArrayAdapter<ExerciseItem> {
         TextView date;
         TextView time;
         TextView speech;
-        //CheckBox didSpeech;
+    }
+
+    static class CircleCardHolder
+    {
+        ViewFlipper flipper;
+        CircleProgressBar bar1;
+        CircleProgressBar bar2;
+        TextView progress1;
+        TextView progress2;
     }
 }
