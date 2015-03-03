@@ -32,6 +32,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ViewFlipper;
 
 import java.lang.reflect.Array;
@@ -134,6 +135,8 @@ public class MainActivity extends FragmentActivity implements ServiceConnection 
         listView = (ListView) findViewById(R.id.card_listView);
 
         listView.setAdapter(adapter);
+        CircleButton exerciseButton = (CircleButton) findViewById(R.id.exercise_button_id);
+        CircleButton speechButton = (CircleButton) findViewById(R.id.speech_button_id);
 
         listView.setOnTouchListener(new View.OnTouchListener() {
             @Override
