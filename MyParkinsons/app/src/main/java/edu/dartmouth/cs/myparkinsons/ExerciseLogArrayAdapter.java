@@ -46,6 +46,30 @@ public class ExerciseLogArrayAdapter extends ArrayAdapter<ExerciseItem> {
 //        if (row == null) {
             if (position == 0) {
                 LayoutInflater inflater = ((Activity) context).getLayoutInflater();
+                row = inflater.inflate(R.layout.buttons_row, parent, false);
+
+                CircleButton exerciseButton = (CircleButton) row.findViewById(R.id.exercise_button_id);
+                CircleButton speechButton = (CircleButton) row.findViewById(R.id.speech_button_id);
+
+                exerciseButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent i = new Intent(context, ExerciseLogActivity.class);
+                        context.startActivity(i);
+                    }
+                });
+
+                speechButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent i = new Intent(context, SpeechActivity.class);
+                        context.startActivity(i);
+                    }
+                });
+            }
+
+            else if (position == 1) {
+                LayoutInflater inflater = ((Activity) context).getLayoutInflater();
                 row = inflater.inflate(R.layout.circle_progress_row, parent, false);
 
                 circleHolder = new CircleCardHolder();
@@ -65,24 +89,7 @@ public class ExerciseLogArrayAdapter extends ArrayAdapter<ExerciseItem> {
                 circleHolder.progress1.setText("33%");
                 circleHolder.progress1.setTextColor(0xFF29A629);
 
-                circleHolder.exerciseButton = (CircleButton) row.findViewById(R.id.exercise_button_id);
-                circleHolder.speechButton = (CircleButton) row.findViewById(R.id.speech_button_id);
 
-                circleHolder.exerciseButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent i = new Intent(context, ExerciseLogActivity.class);
-                        context.startActivity(i);
-                    }
-                });
-
-                circleHolder.speechButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent i = new Intent(context, SpeechActivity.class);
-                        context.startActivity(i);
-                    }
-                });
 
 
 

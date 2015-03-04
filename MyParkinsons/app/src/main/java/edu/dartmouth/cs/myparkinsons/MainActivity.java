@@ -133,7 +133,7 @@ public class MainActivity extends FragmentActivity implements ServiceConnection 
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                     ListView listview1 = (ListView) v;
-                    View view = getViewByPosition(0, listView);
+                    View view = getViewByPosition(1, listView);
                     ViewFlipper viewFlipper = (ViewFlipper)view.findViewById(R.id.viewFlipper);
 
 
