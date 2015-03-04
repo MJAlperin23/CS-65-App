@@ -28,20 +28,22 @@
         android:layout_weight="1"
         android:id="@+id/resultImageView"/>
 
-    <Button
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="0"
-        android:layout_gravity="center_horizontal"
-        android:id="@+id/playbackButton" />
+    <!--<Button-->
+        <!--android:layout_width="fill_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_weight="0"-->
+        <!--android:layout_gravity="center_horizontal"-->
+        <!--android:id="@+id/playbackButton" />-->
 
     <Button
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="100dp"
         android:layout_gravity="bottom"
         android:layout_weight="0"
-        android:id="@+id/recordButton"/>
-
+        android:background="@drawable/custombutton"
+        android:textStyle="bold"
+        android:textColor="#FFFFFF"
+        android:id="@+id/recordButton" />
 
 
 </LinearLayout>

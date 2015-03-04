@@ -51,15 +51,15 @@ public class SpeechActivity extends Activity {
         setContentView(R.layout.activity_speech);
 
         recordButton = (Button)findViewById(R.id.recordButton);
-        replayButton = (Button)findViewById(R.id.playbackButton);
+        //replayButton = (Button)findViewById(R.id.playbackButton);
 
         phrase = (TextView)findViewById(R.id.phraseToRead);
 
         phrase.setText("This app helps improve my speech");
         recordButton.setText(R.string.buttonStart);
 
-        replayButton.setText(R.string.buttonPlay);
-        replayButton.setEnabled(false);
+        //replayButton.setText(R.string.buttonPlay);
+//        replayButton.setEnabled(false);
 
         resultView = (ImageView)findViewById(R.id.resultImageView);
 
@@ -78,13 +78,14 @@ public class SpeechActivity extends Activity {
             }
         });
 
-        replayButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                playBackAudio();
-
-            }
-        });
+//
+//        replayButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                playBackAudio();
+//
+//            }
+//        });
 
 
         SentenceMaker sentenceMaker = new SentenceMaker();
