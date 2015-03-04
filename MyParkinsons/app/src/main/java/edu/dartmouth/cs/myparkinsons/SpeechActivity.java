@@ -199,31 +199,31 @@ public class SpeechActivity extends Activity {
         Toast.makeText(this, s, Toast.LENGTH_SHORT).show();
     }
 
+//    public void playBackAudio() {
+//
+//        //TODO Playback bar
+//
+//        //make sure we have an audio file
+//        if (audioUri == null) {
+//            return;
+//        }
+//
+//        MediaPlayer mediaPlayer = new MediaPlayer();
+//        try {
+//            mediaPlayer.setDataSource(this, audioUri);
+//            mediaPlayer.prepare();
+//            mediaPlayer.start();
+//
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_speech, menu);
+        getMenuInflater().inflate(R.menu.menu_settings_access, menu);
         return true;
-    }
-
-    public void playBackAudio() {
-
-        //TODO Playback bar
-
-        //make sure we have an audio file
-        if (audioUri == null) {
-            return;
-        }
-
-        MediaPlayer mediaPlayer = new MediaPlayer();
-        try {
-            mediaPlayer.setDataSource(this, audioUri);
-            mediaPlayer.prepare();
-            mediaPlayer.start();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     @Override
