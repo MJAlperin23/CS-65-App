@@ -5,6 +5,7 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
@@ -24,7 +25,7 @@ public class SpeechReminderReceiver extends BroadcastReceiver {
 
         String message = i.getStringExtra("message");
         String title = i.getStringExtra("title");
-
+        SharedPreferences settingData = c.getSharedPreferences(SettingsActivity.SHARED_PREFERENCES_KEY, SettingsActivity.MODE_PRIVATE);
         // build notification intent
         Intent goIntent = new Intent(c, SpeechActivity.class);
         int SPEECH_REQUEST_CODE = 0;
@@ -32,21 +33,25 @@ public class SpeechReminderReceiver extends BroadcastReceiver {
                 c, SPEECH_REQUEST_CODE, goIntent, PendingIntent.FLAG_CANCEL_CURRENT
         );
 
-        // get notification builder
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(c);
 
-        // set notification parameters
-        builder.setContentTitle(title);
-        builder.setContentText(message);
-        builder.setSmallIcon(R.drawable.ic_launcher);
-        builder.setAutoCancel(true);
-        builder.setContentIntent(wrapIntent);
+        boolean allowNotification = settingData.getBoolean(SettingsActivity.ALLOW_TIME_ALERT_KEY, true);
 
-        // send notification
-        NotificationManager manager = (NotificationManager) c.getSystemService(Context.NOTIFICATION_SERVICE);
-        manager.notify(N_ID, builder.build());
+        if(allowNotification) {
+            // get notification builder
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(c);
 
+            // set notification parameters
+            builder.setContentTitle(title);
+            builder.setContentText(message);
+            builder.setSmallIcon(R.drawable.speech_pic);
+            builder.setAutoCancel(true);
+            builder.setContentIntent(wrapIntent);
 
+            // send notification
+            NotificationManager manager = (NotificationManager) c.getSystemService(Context.NOTIFICATION_SERVICE);
+            manager.notify(N_ID, builder.build());
+
+        }
 
     }
 

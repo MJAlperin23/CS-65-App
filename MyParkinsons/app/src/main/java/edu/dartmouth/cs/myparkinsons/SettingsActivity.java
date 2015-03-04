@@ -50,6 +50,7 @@ public class SettingsActivity extends Activity implements TimePickerDialog.OnTim
     public static final String TIME_OF_ALERT_KEY = "timeofalertkey_settingsactivity";
     public static final String SAVE_DATA_KEY = "timeofalertkey_settingsactivity";
     public static final String SHARED_PREFERENCES_KEY = "preferenceskey";
+    public static final String ACCEL_ENABLED_KEY = "accelerometerenabledkey";
     public SharedPreferences settingData;
     public static SharedPreferences.Editor spEdit;
 
@@ -103,6 +104,7 @@ public class SettingsActivity extends Activity implements TimePickerDialog.OnTim
 
                 //TODO: create method call to disable accel tracking service
                 case "allow_accel_tracking_toggle":
+                    spEdit.putBoolean(SettingsActivity.ACCEL_ENABLED_KEY, ((SwitchPreference) preference).isChecked());
                     break;
             }
 
@@ -152,9 +154,12 @@ public class SettingsActivity extends Activity implements TimePickerDialog.OnTim
         //nothing needs to be done here
     }
 
-    //TODO: method call to remove all things from database
+    //call helper to remove all entries from database
     private void doPositiveClick() {
-
+        DataSource dbHelper = new DataSource(getApplicationContext());
+        dbHelper.open();
+        dbHelper.deleteAllData();
+        dbHelper.close();
     }
 
     @Override
@@ -170,8 +175,8 @@ public class SettingsActivity extends Activity implements TimePickerDialog.OnTim
 
         setReminder(
             timeSelectionMillis,
-            "MyParkinsons Update Needed",
-            "Please proceed to provide a voice recognition sample"
+            "MyParkinson's Speech Reminder",
+            "Did You Do Your Speech Activity Today?"
         );
     }
 
