@@ -59,7 +59,18 @@
                 android:textStyle="bold"
                 android:textSize="40sp"
                 android:id="@+id/percentView"
+                android:textColor="@android:color/transparent"
                 android:layout_gravity="center" />
+
+            <!--<TextView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="\t\t\t\t   Accelerometer Tracking Disabled\nEnable tracking to record correct exercise data."-->
+                <!--android:textStyle="bold"-->
+                <!--android:textSize="16sp"-->
+                <!--android:textColor="@android:color/transparent"-->
+                <!--android:id="@+id/accel_alert_textview"-->
+                <!--android:layout_gravity="center" />-->
 
 
         </FrameLayout>

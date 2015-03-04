@@ -3,6 +3,7 @@ package edu.dartmouth.cs.myparkinsons;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -26,6 +27,7 @@ public class ExerciseLogArrayAdapter extends ArrayAdapter<ExerciseItem> {
 
     Context context;
     int layoutResourceId;
+    public SharedPreferences settingData;
     List<ExerciseItem> data = null;
 
 
@@ -39,6 +41,7 @@ public class ExerciseLogArrayAdapter extends ArrayAdapter<ExerciseItem> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View row = convertView;
+<<<<<<< HEAD
         CircleCardHolder circleHolder;
             if (position == 0) {
                 LayoutInflater inflater = ((Activity) context).getLayoutInflater();
@@ -128,6 +131,7 @@ public class ExerciseLogArrayAdapter extends ArrayAdapter<ExerciseItem> {
     }
 
 
+<<<<<<< HEAD
 
     static class CircleCardHolder
     {
