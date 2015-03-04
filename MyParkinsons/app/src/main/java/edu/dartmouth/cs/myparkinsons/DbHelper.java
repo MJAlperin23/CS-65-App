@@ -11,6 +11,7 @@ import android.util.Log;
 public class DbHelper extends SQLiteOpenHelper {
     public static final String TABLE = "exercise_items";
     public static final String COLUMN_ID = "_id";
+    public static final String COLUMN_DATE_ID = "date_id";
     public static final String COLUMN_DATE = "date";
     public static final String COLUMN_EXERCISE_TIME = "exercise_time";
     public static final String COLUMN_SPEECH_DONE = "speech_done";
@@ -23,6 +24,7 @@ public class DbHelper extends SQLiteOpenHelper {
     private static final String DATABASE_CREATE = "create table if not exists "
             + TABLE + "("
             + COLUMN_ID + " integer primary key autoincrement, "
+            + COLUMN_DATE_ID + " integer, "
             + COLUMN_DATE + " datetime not null, "
             + COLUMN_EXERCISE_TIME + " integer, "
             + COLUMN_SPEECH_DONE + " integer, "

@@ -104,9 +104,12 @@ public class MainActivity extends FragmentActivity implements ServiceConnection 
 
         ExerciseItem[] items = new ExerciseItem[10];
 
+        DataSource dataSource = new DataSource(this);
+        dataSource.open();
+
         for (int i = 0; i < 10; i++) {
             Random rand = new Random();
-            long walking = Math.abs(rand.nextLong()) % 86400000;
+            long walking = Math.abs(rand.nextLong()) % 3600000;
             int month = (rand.nextInt() % 12) + 1;
             int day = (rand.nextInt() % 28) + 1;
             int year = (rand.nextInt() % 2015) + 1;
@@ -118,9 +121,13 @@ public class MainActivity extends FragmentActivity implements ServiceConnection 
             int totalSpeech = (Math.abs(rand.nextInt()) % 12) + 1;
             int totalCorrect = Math.abs(rand.nextInt()) % totalSpeech;
 
-            items[i] = new ExerciseItem(calendar, totalSpeech, totalCorrect, walking);
+            long dateID = year * 10000 + month * 100 + day;
+
+            items[i] = new ExerciseItem(dateID, calendar, totalSpeech, totalCorrect, walking);
+            dataSource.insert(items[i]);
         }
-        List<ExerciseItem> list = Arrays.asList(items);
+        List<ExerciseItem> list=dataSource.fetchItems();
+        dataSource.close();
         ExerciseLogArrayAdapter adapter = new ExerciseLogArrayAdapter(this, R.layout.exercise_log_row, list);
 
         listView = (ListView) findViewById(R.id.card_listView);
@@ -208,58 +215,6 @@ public class MainActivity extends FragmentActivity implements ServiceConnection 
         }
     }
 
-//    @Override
-//    public boolean onTouchEvent(MotionEvent touchevent)
-//    {
-//        super.onTouchEvent(touchevent);
-//
-//        switch (touchevent.getAction())
-//        {
-//            // when user first touches the screen to swap
-//            case MotionEvent.ACTION_DOWN:
-//            {
-//                lastX = touchevent.getX();
-//                break;
-//            }
-//            case MotionEvent.ACTION_UP:
-//            {
-//                float currentX = touchevent.getX();
-//
-//                // if left to right swipe on screen
-//                if (lastX < currentX)
-//                {
-//                    // If no more View/Child to flip
-//                    if (viewFlipper.getDisplayedChild() == 0)
-//                        break;
-//
-//                    // set the required Animation type to ViewFlipper
-//                    // The Next screen will come in form Left and current Screen will go OUT from Right
-//                    viewFlipper.setInAnimation(this, R.anim.in_from_left);
-//                    viewFlipper.setOutAnimation(this, R.anim.out_to_right);
-//                    // Show the next Screen
-//                    viewFlipper.showNext();
-//                    CircleProgressFragment.setCircleProgress(33);
-//                }
-//
-//                // if right to left swipe on screen
-//                if (lastX > currentX)
-//                {
-//                    if (viewFlipper.getDisplayedChild() == 1)
-//                        break;
-//                    // set the required Animation type to ViewFlipper
-//                    // The Next screen will come in form Right and current Screen will go OUT from Left
-//                    viewFlipper.setInAnimation(this, R.anim.in_from_right);
-//                    viewFlipper.setOutAnimation(this, R.anim.out_to_left);
-//                    // Show The Previous Screen
-//                    viewFlipper.showPrevious();
-//                    SpeechCircleProgressFragment.setCircleProgress(67);
-//                }
-//                break;
-//            }
-//        }
-//        return false;
-//    }
-
 
 
 
@@ -273,8 +228,7 @@ public class MainActivity extends FragmentActivity implements ServiceConnection 
     @Override
     protected void onPostResume() {
         super.onPostResume();
-//        CircleProgressFragment.setCircleProgress(33);
-//        SpeechCircleProgressFragment.setCircleProgress(67);
+
     }
 
     @Override

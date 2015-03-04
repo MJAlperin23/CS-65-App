@@ -43,10 +43,28 @@ public class DataSource {
         ExerciseItem item;
         Cursor cursor = database.query(DbHelper.TABLE, DbHelper.allColumns, DbHelper.COLUMN_ID + " = " +id,null,null,null,null);
         cursor.moveToFirst();
+        if (cursor.isAfterLast()) {
+            return null;
+        }
         item = cursorToExerciseItem(cursor);
         cursor.close();
         return item;
     }
+
+    public ExerciseItem fetchItemByDateID(long dateID) {
+        ExerciseItem item;
+        Cursor cursor = database.query(DbHelper.TABLE, DbHelper.allColumns, DbHelper.COLUMN_DATE_ID + " = "+dateID,null,null,null,null);
+        cursor.moveToFirst();
+        item = cursorToExerciseItem(cursor);
+        cursor.close();
+        return item;
+    }
+
+    public void updateExerciseItemForDateID(ExerciseItem item) {
+        removeItem(item.getId());
+        insert(item);
+    }
+
     public List<ExerciseItem> fetchItems(){
         List<ExerciseItem> items = new ArrayList<ExerciseItem>();
         if (!database.isOpen()) {
@@ -73,11 +91,12 @@ public class DataSource {
         int speechTotal = cursor.getInt(cursor.getColumnIndex(DbHelper.COLUMN_SPEECH_DONE));
         int speechCorrect = cursor.getInt(cursor.getColumnIndex(DbHelper.COLUMN_SPEECH_CORRECT));
         long date = cursor.getLong(cursor.getColumnIndex(DbHelper.COLUMN_DATE));
-        //TODO save and store the correct date
+        long dateID = cursor.getLong(cursor.getColumnIndex(DbHelper.COLUMN_DATE_ID));
+
         Calendar cal = Calendar.getInstance();
         cal.setTimeInMillis(date);
 
-        ExerciseItem item = new ExerciseItem(cal, speechTotal, speechCorrect, time);
+        ExerciseItem item = new ExerciseItem(dateID, cal, speechTotal, speechCorrect, time);
         item.setId(id);
 
         return item;

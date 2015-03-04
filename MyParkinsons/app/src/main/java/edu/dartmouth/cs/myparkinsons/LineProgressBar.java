@@ -136,7 +136,7 @@ public class LineProgressBar extends View {
 
         foregroundPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         foregroundPaint.setColor(color);
-        foregroundPaint.setStyle(Paint.Style.STROKE);
+        foregroundPaint.setStyle(Paint.Style.FILL_AND_STROKE);
         foregroundPaint.setStrokeWidth(strokeWidth);
     }
 

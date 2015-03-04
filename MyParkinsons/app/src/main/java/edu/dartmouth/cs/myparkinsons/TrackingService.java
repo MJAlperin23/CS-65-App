@@ -29,6 +29,7 @@ import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.ArrayBlockingQueue;
 
+
 public class TrackingService extends Service implements SensorEventListener {
     public static final String TYPE_KEY = "TYPE_KEY";
     public static final int MSG_SET_TYPE_VALUE = 5;
@@ -139,7 +140,7 @@ public class TrackingService extends Service implements SensorEventListener {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        sensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_GAME);
+        sensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
         wekaTask.execute();
         return START_NOT_STICKY;
     }
@@ -207,7 +208,7 @@ public class TrackingService extends Service implements SensorEventListener {
 
             double[] accBlock = arrayFromQueue();
             double[] re = accBlock;
-            double[] im = new double[64];  //Globals.ACCELEROMETER_BLOCK_CAPACITY];
+            double[] im = new double[64];
 
             double max = max(accBlock);
 
@@ -281,10 +282,7 @@ public class TrackingService extends Service implements SensorEventListener {
                 }
                 return;
             }
-            // If you use less than API20:
-//            if (powerManager.isScreenOn()){
-//
-//            }
+
 
             double type = values[0];
             if (isExercising) {
@@ -300,7 +298,7 @@ public class TrackingService extends Service implements SensorEventListener {
                     isExercising = false;
                     if (c.get(Calendar.DAY_OF_YEAR) != old.get(Calendar.DAY_OF_YEAR)) {
                         //TODO add to database
-                        ExerciseItem item = new ExerciseItem(old, 0, 0, dailyExerciseTime);
+                        ExerciseItem item = new ExerciseItem(0 ,old, 0, 0, dailyExerciseTime);
                         dailyExerciseTime = 0;
 
                     }

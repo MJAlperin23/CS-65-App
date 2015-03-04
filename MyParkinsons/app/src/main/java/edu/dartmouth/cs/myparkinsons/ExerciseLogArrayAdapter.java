@@ -28,8 +28,6 @@ public class ExerciseLogArrayAdapter extends ArrayAdapter<ExerciseItem> {
     int layoutResourceId;
     List<ExerciseItem> data = null;
 
-    private float lastX;
-
 
     public ExerciseLogArrayAdapter(Context context, int layoutResourceId, List<ExerciseItem> data) {
         super(context, layoutResourceId, data);
@@ -41,9 +39,7 @@ public class ExerciseLogArrayAdapter extends ArrayAdapter<ExerciseItem> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View row = convertView;
-        ExerciseItemHolder holder = null;
-        CircleCardHolder circleHolder = null;
-//        if (row == null) {
+        CircleCardHolder circleHolder;
             if (position == 0) {
                 LayoutInflater inflater = ((Activity) context).getLayoutInflater();
                 row = inflater.inflate(R.layout.buttons_row, parent, false);
@@ -81,19 +77,37 @@ public class ExerciseLogArrayAdapter extends ArrayAdapter<ExerciseItem> {
 
                 circleHolder.bar2.setColor(0xFF0066FF);
                 circleHolder.bar2.setStrokeWidth(50);
+                circleHolder.bar2.setProgressWithAnimation(67);
                 circleHolder.progress2.setText("67%");
                 circleHolder.progress2.setTextColor(0xFF0066FF);
 
                 circleHolder.bar1.setColor(0xFF29A629);
                 circleHolder.bar1.setStrokeWidth(50);
+                circleHolder.bar1.setProgressWithAnimation(33);
                 circleHolder.progress1.setText("33%");
                 circleHolder.progress1.setTextColor(0xFF29A629);
 
-
-
-
-
             } else {
+
+                DataSource dataSource = new DataSource(context);
+                dataSource.open();
+                List<ExerciseItem> items = dataSource.fetchItems();
+                ExerciseItem item = items.get(position - 1);
+                dataSource.close();
+
+                if (item == null)
+                {
+                    return row;
+                }
+
+
+                long exerciseMillis = item.getExerciseTime();
+                long minutes = (long) (exerciseMillis * 1.66667e-5);
+                int exerciseProgress = (int) (minutes / 60.0);
+                int speechProgress = (int) (item.getSpeechPercent() * 100);
+                System.out.println("Exercise" + exerciseProgress);
+                System.out.println("Speech" + speechProgress);
+
                 LayoutInflater inflater = ((Activity) context).getLayoutInflater();
                 row = inflater.inflate(R.layout.history_row, parent, false);
 
@@ -102,56 +116,18 @@ public class ExerciseLogArrayAdapter extends ArrayAdapter<ExerciseItem> {
 
                 lineBar.setColor(0xFF0066FF);
                 lineBar.setStrokeWidth(10);
+                lineBar.setProgressWithAnimation(exerciseProgress);
 
                 circleBar.setColor(0xFF29A629);
                 circleBar.setStrokeWidth(10);
-
-//                holder = new ExerciseItemHolder();
-//                holder.date = (TextView) row.findViewById(R.id.dateText);
-//                holder.time = (TextView) row.findViewById(R.id.exerciseTimeText);
-//                holder.speech = (TextView) row.findViewById(R.id.speechPercentText);
-                //holder.didSpeech = (CheckBox)row.findViewById(R.id.speechDoneCheckBox);
-
-//                ExerciseItem entry = getItem(position);
-//                SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
-//                Date theDate = entry.getDate().getTime();
-//                String date = format.format(theDate);
-//                holder.date.setText(date);
-//
-//                String time = String.format("%02d hrs, %02d min, %02d sec",
-//                        TimeUnit.MILLISECONDS.toHours(entry.getExerciseTime()),
-//                        TimeUnit.MILLISECONDS.toMinutes(entry.getExerciseTime()) -
-//                                TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(entry.getExerciseTime())),
-//                        TimeUnit.MILLISECONDS.toSeconds(entry.getExerciseTime()) -
-//                                TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(entry.getExerciseTime())));
-//
-//
-//                holder.time.setText("Exercise Time: " + time);
-//                holder.speech.setText(String.format("Speech: %d out of %d", entry.getSpeechCorrectCount(), entry.getSpeechDoneCount()));
-//                //holder.didSpeech.setChecked(entry.isSpeechDone());
+                circleBar.setProgressWithAnimation(speechProgress);
 
             }
-
-
-
-
 
         return row;
     }
 
 
-
-
-    @Override
-    public ExerciseItem getItem(int position) {
-        return data.get(position);
-    }
-    static class ExerciseItemHolder
-    {
-        TextView date;
-        TextView time;
-        TextView speech;
-    }
 
     static class CircleCardHolder
     {
@@ -160,7 +136,5 @@ public class ExerciseLogArrayAdapter extends ArrayAdapter<ExerciseItem> {
         CircleProgressBar bar2;
         TextView progress1;
         TextView progress2;
-        CircleButton exerciseButton;
-        CircleButton speechButton;
     }
 }
