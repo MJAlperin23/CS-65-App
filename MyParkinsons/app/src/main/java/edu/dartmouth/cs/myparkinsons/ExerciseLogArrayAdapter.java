@@ -41,7 +41,6 @@ public class ExerciseLogArrayAdapter extends ArrayAdapter<ExerciseItem> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View row = convertView;
-<<<<<<< HEAD
         CircleCardHolder circleHolder;
             if (position == 0) {
                 LayoutInflater inflater = ((Activity) context).getLayoutInflater();
@@ -130,8 +129,6 @@ public class ExerciseLogArrayAdapter extends ArrayAdapter<ExerciseItem> {
         return row;
     }
 
-
-<<<<<<< HEAD
 
     static class CircleCardHolder
     {
