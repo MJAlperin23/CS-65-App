@@ -88,31 +88,40 @@ public class ExerciseLogArrayAdapter extends ArrayAdapter<ExerciseItem> {
 
             } else {
                 LayoutInflater inflater = ((Activity) context).getLayoutInflater();
-                row = inflater.inflate(layoutResourceId, parent, false);
+                row = inflater.inflate(R.layout.history_row, parent, false);
 
-                holder = new ExerciseItemHolder();
-                holder.date = (TextView) row.findViewById(R.id.dateText);
-                holder.time = (TextView) row.findViewById(R.id.exerciseTimeText);
-                holder.speech = (TextView) row.findViewById(R.id.speechPercentText);
+                LineProgressBar lineBar = (LineProgressBar)row.findViewById(R.id.line_progressBar);
+                CircleProgressBar circleBar = (CircleProgressBar)row.findViewById(R.id.custom_progressBar);
+
+                lineBar.setColor(0xFF0066FF);
+                lineBar.setStrokeWidth(10);
+
+                circleBar.setColor(0xFF29A629);
+                circleBar.setStrokeWidth(10);
+
+//                holder = new ExerciseItemHolder();
+//                holder.date = (TextView) row.findViewById(R.id.dateText);
+//                holder.time = (TextView) row.findViewById(R.id.exerciseTimeText);
+//                holder.speech = (TextView) row.findViewById(R.id.speechPercentText);
                 //holder.didSpeech = (CheckBox)row.findViewById(R.id.speechDoneCheckBox);
 
-                ExerciseItem entry = getItem(position);
-                SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
-                Date theDate = entry.getDate().getTime();
-                String date = format.format(theDate);
-                holder.date.setText(date);
-
-                String time = String.format("%02d hrs, %02d min, %02d sec",
-                        TimeUnit.MILLISECONDS.toHours(entry.getExerciseTime()),
-                        TimeUnit.MILLISECONDS.toMinutes(entry.getExerciseTime()) -
-                                TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(entry.getExerciseTime())),
-                        TimeUnit.MILLISECONDS.toSeconds(entry.getExerciseTime()) -
-                                TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(entry.getExerciseTime())));
-
-
-                holder.time.setText("Exercise Time: " + time);
-                holder.speech.setText(String.format("Speech: %d out of %d", entry.getSpeechCorrectCount(), entry.getSpeechDoneCount()));
-                //holder.didSpeech.setChecked(entry.isSpeechDone());
+//                ExerciseItem entry = getItem(position);
+//                SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+//                Date theDate = entry.getDate().getTime();
+//                String date = format.format(theDate);
+//                holder.date.setText(date);
+//
+//                String time = String.format("%02d hrs, %02d min, %02d sec",
+//                        TimeUnit.MILLISECONDS.toHours(entry.getExerciseTime()),
+//                        TimeUnit.MILLISECONDS.toMinutes(entry.getExerciseTime()) -
+//                                TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(entry.getExerciseTime())),
+//                        TimeUnit.MILLISECONDS.toSeconds(entry.getExerciseTime()) -
+//                                TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(entry.getExerciseTime())));
+//
+//
+//                holder.time.setText("Exercise Time: " + time);
+//                holder.speech.setText(String.format("Speech: %d out of %d", entry.getSpeechCorrectCount(), entry.getSpeechDoneCount()));
+//                //holder.didSpeech.setChecked(entry.isSpeechDone());
 
             }
 
