@@ -7,6 +7,7 @@ package edu.dartmouth.cs.myparkinsons;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -28,6 +29,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.ArrayBlockingQueue;
+
 
 public class TrackingService extends Service implements SensorEventListener {
     public static final String TYPE_KEY = "TYPE_KEY";
@@ -52,6 +54,9 @@ public class TrackingService extends Service implements SensorEventListener {
     private long lastExerciseChangedTime;
     private boolean isExercising;
 
+    public SharedPreferences settingData;
+    public static SharedPreferences.Editor spEdit;
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -67,6 +72,9 @@ public class TrackingService extends Service implements SensorEventListener {
         accQueue = new ArrayBlockingQueue<>(64);
 
         wekaTask = new WekaTask();
+
+        settingData = getSharedPreferences(SettingsActivity.SHARED_PREFERENCES_KEY, MODE_PRIVATE);
+        spEdit = settingData.edit();
 
     }
 
@@ -139,7 +147,7 @@ public class TrackingService extends Service implements SensorEventListener {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        sensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_GAME);
+        sensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_FASTEST);
         wekaTask.execute();
         return START_NOT_STICKY;
     }
@@ -207,7 +215,7 @@ public class TrackingService extends Service implements SensorEventListener {
 
             double[] accBlock = arrayFromQueue();
             double[] re = accBlock;
-            double[] im = new double[64];  //Globals.ACCELEROMETER_BLOCK_CAPACITY];
+            double[] im = new double[64];
 
             double max = max(accBlock);
 
@@ -281,10 +289,7 @@ public class TrackingService extends Service implements SensorEventListener {
                 }
                 return;
             }
-            // If you use less than API20:
-//            if (powerManager.isScreenOn()){
-//
-//            }
+
 
             double type = values[0];
             if (isExercising) {
@@ -296,12 +301,39 @@ public class TrackingService extends Service implements SensorEventListener {
 
                     long time = c.getTimeInMillis();
                     long difference = time - lastExerciseChangedTime;
+
+
+
                     dailyExerciseTime += difference;
+
+                    long previousTime = settingData.getLong(SettingsActivity.EXERCISE_TIME_KEY, 0);
+                    spEdit.putLong(SettingsActivity.EXERCISE_TIME_KEY, difference + previousTime);
+                    long date = settingData.getLong(SettingsActivity.CURRENT_DAY_KEY, 0);
+                    if (date == 0) {
+                        Calendar d = Calendar.getInstance();
+                        int day = d.get(Calendar.DAY_OF_MONTH);
+                        int month = d.get(Calendar.MONTH);
+                        int year = d.get(Calendar.YEAR);
+                        long theDate = year * 10000 + month * 100 + day;
+                        spEdit.putLong(SettingsActivity.CURRENT_DAY_KEY, theDate);
+
+                    }
+                    spEdit.commit();
+
                     isExercising = false;
                     if (c.get(Calendar.DAY_OF_YEAR) != old.get(Calendar.DAY_OF_YEAR)) {
-                        //TODO add to database
-                        ExerciseItem item = new ExerciseItem(old, 0, 0, dailyExerciseTime);
+                        //New day add to database and clear data from prefs
+                        int total = settingData.getInt(SettingsActivity.TOTAL_SPEECH_KEY, 0);
+                        int correct = settingData.getInt(SettingsActivity.CORRECT_SPEECH_KEY, 0);
+                        ExerciseItem item = new ExerciseItem(old, total, correct, dailyExerciseTime);
                         dailyExerciseTime = 0;
+                        spEdit.putLong(SettingsActivity.EXERCISE_TIME_KEY, 0);
+                        spEdit.putInt(SettingsActivity.CORRECT_SPEECH_KEY, 0);
+                        spEdit.putInt(SettingsActivity.TOTAL_SPEECH_KEY, 0);
+                        DataSource dataSource = new DataSource(appContext);
+                        dataSource.open();
+                        dataSource.insert(item);
+                        dataSource.close();
 
                     }
                 }

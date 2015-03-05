@@ -43,10 +43,15 @@ public class DataSource {
         ExerciseItem item;
         Cursor cursor = database.query(DbHelper.TABLE, DbHelper.allColumns, DbHelper.COLUMN_ID + " = " +id,null,null,null,null);
         cursor.moveToFirst();
+        if (cursor.isAfterLast()) {
+            return null;
+        }
         item = cursorToExerciseItem(cursor);
         cursor.close();
         return item;
     }
+
+
     public List<ExerciseItem> fetchItems(){
         List<ExerciseItem> items = new ArrayList<ExerciseItem>();
         if (!database.isOpen()) {
@@ -73,7 +78,7 @@ public class DataSource {
         int speechTotal = cursor.getInt(cursor.getColumnIndex(DbHelper.COLUMN_SPEECH_DONE));
         int speechCorrect = cursor.getInt(cursor.getColumnIndex(DbHelper.COLUMN_SPEECH_CORRECT));
         long date = cursor.getLong(cursor.getColumnIndex(DbHelper.COLUMN_DATE));
-        //TODO save and store the correct date
+
         Calendar cal = Calendar.getInstance();
         cal.setTimeInMillis(date);
 

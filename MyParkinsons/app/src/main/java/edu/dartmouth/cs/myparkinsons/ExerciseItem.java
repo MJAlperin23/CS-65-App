@@ -39,4 +39,5 @@ public class ExerciseItem {
     public long getExerciseTime() {
         return exerciseTime;
     }
+
 }

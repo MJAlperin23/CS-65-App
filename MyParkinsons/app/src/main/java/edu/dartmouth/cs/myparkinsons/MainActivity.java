@@ -30,6 +30,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -104,9 +105,12 @@ public class MainActivity extends FragmentActivity implements ServiceConnection 
 
         ExerciseItem[] items = new ExerciseItem[10];
 
+        DataSource dataSource = new DataSource(this);
+        dataSource.open();
+
         for (int i = 0; i < 10; i++) {
             Random rand = new Random();
-            long walking = Math.abs(rand.nextLong()) % 86400000;
+            long walking = Math.abs(rand.nextLong()) % 3600000;
             int month = (rand.nextInt() % 12) + 1;
             int day = (rand.nextInt() % 28) + 1;
             int year = (rand.nextInt() % 2015) + 1;
@@ -118,9 +122,12 @@ public class MainActivity extends FragmentActivity implements ServiceConnection 
             int totalSpeech = (Math.abs(rand.nextInt()) % 12) + 1;
             int totalCorrect = Math.abs(rand.nextInt()) % totalSpeech;
 
+
             items[i] = new ExerciseItem(calendar, totalSpeech, totalCorrect, walking);
+//            dataSource.insert(items[i]);
         }
-        List<ExerciseItem> list = Arrays.asList(items);
+        List<ExerciseItem> list=dataSource.fetchItems();
+        dataSource.close();
         ExerciseLogArrayAdapter adapter = new ExerciseLogArrayAdapter(this, R.layout.exercise_log_row, list);
 
         listView = (ListView) findViewById(R.id.card_listView);
@@ -165,8 +172,25 @@ public class MainActivity extends FragmentActivity implements ServiceConnection 
                                 // Show the next Screen
                                 viewFlipper.showNext();
                                 CircleProgressBar bar = (CircleProgressBar)view.findViewById(R.id.custom_progressBar);
+                                TextView textView = (TextView)view.findViewById(R.id.percentView);
+
+                                ImageView leftDot = (ImageView)view.findViewById(R.id.left_circle);
+                                ImageView rightDot = (ImageView)view.findViewById(R.id.right_circle);
+                                leftDot.setImageResource(R.drawable.dark_circle);
+                                rightDot.setImageResource(R.drawable.light_circle);
+
                                 bar.setProgress(0);
-                                bar.setProgressWithAnimation(33);
+
+                                SharedPreferences settingData = getSharedPreferences(SettingsActivity.SHARED_PREFERENCES_KEY, MODE_PRIVATE);
+
+                                long time = settingData.getLong(SettingsActivity.EXERCISE_TIME_KEY, 0);
+                                long minutes = (long) (time * 1.66667e-5);
+                                System.out.println(time);
+                                System.out.println(minutes);
+                                String text = String.format("%d/%d\nminutes", minutes, 60);
+                                System.out.println(text);
+                                textView.setText(text);
+                                bar.setProgressWithAnimation((float) (minutes / 60. * 100));
                                 //CircleProgressFragment.setCircleProgress(33);
                             }
 
@@ -181,8 +205,28 @@ public class MainActivity extends FragmentActivity implements ServiceConnection 
                                 // Show The Previous Screen
                                 viewFlipper.showPrevious();
                                 CircleProgressBar bar = (CircleProgressBar)view.findViewById(R.id.custom_progressBar2);
+                                TextView textView = (TextView)view.findViewById(R.id.percentView2);
+
+                                ImageView leftDot = (ImageView)view.findViewById(R.id.left_circle);
+                                ImageView rightDot = (ImageView)view.findViewById(R.id.right_circle);
+                                leftDot.setImageResource(R.drawable.light_circle);
+                                rightDot.setImageResource(R.drawable.dark_circle
+                                );
+
                                 bar.setProgress(0);
-                                bar.setProgressWithAnimation(67);
+
+                                SharedPreferences settingData = getSharedPreferences(SettingsActivity.SHARED_PREFERENCES_KEY, MODE_PRIVATE);
+                                int correct = settingData.getInt(SettingsActivity.CORRECT_SPEECH_KEY, 0);
+                                int total = settingData.getInt(SettingsActivity.TOTAL_SPEECH_KEY, 0);
+                                float percent = (float) correct / (float) total;
+                                System.out.println(percent);
+                                if (total == 0) {
+                                    bar.setProgressWithAnimation(0);
+                                } else {
+                                    bar.setProgressWithAnimation(percent * 100);
+                                }
+                                String text = String.format("%d/%d\ncorrect", correct, total);
+                                textView.setText(text);
                                 //SpeechCircleProgressFragment.setCircleProgress(67);
                             }
                             break;
@@ -219,8 +263,7 @@ public class MainActivity extends FragmentActivity implements ServiceConnection 
     @Override
     protected void onPostResume() {
         super.onPostResume();
-//        CircleProgressFragment.setCircleProgress(33);
-//        SpeechCircleProgressFragment.setCircleProgress(67);
+
     }
 
     @Override

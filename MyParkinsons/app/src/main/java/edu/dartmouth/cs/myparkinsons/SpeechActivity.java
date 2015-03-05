@@ -3,6 +3,7 @@ package edu.dartmouth.cs.myparkinsons;
 import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.media.Image;
@@ -26,6 +27,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 
@@ -43,12 +45,18 @@ public class SpeechActivity extends Activity {
 
     private Uri audioUri;
 
+    public SharedPreferences settingData;
+    public static SharedPreferences.Editor spEdit;
+
     private HashMap<String, ArrayList<SentenceMaker.GrammarRule>> grammar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_speech);
+
+        settingData = getSharedPreferences(SettingsActivity.SHARED_PREFERENCES_KEY, MODE_PRIVATE);
+        spEdit = settingData.edit();
 
         recordButton = (Button)findViewById(R.id.recordButton);
         //replayButton = (Button)findViewById(R.id.playbackButton);
@@ -154,6 +162,9 @@ public class SpeechActivity extends Activity {
                         animation1.setFillAfter(true);
                         resultView.startAnimation(animation1);
                         understood = true;
+                        //add one to today's data
+                        spEdit.putInt(SettingsActivity.CORRECT_SPEECH_KEY, settingData.getInt(SettingsActivity.CORRECT_SPEECH_KEY, 0) + 1);
+                        spEdit.commit();
                         break;
                     }
                 }
@@ -166,6 +177,18 @@ public class SpeechActivity extends Activity {
                     animation1.setFillAfter(true);
                     resultView.startAnimation(animation1);
                 }
+
+                spEdit.putInt(SettingsActivity.TOTAL_SPEECH_KEY, settingData.getInt(SettingsActivity.TOTAL_SPEECH_KEY, 0) + 1);
+                long date = settingData.getLong(SettingsActivity.CURRENT_DAY_KEY, 0);
+                if (date == 0) {
+                    Calendar c = Calendar.getInstance();
+                    int day = c.get(Calendar.DAY_OF_MONTH);
+                    int month = c.get(Calendar.MONTH);
+                    int year = c.get(Calendar.YEAR);
+                    long theDate = year * 10000 + month * 100 + day;
+                    spEdit.putLong(SettingsActivity.CURRENT_DAY_KEY, theDate);
+                }
+                spEdit.commit();
 
                 //http://stackoverflow.com/questions/23047433/record-save-audio-from-voice-recognition-intent
                 audioUri = data.getData();
