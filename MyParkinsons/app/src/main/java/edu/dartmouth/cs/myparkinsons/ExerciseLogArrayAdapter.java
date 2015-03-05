@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
@@ -29,18 +30,19 @@ import java.util.concurrent.TimeUnit;
 */
 public class ExerciseLogArrayAdapter extends ArrayAdapter<ExerciseItem> {
 
-    Context context;
+    private Context context;
     int layoutResourceId;
-    public SharedPreferences settingData;
     List<ExerciseItem> data = null;
 
 
-    public ExerciseLogArrayAdapter(Context context, int layoutResourceId, List<ExerciseItem> data) {
-        super(context, layoutResourceId, data);
+    public ExerciseLogArrayAdapter(Context c, int layoutResourceId, List<ExerciseItem> data) {
+        super(c, layoutResourceId, data);
         this.layoutResourceId = layoutResourceId;
-        this.context = context;
+        context = c;
         this.data = data;
     }
+
+
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.content.ComponentName;
@@ -46,7 +47,6 @@ import java.util.Random;
 
 
 public class MainActivity extends FragmentActivity implements ServiceConnection {
-
 
 
     private Messenger serviceMessenger = null;
@@ -105,82 +105,82 @@ public class MainActivity extends FragmentActivity implements ServiceConnection 
         list.addAll(dataSource.fetchItems());
 
         dataSource.close();
-        ExerciseLogArrayAdapter adapter = new ExerciseLogArrayAdapter(this, R.layout.exercise_log_row, list);
+        final ExerciseLogArrayAdapter adapter = new ExerciseLogArrayAdapter(this, R.layout.exercise_log_row, list);
 
         listView = (ListView) findViewById(R.id.card_listView);
 
         listView.setAdapter(adapter);
 
-
+        
 
         listView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                    View view = getViewByPosition(1, listView);
-                    ViewFlipper viewFlipper = (ViewFlipper)view.findViewById(R.id.viewFlipper);
+                View view = getViewByPosition(1, listView);
+                ViewFlipper viewFlipper = (ViewFlipper) view.findViewById(R.id.viewFlipper);
 
 
-                    switch (event.getAction()) {
-                        // when user first touches the screen to swap
-                        case MotionEvent.ACTION_DOWN: {
-                            lastX = event.getX();
-                            lastY = event.getY();
-                            break;
-                        }
-                        case MotionEvent.ACTION_UP: {
-                            float currentX = event.getX();
-                            float currentY = event.getY();
-
-                            if (Math.abs(currentY - lastY) > Math.abs(currentX - lastX)) {
-                                return false;
-                            }
-
-                            // if left to right swipe on screen
-                            if (lastX < currentX) {
-                                // If no more View/Child to flip
-                                if (viewFlipper.getDisplayedChild() == 0)
-                                    break;
-
-                                // set the required Animation type to ViewFlipper
-                                // The Next screen will come in form Left and current Screen will go OUT from Right
-                                viewFlipper.setInAnimation(getApplicationContext(), R.anim.in_from_left);
-                                viewFlipper.setOutAnimation(getApplicationContext(), R.anim.out_to_right);
-                                // Show the next Screen
-                                viewFlipper.showNext();
-
-                                refreshExerciseView(view);
-
-                            }
-
-                            // if right to left swipe on screen
-                            if (lastX > currentX) {
-                                if (viewFlipper.getDisplayedChild() == 1)
-                                    break;
-                                // set the required Animation type to ViewFlipper
-                                // The Next screen will come in form Right and current Screen will go OUT from Left
-                                viewFlipper.setInAnimation(getApplicationContext(), R.anim.in_from_right);
-                                viewFlipper.setOutAnimation(getApplicationContext(), R.anim.out_to_left);
-                                // Show The Previous Screen
-                                viewFlipper.showPrevious();
-
-                                refreshSpeechView(view);
-                            }
-                            break;
-                        }
+                switch (event.getAction()) {
+                    // when user first touches the screen to swap
+                    case MotionEvent.ACTION_DOWN: {
+                        lastX = event.getX();
+                        lastY = event.getY();
+                        break;
                     }
+                    case MotionEvent.ACTION_UP: {
+                        float currentX = event.getX();
+                        float currentY = event.getY();
 
-                    return false;
+                        if (Math.abs(currentY - lastY) > Math.abs(currentX - lastX)) {
+                            return false;
+                        }
+
+                        // if left to right swipe on screen
+                        if (lastX < currentX) {
+                            // If no more View/Child to flip
+                            if (viewFlipper.getDisplayedChild() == 0)
+                                break;
+
+                            // set the required Animation type to ViewFlipper
+                            // The Next screen will come in form Left and current Screen will go OUT from Right
+                            viewFlipper.setInAnimation(getApplicationContext(), R.anim.in_from_left);
+                            viewFlipper.setOutAnimation(getApplicationContext(), R.anim.out_to_right);
+                            // Show the next Screen
+                            viewFlipper.showNext();
+
+                            refreshExerciseView(view);
+
+                        }
+
+                        // if right to left swipe on screen
+                        if (lastX > currentX) {
+                            if (viewFlipper.getDisplayedChild() == 1)
+                                break;
+                            // set the required Animation type to ViewFlipper
+                            // The Next screen will come in form Right and current Screen will go OUT from Left
+                            viewFlipper.setInAnimation(getApplicationContext(), R.anim.in_from_right);
+                            viewFlipper.setOutAnimation(getApplicationContext(), R.anim.out_to_left);
+                            // Show The Previous Screen
+                            viewFlipper.showPrevious();
+
+                            refreshSpeechView(view);
+                        }
+                        break;
+                    }
+                }
+
+                return false;
             }
         });
 
     }
 
     private void refreshSpeechView(View view) {
-        CircleProgressBar bar = (CircleProgressBar)view.findViewById(R.id.custom_progressBar2);
-        TextView textView = (TextView)view.findViewById(R.id.percentView2);
+        CircleProgressBar bar = (CircleProgressBar) view.findViewById(R.id.custom_progressBar2);
+        TextView textView = (TextView) view.findViewById(R.id.percentView2);
 
-        ImageView leftDot = (ImageView)view.findViewById(R.id.left_circle);
-        ImageView rightDot = (ImageView)view.findViewById(R.id.right_circle);
+        ImageView leftDot = (ImageView) view.findViewById(R.id.left_circle);
+        ImageView rightDot = (ImageView) view.findViewById(R.id.right_circle);
         leftDot.setImageResource(R.drawable.light_circle);
         rightDot.setImageResource(R.drawable.dark_circle
         );
@@ -202,11 +202,11 @@ public class MainActivity extends FragmentActivity implements ServiceConnection 
     }
 
     public void refreshExerciseView(View view) {
-        CircleProgressBar bar = (CircleProgressBar)view.findViewById(R.id.custom_progressBar);
-        TextView textView = (TextView)view.findViewById(R.id.percentView);
+        CircleProgressBar bar = (CircleProgressBar) view.findViewById(R.id.custom_progressBar);
+        TextView textView = (TextView) view.findViewById(R.id.percentView);
 
-        ImageView leftDot = (ImageView)view.findViewById(R.id.left_circle);
-        ImageView rightDot = (ImageView)view.findViewById(R.id.right_circle);
+        ImageView leftDot = (ImageView) view.findViewById(R.id.left_circle);
+        ImageView rightDot = (ImageView) view.findViewById(R.id.right_circle);
         leftDot.setImageResource(R.drawable.dark_circle);
         rightDot.setImageResource(R.drawable.light_circle);
 
@@ -228,7 +228,7 @@ public class MainActivity extends FragmentActivity implements ServiceConnection 
         final int firstListItemPosition = listView.getFirstVisiblePosition();
         final int lastListItemPosition = firstListItemPosition + listView.getChildCount() - 1;
 
-        if (pos < firstListItemPosition || pos > lastListItemPosition ) {
+        if (pos < firstListItemPosition || pos > lastListItemPosition) {
             return listView.getAdapter().getView(pos, null, listView);
         } else {
             final int childIndex = pos - firstListItemPosition;
@@ -340,10 +340,6 @@ public class MainActivity extends FragmentActivity implements ServiceConnection 
     private void sendNewType(Double type) {
 
 
-
-
-
-
     }
 
- }
+}
