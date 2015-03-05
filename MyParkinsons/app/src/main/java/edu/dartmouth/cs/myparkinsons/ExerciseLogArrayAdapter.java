@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -14,6 +15,8 @@ import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
+
+import org.w3c.dom.Text;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -83,18 +86,19 @@ public class ExerciseLogArrayAdapter extends ArrayAdapter<ExerciseItem> {
 
                 SharedPreferences settingData = context.getSharedPreferences(SettingsActivity.SHARED_PREFERENCES_KEY, Context.MODE_PRIVATE);
 
+                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+                int goal = Integer.parseInt(prefs.getString("exercise_time_key", "60"));
+
                 long time = settingData.getLong(SettingsActivity.EXERCISE_TIME_KEY, 0);
                 long minutes = (long) (time * 1.66667e-5);
-                String text = String.format("%d/%d\nminutes", minutes, 60);
-                circleHolder.progress1.setTextColor(0xFF29A629);
+                String text = String.format("%d/%d", minutes, goal);
                 circleHolder.bar1.setColor(0xFF29A629);
                 circleHolder.bar1.setStrokeWidth(50);
                 circleHolder.progress1.setText(text);
-                circleHolder.bar1.setProgressWithAnimation((float) (minutes / 60. * 100));
+                circleHolder.bar1.setProgressWithAnimation(minutes / (float)goal * 100);
 
                 circleHolder.bar2.setColor(0xFF0066FF);
                 circleHolder.bar2.setStrokeWidth(50);
-                circleHolder.progress2.setTextColor(0xFF0066FF);
                 int correct = settingData.getInt(SettingsActivity.CORRECT_SPEECH_KEY, 0);
                 int total = settingData.getInt(SettingsActivity.TOTAL_SPEECH_KEY, 0);
                 float percent = (float) correct / (float) total;
@@ -119,10 +123,12 @@ public class ExerciseLogArrayAdapter extends ArrayAdapter<ExerciseItem> {
                     return row;
                 }
 
+                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+                int goal = Integer.parseInt(prefs.getString("exercise_time_key", "60"));
 
                 long exerciseMillis = item.getExerciseTime();
                 long minutes = (long) (exerciseMillis * 1.66667e-5);
-                int exerciseProgress = (int) (minutes / 60.0);
+                int exerciseProgress = (int) (minutes / (float)goal * 100);
                 int speechProgress = (int) (item.getSpeechPercent() * 100);
 
                 LayoutInflater inflater = ((Activity) context).getLayoutInflater();
@@ -131,20 +137,25 @@ public class ExerciseLogArrayAdapter extends ArrayAdapter<ExerciseItem> {
                 LineProgressBar speechBar = (LineProgressBar)row.findViewById(R.id.speech_bar);
                 LineProgressBar exerciseBar = (LineProgressBar)row.findViewById(R.id.exercise_bar);
 
+                TextView speechText = (TextView)row.findViewById(R.id.history_speech_text);
+                TextView exerciseText = (TextView) row.findViewById(R.id.history_exercise_text);
+
                 TextView date = (TextView) row.findViewById(R.id.dateTextView);
 
                 Calendar c = item.getDate();
                 SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
                 date.setText(format.format(c.getTime()));
 
+                speechText.setText(String.format("%d/%d", item.getSpeechCorrectCount(), item.getSpeechDoneCount()));
+                exerciseText.setText(String.format("%d/%d min", minutes, goal));
 
                 speechBar.setColor(0xFF0066FF);
                 speechBar.setStrokeWidth(10);
-                speechBar.setProgressWithAnimation(exerciseProgress);
+                speechBar.setProgressWithAnimation(speechProgress);
 
                 exerciseBar.setColor(0xFF29A629);
                 exerciseBar.setStrokeWidth(10);
-                exerciseBar.setProgressWithAnimation(speechProgress);
+                exerciseBar.setProgressWithAnimation(exerciseProgress);
 
             }
 

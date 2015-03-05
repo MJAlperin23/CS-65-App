@@ -46,6 +46,7 @@
                 android:layout_gravity="center_horizontal|right"
                 android:layout_weight="0"
                 android:textColor="#FF29A629"
+                android:id="@+id/history_exercise_text"
                 android:text="7/60 min" />
 
 
@@ -72,6 +73,7 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_weight="0"
                 android:textColor="#FF0066FF"
+                android:id="@+id/history_speech_text"
                 android:text="1/1" />
 
 
