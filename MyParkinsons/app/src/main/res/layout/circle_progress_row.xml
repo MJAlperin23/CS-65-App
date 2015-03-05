@@ -1,107 +1,113 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <!--<LinearLayout-->
-        <!--android:layout_width="fill_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:paddingBottom="20dp">-->
-
-        <!--<edu.dartmouth.cs.myparkinsons.CircleButton-->
-            <!--android:id="@+id/exercise_button_id"-->
-            <!--android:layout_width="100dp"-->
-            <!--android:layout_height="100dp"-->
-            <!--android:src="@drawable/exercise_pic"-->
-            <!--app:cb_color="#FF29A629"-->
-            <!--app:cb_pressedRingWidth="10dip"-->
-            <!--android:layout_weight="1"-->
-            <!--android:layout_gravity="left"-->
-            <!--android:layout_marginLeft="0dp"/>-->
-
-        <!--<edu.dartmouth.cs.myparkinsons.CircleButton-->
-            <!--android:id="@+id/speech_button_id"-->
-            <!--android:layout_width="100dp"-->
-            <!--android:layout_height="100dp"-->
-            <!--android:src="@drawable/speech_pic"-->
-            <!--app:cb_color="#FF0066FF"-->
-            <!--app:cb_pressedRingWidth="10dip"-->
-            <!--android:layout_weight="1"-->
-            <!--android:layout_gravity="right"/>-->
-
-    <!--</LinearLayout>-->
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:descendantFocusability="beforeDescendants"
+    android:orientation="vertical">
 
 
-    <ViewFlipper
-        android:id="@+id/viewFlipper"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_weight="1">
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/card_background"
+        android:descendantFocusability="afterDescendants"
+        android:orientation="vertical"
+        android:paddingBottom="15dp"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:paddingTop="15dp">
 
-
-        <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:tools="http://schemas.android.com/tools"
-            android:layout_width="fill_parent"
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:context="edu.dartmouth.cs.myparkinsons.CirlceProgressFragment">
+            android:text="Today" />
 
-            <edu.dartmouth.cs.myparkinsons.CircleProgressBar
-                android:id="@+id/custom_progressBar"
-                android:layout_width="2600dp"
-                android:layout_height="260dp"
-                android:layout_gravity="center"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="New Text"
-                android:textStyle="bold"
-                android:textSize="40sp"
-                android:id="@+id/percentView"
-                android:textColor="@android:color/transparent"
-                android:layout_gravity="center" />
-
-            <!--<TextView-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:text="\t\t\t\t   Accelerometer Tracking Disabled\nEnable tracking to record correct exercise data."-->
-                <!--android:textStyle="bold"-->
-                <!--android:textSize="16sp"-->
-                <!--android:textColor="@android:color/transparent"-->
-                <!--android:id="@+id/accel_alert_textview"-->
-                <!--android:layout_gravity="center" />-->
-
-
-        </FrameLayout>
-
-        <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:tools="http://schemas.android.com/tools"
-            android:layout_width="fill_parent"
+        <LinearLayout
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:context="edu.dartmouth.cs.myparkinsons.CirlceProgressFragment">
+            android:layout_gravity="center"
+            android:layout_marginTop="80dp"
+            android:orientation="horizontal">
 
-            <edu.dartmouth.cs.myparkinsons.CircleProgressBar
-                android:id="@+id/custom_progressBar2"
-                android:layout_width="2600dp"
-                android:layout_height="260dp"
-                android:layout_gravity="center"/>
+            <ImageView
+                android:layout_width="7dp"
+                android:layout_height="7dp"
+                android:layout_marginRight="2dp"
+                android:id="@+id/left_circle"
+                android:src="@drawable/dark_circle" />
 
-            <TextView
-                android:layout_width="wrap_content"
+            <ImageView
+                android:layout_width="7dp"
+                android:layout_height="7dp"
+                android:layout_marginLeft="2dp"
+                android:id="@+id/right_circle"
+                android:src="@drawable/light_circle" />
+
+        </LinearLayout>
+
+
+        <ViewFlipper
+            android:id="@+id/viewFlipper"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="1">
+
+
+            <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:text="New Text"
-                android:textStyle="bold"
-                android:textSize="40sp"
-                android:id="@+id/percentView2"
-                android:layout_gravity="center" />
+                tools:context="edu.dartmouth.cs.myparkinsons.CirlceProgressFragment">
+
+                <edu.dartmouth.cs.myparkinsons.CircleProgressBar
+                    android:id="@+id/custom_progressBar"
+                    android:layout_width="2600dp"
+                    android:layout_height="260dp"
+                    android:layout_gravity="center" />
+
+                <TextView
+                    android:id="@+id/percentView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="New Text"
+                    android:textAlignment="center"
+                    android:textColor="@android:color/transparent"
+                    android:textSize="35sp"
+                    android:textStyle="bold" />
 
 
-        </FrameLayout>
+            </FrameLayout>
+
+            <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                tools:context="edu.dartmouth.cs.myparkinsons.CirlceProgressFragment">
+
+                <edu.dartmouth.cs.myparkinsons.CircleProgressBar
+                    android:id="@+id/custom_progressBar2"
+                    android:layout_width="2600dp"
+                    android:layout_height="260dp"
+                    android:layout_gravity="center" />
+
+                <TextView
+                    android:id="@+id/percentView2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="New Text"
+                    android:textSize="35sp"
+                    android:textStyle="bold" />
 
 
-    </ViewFlipper>
+            </FrameLayout>
 
+
+        </ViewFlipper>
+
+    </FrameLayout>
 
 
 </LinearLayout>

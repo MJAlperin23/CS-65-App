@@ -30,6 +30,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -123,7 +124,7 @@ public class MainActivity extends FragmentActivity implements ServiceConnection 
 
 
             items[i] = new ExerciseItem(calendar, totalSpeech, totalCorrect, walking);
-            dataSource.insert(items[i]);
+//            dataSource.insert(items[i]);
         }
         List<ExerciseItem> list=dataSource.fetchItems();
         dataSource.close();
@@ -171,6 +172,13 @@ public class MainActivity extends FragmentActivity implements ServiceConnection 
                                 // Show the next Screen
                                 viewFlipper.showNext();
                                 CircleProgressBar bar = (CircleProgressBar)view.findViewById(R.id.custom_progressBar);
+                                TextView textView = (TextView)view.findViewById(R.id.percentView);
+
+                                ImageView leftDot = (ImageView)view.findViewById(R.id.left_circle);
+                                ImageView rightDot = (ImageView)view.findViewById(R.id.right_circle);
+                                leftDot.setImageResource(R.drawable.dark_circle);
+                                rightDot.setImageResource(R.drawable.light_circle);
+
                                 bar.setProgress(0);
 
                                 SharedPreferences settingData = getSharedPreferences(SettingsActivity.SHARED_PREFERENCES_KEY, MODE_PRIVATE);
@@ -179,6 +187,9 @@ public class MainActivity extends FragmentActivity implements ServiceConnection 
                                 long minutes = (long) (time * 1.66667e-5);
                                 System.out.println(time);
                                 System.out.println(minutes);
+                                String text = String.format("%d/%d\nminutes", minutes, 60);
+                                System.out.println(text);
+                                textView.setText(text);
                                 bar.setProgressWithAnimation((float) (minutes / 60. * 100));
                                 //CircleProgressFragment.setCircleProgress(33);
                             }
@@ -194,6 +205,14 @@ public class MainActivity extends FragmentActivity implements ServiceConnection 
                                 // Show The Previous Screen
                                 viewFlipper.showPrevious();
                                 CircleProgressBar bar = (CircleProgressBar)view.findViewById(R.id.custom_progressBar2);
+                                TextView textView = (TextView)view.findViewById(R.id.percentView2);
+
+                                ImageView leftDot = (ImageView)view.findViewById(R.id.left_circle);
+                                ImageView rightDot = (ImageView)view.findViewById(R.id.right_circle);
+                                leftDot.setImageResource(R.drawable.light_circle);
+                                rightDot.setImageResource(R.drawable.dark_circle
+                                );
+
                                 bar.setProgress(0);
 
                                 SharedPreferences settingData = getSharedPreferences(SettingsActivity.SHARED_PREFERENCES_KEY, MODE_PRIVATE);
@@ -206,6 +225,8 @@ public class MainActivity extends FragmentActivity implements ServiceConnection 
                                 } else {
                                     bar.setProgressWithAnimation(percent * 100);
                                 }
+                                String text = String.format("%d/%d\ncorrect", correct, total);
+                                textView.setText(text);
                                 //SpeechCircleProgressFragment.setCircleProgress(67);
                             }
                             break;

@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.ViewFlipper;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -77,17 +78,36 @@ public class ExerciseLogArrayAdapter extends ArrayAdapter<ExerciseItem> {
                 circleHolder.progress1 = (TextView) row.findViewById(R.id.percentView);
                 circleHolder.progress2 = (TextView) row.findViewById(R.id.percentView2);
 
-                circleHolder.bar2.setColor(0xFF0066FF);
-                circleHolder.bar2.setStrokeWidth(50);
-                circleHolder.bar2.setProgressWithAnimation(67);
-                circleHolder.progress2.setText("67%");
-                circleHolder.progress2.setTextColor(0xFF0066FF);
+                circleHolder.bar1.setProgressWithAnimation(0);
+                circleHolder.bar2.setProgressWithAnimation(0);
 
+                SharedPreferences settingData = context.getSharedPreferences(SettingsActivity.SHARED_PREFERENCES_KEY, Context.MODE_PRIVATE);
+
+                long time = settingData.getLong(SettingsActivity.EXERCISE_TIME_KEY, 0);
+                long minutes = (long) (time * 1.66667e-5);
+                String text = String.format("%d/%d\nminutes", minutes, 60);
+                circleHolder.progress1.setTextColor(0xFF29A629);
                 circleHolder.bar1.setColor(0xFF29A629);
                 circleHolder.bar1.setStrokeWidth(50);
-                circleHolder.bar1.setProgressWithAnimation(33);
-                circleHolder.progress1.setText("33%");
-                circleHolder.progress1.setTextColor(0xFF29A629);
+                circleHolder.progress1.setText(text);
+                circleHolder.bar1.setProgressWithAnimation((float) (minutes / 60. * 100));
+
+                circleHolder.bar2.setColor(0xFF0066FF);
+                circleHolder.bar2.setStrokeWidth(50);
+                circleHolder.progress2.setTextColor(0xFF0066FF);
+                int correct = settingData.getInt(SettingsActivity.CORRECT_SPEECH_KEY, 0);
+                int total = settingData.getInt(SettingsActivity.TOTAL_SPEECH_KEY, 0);
+                float percent = (float) correct / (float) total;
+                if (total == 0) {
+                    circleHolder.bar2.setProgressWithAnimation(0);
+                } else {
+                    circleHolder.bar2.setProgressWithAnimation(percent * 100);
+                }
+                text = String.format("%d/%d\ncorrect", correct, total);
+                circleHolder.progress2.setText(text);
+
+
+
 
             } else {
 
@@ -107,22 +127,27 @@ public class ExerciseLogArrayAdapter extends ArrayAdapter<ExerciseItem> {
                 long minutes = (long) (exerciseMillis * 1.66667e-5);
                 int exerciseProgress = (int) (minutes / 60.0);
                 int speechProgress = (int) (item.getSpeechPercent() * 100);
-                System.out.println("Exercise" + exerciseProgress);
-                System.out.println("Speech" + speechProgress);
 
                 LayoutInflater inflater = ((Activity) context).getLayoutInflater();
                 row = inflater.inflate(R.layout.history_row, parent, false);
 
-                LineProgressBar lineBar = (LineProgressBar)row.findViewById(R.id.line_progressBar);
-                CircleProgressBar circleBar = (CircleProgressBar)row.findViewById(R.id.custom_progressBar);
+                LineProgressBar speechBar = (LineProgressBar)row.findViewById(R.id.speech_bar);
+                LineProgressBar exerciseBar = (LineProgressBar)row.findViewById(R.id.exercise_bar);
 
-                lineBar.setColor(0xFF0066FF);
-                lineBar.setStrokeWidth(10);
-                lineBar.setProgressWithAnimation(exerciseProgress);
+                TextView date = (TextView) row.findViewById(R.id.dateTextView);
 
-                circleBar.setColor(0xFF29A629);
-                circleBar.setStrokeWidth(10);
-                circleBar.setProgressWithAnimation(speechProgress);
+                Calendar c = item.getDate();
+                SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
+                date.setText(format.format(c.getTime()));
+
+
+                speechBar.setColor(0xFF0066FF);
+                speechBar.setStrokeWidth(10);
+                speechBar.setProgressWithAnimation(exerciseProgress);
+
+                exerciseBar.setColor(0xFF29A629);
+                exerciseBar.setStrokeWidth(10);
+                exerciseBar.setProgressWithAnimation(speechProgress);
 
             }
 
