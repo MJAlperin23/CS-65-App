@@ -111,11 +111,8 @@ public class ExerciseLogArrayAdapter extends ArrayAdapter<ExerciseItem> {
 
             } else {
 
-                DataSource dataSource = new DataSource(context);
-                dataSource.open();
-                List<ExerciseItem> items = dataSource.fetchItems();
-                ExerciseItem item = items.get(position - 1);
-                dataSource.close();
+
+                ExerciseItem item = data.get(position);
 
                 if (item == null)
                 {

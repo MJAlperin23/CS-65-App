@@ -37,6 +37,7 @@ import android.widget.Toast;
 import android.widget.ViewFlipper;
 
 import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
@@ -126,7 +127,13 @@ public class MainActivity extends FragmentActivity implements ServiceConnection 
             items[i] = new ExerciseItem(calendar, totalSpeech, totalCorrect, walking);
 //            dataSource.insert(items[i]);
         }
-        List<ExerciseItem> list=dataSource.fetchItems();
+        List<ExerciseItem> list = new ArrayList<>();
+
+        //Insert two null items because the first two cards in the list are not history stuff
+        list.add(new ExerciseItem(null, 0, 0, 0));
+        list.add(new ExerciseItem(null, 0, 0, 0));
+        list.addAll(dataSource.fetchItems());
+
         dataSource.close();
         ExerciseLogArrayAdapter adapter = new ExerciseLogArrayAdapter(this, R.layout.exercise_log_row, list);
 
