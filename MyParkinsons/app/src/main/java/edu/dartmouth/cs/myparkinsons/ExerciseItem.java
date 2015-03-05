@@ -11,14 +11,12 @@ public class ExerciseItem {
     private int speechDoneCount;
     private int speechCorrectCount;
     private long exerciseTime;
-    private long dateID;
 
-    public ExerciseItem(long dateID, Calendar date, int speechDoneCount, int speechCorrectCount, long time) {
+    public ExerciseItem(Calendar date, int speechDoneCount, int speechCorrectCount, long time) {
         this.date = date;
         this.exerciseTime = time;
         this.speechCorrectCount = speechCorrectCount;
         this.speechDoneCount = speechDoneCount;
-        this.dateID = dateID;
     }
     public long getId () {return id;};
     public void setId(long id){this.id = id;};
@@ -42,11 +40,4 @@ public class ExerciseItem {
         return exerciseTime;
     }
 
-    public long getDateID() {
-        return dateID;
-    }
-
-    public void setDateID(long dateID) {
-        this.dateID = dateID;
-    }
 }

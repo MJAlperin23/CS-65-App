@@ -121,9 +121,8 @@ public class MainActivity extends FragmentActivity implements ServiceConnection 
             int totalSpeech = (Math.abs(rand.nextInt()) % 12) + 1;
             int totalCorrect = Math.abs(rand.nextInt()) % totalSpeech;
 
-            long dateID = year * 10000 + month * 100 + day;
 
-            items[i] = new ExerciseItem(dateID, calendar, totalSpeech, totalCorrect, walking);
+            items[i] = new ExerciseItem(calendar, totalSpeech, totalCorrect, walking);
             dataSource.insert(items[i]);
         }
         List<ExerciseItem> list=dataSource.fetchItems();
@@ -173,7 +172,14 @@ public class MainActivity extends FragmentActivity implements ServiceConnection 
                                 viewFlipper.showNext();
                                 CircleProgressBar bar = (CircleProgressBar)view.findViewById(R.id.custom_progressBar);
                                 bar.setProgress(0);
-                                bar.setProgressWithAnimation(33);
+
+                                SharedPreferences settingData = getSharedPreferences(SettingsActivity.SHARED_PREFERENCES_KEY, MODE_PRIVATE);
+
+                                long time = settingData.getLong(SettingsActivity.EXERCISE_TIME_KEY, 0);
+                                long minutes = (long) (time * 1.66667e-5);
+                                System.out.println(time);
+                                System.out.println(minutes);
+                                bar.setProgressWithAnimation((float) (minutes / 60. * 100));
                                 //CircleProgressFragment.setCircleProgress(33);
                             }
 
@@ -189,7 +195,17 @@ public class MainActivity extends FragmentActivity implements ServiceConnection 
                                 viewFlipper.showPrevious();
                                 CircleProgressBar bar = (CircleProgressBar)view.findViewById(R.id.custom_progressBar2);
                                 bar.setProgress(0);
-                                bar.setProgressWithAnimation(67);
+
+                                SharedPreferences settingData = getSharedPreferences(SettingsActivity.SHARED_PREFERENCES_KEY, MODE_PRIVATE);
+                                int correct = settingData.getInt(SettingsActivity.CORRECT_SPEECH_KEY, 0);
+                                int total = settingData.getInt(SettingsActivity.TOTAL_SPEECH_KEY, 0);
+                                float percent = (float) correct / (float) total;
+                                System.out.println(percent);
+                                if (total == 0) {
+                                    bar.setProgressWithAnimation(0);
+                                } else {
+                                    bar.setProgressWithAnimation(percent * 100);
+                                }
                                 //SpeechCircleProgressFragment.setCircleProgress(67);
                             }
                             break;

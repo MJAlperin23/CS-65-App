@@ -51,6 +51,13 @@ public class SettingsActivity extends Activity implements TimePickerDialog.OnTim
     public static final String SAVE_DATA_KEY = "timeofalertkey_settingsactivity";
     public static final String SHARED_PREFERENCES_KEY = "preferenceskey";
     public static final String ACCEL_ENABLED_KEY = "accelerometerenabledkey";
+
+    //keys to save todays data in preferences. At midnight it'll move from preferences into the database
+    public static final String CURRENT_DAY_KEY = "current_day_key";
+    public static final String TOTAL_SPEECH_KEY = "total_speech_key";
+    public static final String CORRECT_SPEECH_KEY = "correct_speech_key";
+    public static final String EXERCISE_TIME_KEY = "exercise_time_key";
+
     public SharedPreferences settingData;
     public static SharedPreferences.Editor spEdit;
 
@@ -202,7 +209,6 @@ public class SettingsActivity extends Activity implements TimePickerDialog.OnTim
         );
 
     }
-
 
 }
 
