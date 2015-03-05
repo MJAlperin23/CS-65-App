@@ -43,6 +43,8 @@ public class GraphActivity extends Activity {
         graph.getGridLabelRenderer().setVerticalAxisTitle("Exercise Distance");
         graph.getGridLabelRenderer().setGridStyle(GridLabelRenderer.GridStyle.NONE);
         graph.getGridLabelRenderer().setHighlightZeroLines(true);
+        graph.getGridLabelRenderer().setGridStyle(GridLabelRenderer.GridStyle.BOTH);
+
     }
 
 

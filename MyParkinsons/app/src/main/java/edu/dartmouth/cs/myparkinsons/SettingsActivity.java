@@ -109,10 +109,9 @@ public class SettingsActivity extends Activity implements TimePickerDialog.OnTim
                     spEdit.commit();
                     break;
 
-                //TODO: create method call to disable accel tracking service
-                case "allow_accel_tracking_toggle":
-                    spEdit.putBoolean(SettingsActivity.ACCEL_ENABLED_KEY, ((SwitchPreference) preference).isChecked());
-                    break;
+//                case "allow_accel_tracking_toggle":
+//                    spEdit.putBoolean(SettingsActivity.ACCEL_ENABLED_KEY, ((SwitchPreference) preference).isChecked());
+//                    break;
             }
 
             return super.onPreferenceTreeClick(preferenceScreen, preference);

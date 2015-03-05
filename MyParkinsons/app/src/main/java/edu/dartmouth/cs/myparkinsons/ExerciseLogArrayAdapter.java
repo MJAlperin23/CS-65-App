@@ -22,8 +22,8 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Created by Andrew on 2/2/15.
- */
+* Created by Andrew on 2/2/15.
+*/
 public class ExerciseLogArrayAdapter extends ArrayAdapter<ExerciseItem> {
 
     Context context;
@@ -161,3 +161,4 @@ public class ExerciseLogArrayAdapter extends ArrayAdapter<ExerciseItem> {
         TextView progress2;
     }
 }
+
