@@ -111,7 +111,7 @@ public class MainActivity extends FragmentActivity implements ServiceConnection 
 
         listView.setAdapter(adapter);
 
-        
+
 
         listView.setOnTouchListener(new View.OnTouchListener() {
             @Override
