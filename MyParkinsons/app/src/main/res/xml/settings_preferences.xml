@@ -5,8 +5,8 @@
 
         <PreferenceScreen
             android:key="user_profile_activity"
-            android:summary="@string/user_profile_summary"
-            android:title="@string/user_profile_title">
+            android:title="@string/user_profile_title"
+            android:summary="@string/user_profile_summary">
 
             <intent android:action="edu.dartmouth.cs.myparkinsons.ProfileActivity" />
         </PreferenceScreen>
@@ -16,27 +16,21 @@
     <PreferenceCategory android:title="@string/addsettings_title">
 
         <!--<SwitchPreference-->
-        <!--android:key="allow_accel_tracking_toggle"-->
-        <!--android:title="@string/allow_tracking_title"-->
-        <!--android:summary="@string/allow_tracking_summery"-->
-        <!--android:defaultValue="true"/>-->
+            <!--android:key="allow_accel_tracking_toggle"-->
+            <!--android:title="@string/allow_tracking_title"-->
+            <!--android:summary="@string/allow_tracking_summery"-->
+            <!--android:defaultValue="true"/>-->
 
         <SwitchPreference
-            android:defaultValue="true"
             android:key="speech_alert_toggle_switch"
+            android:title="@string/speech_alert_title"
             android:summary="@string/speech_alert_summery"
-            android:title="@string/speech_alert_title" />
+            android:defaultValue="true"/>
 
         <Preference
             android:key="time_select_key"
-            android:summary="@string/pref_summary"
-            android:title="Speech Reminder Time" />
-
-        <EditTextPreference
-            android:key="exercise_time_key"
-            android:numeric="integer"
-            android:summary="Set a Goal for how many minutes to exercise each day"
-            android:title="Exercise Time Goal" />
+            android:title="Speech Reminder Time"
+            android:summary="@string/pref_summary" />
 
     </PreferenceCategory>
 
@@ -44,15 +38,15 @@
     <PreferenceCategory android:title="Data Storage Options">
 
         <SwitchPreference
-            android:defaultValue="true"
             android:key="store_data_toggle_switch"
+            android:title="@string/title_save_data"
             android:summary="@string/summary_save_data"
-            android:title="@string/title_save_data" />
+            android:defaultValue="true"/>
 
         <Preference
             android:key="delete_data_key"
-            android:summary="@string/delete_data_summary"
-            android:title="@string/delete_data_title" />
+            android:title="@string/delete_data_title"
+            android:summary="@string/delete_data_summary" />
 
     </PreferenceCategory>
 
@@ -61,8 +55,8 @@
 
         <PreferenceScreen
             android:key="homepage_intent_preference"
-            android:summary="@string/intent_preference_summary"
-            android:title="@string/intent_preference_title">
+            android:title="@string/intent_preference_title"
+            android:summary="@string/intent_preference_summary">
 
             <intent
                 android:action="android.intent.action.VIEW"

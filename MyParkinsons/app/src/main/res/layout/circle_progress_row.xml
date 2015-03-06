@@ -66,37 +66,16 @@
                     android:layout_height="260dp"
                     android:layout_gravity="center" />
 
-                <LinearLayout
+                <TextView
+                    android:id="@+id/percentView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_gravity="center">
-
-                    <TextView
-                        android:id="@+id/percentView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_weight="0"
-                        android:text="New Text"
-                        android:textSize="35sp"
-                        android:textColor="#FF29A629"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_weight="0"
-                        android:text="Minutes"
-                        android:textSize="35sp"
-                        android:textColor="#FF29A629"
-                        android:textStyle="bold"/>
-
-
-                    </LinearLayout>
-
-
+                    android:layout_gravity="center"
+                    android:text="New Text"
+                    android:textAlignment="center"
+                    android:textColor="@android:color/transparent"
+                    android:textSize="35sp"
+                    android:textStyle="bold" />
 
 
             </FrameLayout>
@@ -113,36 +92,14 @@
                     android:layout_height="260dp"
                     android:layout_gravity="center" />
 
-                <LinearLayout
+                <TextView
+                    android:id="@+id/percentView2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_gravity="center">
-
-                    <TextView
-                        android:id="@+id/percentView2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:text="New Text"
-                        android:textSize="35sp"
-                        android:textColor="#FF0066FF"
-                        android:textStyle="bold" />
-
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_weight="0"
-                        android:text="Correct"
-                        android:textSize="35sp"
-                        android:textColor="#FF0066FF"
-                        android:textStyle="bold"/>
-
-
-                </LinearLayout>
-
+                    android:layout_gravity="center"
+                    android:text="New Text"
+                    android:textSize="35sp"
+                    android:textStyle="bold" />
 
 
             </FrameLayout>
