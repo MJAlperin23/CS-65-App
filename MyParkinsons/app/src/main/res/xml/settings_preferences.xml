@@ -32,6 +32,13 @@
             android:title="Speech Reminder Time"
             android:summary="@string/pref_summary" />
 
+        <EditTextPreference
+            android:key="exercise_time_key"
+            android:title="Exercise Goal Time"
+            android:summary="Set a goal for how many minutes to exercise each day"
+            android:numeric="integer"
+            />
+
     </PreferenceCategory>
 
 

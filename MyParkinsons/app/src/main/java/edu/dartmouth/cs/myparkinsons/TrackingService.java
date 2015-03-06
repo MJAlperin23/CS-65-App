@@ -277,18 +277,18 @@ public class TrackingService extends Service implements SensorEventListener {
         @Override
         protected void onProgressUpdate(Double... values) {
 
-            PowerManager powerManager = (PowerManager) getSystemService(POWER_SERVICE);
-            // If you use API20 or more:
-            if (powerManager.isInteractive()){
-                if (isExercising) {
-                    System.out.println("Switched to not exercising!!");
-                    long time = Calendar.getInstance().getTimeInMillis();
-                    long difference = time - lastExerciseChangedTime;
-                    dailyExerciseTime += difference;
-                    isExercising = false;
-                }
-                return;
-            }
+//            PowerManager powerManager = (PowerManager) getSystemService(POWER_SERVICE);
+//            // If you use API20 or more:
+//            if (powerManager.isInteractive()){
+//                if (isExercising) {
+//                    System.out.println("Switched to not exercising!!");
+//                    long time = Calendar.getInstance().getTimeInMillis();
+//                    long difference = time - lastExerciseChangedTime;
+//                    dailyExerciseTime += difference;
+//                    isExercising = false;
+//                }
+//                return;
+//            }
 
 
             double type = values[0];

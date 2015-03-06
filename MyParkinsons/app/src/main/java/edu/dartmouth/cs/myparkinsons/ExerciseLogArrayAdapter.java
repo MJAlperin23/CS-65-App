@@ -56,7 +56,7 @@ public class ExerciseLogArrayAdapter extends ArrayAdapter<ExerciseItem> {
             exerciseButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent i = new Intent(context, ExerciseLogActivity.class);
+                    Intent i = new Intent(context, ExerciseVideoChoices.class);
                     context.startActivity(i);
                 }
             });
@@ -89,6 +89,8 @@ public class ExerciseLogArrayAdapter extends ArrayAdapter<ExerciseItem> {
 
             long time = settingData.getLong(SettingsActivity.EXERCISE_TIME_KEY, 0);
             long minutes = (long) (time * 1.66667e-5);
+            
+            //TODO - Format minute vs minutes!
             String text = String.format("%d/%d", minutes, goal);
             circleHolder.bar1.setColor(0xFF29A629);
             circleHolder.bar1.setStrokeWidth(50);
