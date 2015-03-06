@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.content.ComponentName;
@@ -20,6 +21,7 @@ import android.os.Messenger;
 import android.os.Parcelable;
 import android.os.RemoteException;
 import android.os.SystemClock;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
@@ -37,6 +39,7 @@ import android.widget.Toast;
 import android.widget.ViewFlipper;
 
 import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
@@ -46,27 +49,16 @@ import java.util.Random;
 public class MainActivity extends FragmentActivity implements ServiceConnection {
 
 
-//    private Button exerciseButton;
-//    private Button speechButton;
-
-
     private Messenger serviceMessenger = null;
     boolean isBound;
-//    public CircleProgressFragment cpf;
-//    public SpeechCircleProgressFragment scpf;
     private final Messenger messenger = new Messenger(
             new IncomingMessageHandler());
 
     private ServiceConnection connection = this;
 
     //http://www.learn-android-easily.com/2013/06/android-viewflipper-example.html
-//    private ViewFlipper viewFlipper;
     private float lastX;
     private float lastY;
-
-
-    private CircleButton exerciseButton;
-    private CircleButton speechButton;
 
 
     private ListView listView;
@@ -75,26 +67,6 @@ public class MainActivity extends FragmentActivity implements ServiceConnection 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-
-//        viewFlipper = (ViewFlipper) findViewById(R.id.viewFlipper);
-//
-//
-//        if (savedInstanceState == null) {
-//            getSupportFragmentManager().beginTransaction()
-//                    .add(R.id.container, new CircleProgressFragment())
-//                    .commit();
-//            getSupportFragmentManager().beginTransaction()
-//                    .add(R.id.container2, new SpeechCircleProgressFragment())
-//                    .commit();
-//        }
-//        cpf = new CircleProgressFragment();
-//        scpf = new SpeechCircleProgressFragment();
-
-//        exerciseButton = (Button)findViewById(R.id.exerciseButton);
-//        speechButton = (Button)findViewById(R.id.speechButton);
-
-
 
         // set up periodic notification requests
         SharedPreferences prefs = getSharedPreferences(SettingsActivity.SHARED_PREFERENCES_KEY, MODE_PRIVATE);
@@ -125,125 +97,138 @@ public class MainActivity extends FragmentActivity implements ServiceConnection 
             items[i] = new ExerciseItem(calendar, totalSpeech, totalCorrect, walking);
 //            dataSource.insert(items[i]);
         }
-        List<ExerciseItem> list=dataSource.fetchItems();
+        List<ExerciseItem> list = new ArrayList<>();
+
+        //Insert two null items because the first two cards in the list are not history stuff
+        list.add(new ExerciseItem(null, 0, 0, 0));
+        list.add(new ExerciseItem(null, 0, 0, 0));
+        list.addAll(dataSource.fetchItems());
+
         dataSource.close();
-        ExerciseLogArrayAdapter adapter = new ExerciseLogArrayAdapter(this, R.layout.exercise_log_row, list);
+        final ExerciseLogArrayAdapter adapter = new ExerciseLogArrayAdapter(this, R.layout.exercise_log_row, list);
 
         listView = (ListView) findViewById(R.id.card_listView);
 
         listView.setAdapter(adapter);
 
-
+        
 
         listView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                    ListView listview1 = (ListView) v;
-                    View view = getViewByPosition(1, listView);
-                    ViewFlipper viewFlipper = (ViewFlipper)view.findViewById(R.id.viewFlipper);
+                View view = getViewByPosition(1, listView);
+                ViewFlipper viewFlipper = (ViewFlipper) view.findViewById(R.id.viewFlipper);
 
 
-                    switch (event.getAction()) {
-                        // when user first touches the screen to swap
-                        case MotionEvent.ACTION_DOWN: {
-                            lastX = event.getX();
-                            lastY = event.getY();
-                            break;
-                        }
-                        case MotionEvent.ACTION_UP: {
-                            float currentX = event.getX();
-                            float currentY = event.getY();
-
-                            if (Math.abs(currentY - lastY) > Math.abs(currentX - lastX)) {
-                                return false;
-                            }
-
-                            // if left to right swipe on screen
-                            if (lastX < currentX) {
-                                // If no more View/Child to flip
-                                if (viewFlipper.getDisplayedChild() == 0)
-                                    break;
-
-                                // set the required Animation type to ViewFlipper
-                                // The Next screen will come in form Left and current Screen will go OUT from Right
-                                viewFlipper.setInAnimation(getApplicationContext(), R.anim.in_from_left);
-                                viewFlipper.setOutAnimation(getApplicationContext(), R.anim.out_to_right);
-                                // Show the next Screen
-                                viewFlipper.showNext();
-                                CircleProgressBar bar = (CircleProgressBar)view.findViewById(R.id.custom_progressBar);
-                                TextView textView = (TextView)view.findViewById(R.id.percentView);
-
-                                ImageView leftDot = (ImageView)view.findViewById(R.id.left_circle);
-                                ImageView rightDot = (ImageView)view.findViewById(R.id.right_circle);
-                                leftDot.setImageResource(R.drawable.dark_circle);
-                                rightDot.setImageResource(R.drawable.light_circle);
-
-                                bar.setProgress(0);
-
-                                SharedPreferences settingData = getSharedPreferences(SettingsActivity.SHARED_PREFERENCES_KEY, MODE_PRIVATE);
-
-                                long time = settingData.getLong(SettingsActivity.EXERCISE_TIME_KEY, 0);
-                                long minutes = (long) (time * 1.66667e-5);
-                                System.out.println(time);
-                                System.out.println(minutes);
-                                String text = String.format("%d/%d\nminutes", minutes, 60);
-                                System.out.println(text);
-                                textView.setText(text);
-                                bar.setProgressWithAnimation((float) (minutes / 60. * 100));
-                                //CircleProgressFragment.setCircleProgress(33);
-                            }
-
-                            // if right to left swipe on screen
-                            if (lastX > currentX) {
-                                if (viewFlipper.getDisplayedChild() == 1)
-                                    break;
-                                // set the required Animation type to ViewFlipper
-                                // The Next screen will come in form Right and current Screen will go OUT from Left
-                                viewFlipper.setInAnimation(getApplicationContext(), R.anim.in_from_right);
-                                viewFlipper.setOutAnimation(getApplicationContext(), R.anim.out_to_left);
-                                // Show The Previous Screen
-                                viewFlipper.showPrevious();
-                                CircleProgressBar bar = (CircleProgressBar)view.findViewById(R.id.custom_progressBar2);
-                                TextView textView = (TextView)view.findViewById(R.id.percentView2);
-
-                                ImageView leftDot = (ImageView)view.findViewById(R.id.left_circle);
-                                ImageView rightDot = (ImageView)view.findViewById(R.id.right_circle);
-                                leftDot.setImageResource(R.drawable.light_circle);
-                                rightDot.setImageResource(R.drawable.dark_circle
-                                );
-
-                                bar.setProgress(0);
-
-                                SharedPreferences settingData = getSharedPreferences(SettingsActivity.SHARED_PREFERENCES_KEY, MODE_PRIVATE);
-                                int correct = settingData.getInt(SettingsActivity.CORRECT_SPEECH_KEY, 0);
-                                int total = settingData.getInt(SettingsActivity.TOTAL_SPEECH_KEY, 0);
-                                float percent = (float) correct / (float) total;
-                                System.out.println(percent);
-                                if (total == 0) {
-                                    bar.setProgressWithAnimation(0);
-                                } else {
-                                    bar.setProgressWithAnimation(percent * 100);
-                                }
-                                String text = String.format("%d/%d\ncorrect", correct, total);
-                                textView.setText(text);
-                                //SpeechCircleProgressFragment.setCircleProgress(67);
-                            }
-                            break;
-                        }
+                switch (event.getAction()) {
+                    // when user first touches the screen to swap
+                    case MotionEvent.ACTION_DOWN: {
+                        lastX = event.getX();
+                        lastY = event.getY();
+                        break;
                     }
+                    case MotionEvent.ACTION_UP: {
+                        float currentX = event.getX();
+                        float currentY = event.getY();
 
-                    return false;
+                        if (Math.abs(currentY - lastY) > Math.abs(currentX - lastX)) {
+                            return false;
+                        }
 
+                        // if left to right swipe on screen
+                        if (lastX < currentX) {
+                            // If no more View/Child to flip
+                            if (viewFlipper.getDisplayedChild() == 0)
+                                break;
+
+                            // set the required Animation type to ViewFlipper
+                            // The Next screen will come in form Left and current Screen will go OUT from Right
+                            viewFlipper.setInAnimation(getApplicationContext(), R.anim.in_from_left);
+                            viewFlipper.setOutAnimation(getApplicationContext(), R.anim.out_to_right);
+                            // Show the next Screen
+                            viewFlipper.showNext();
+
+                            refreshExerciseView(view);
+
+                        }
+
+                        // if right to left swipe on screen
+                        if (lastX > currentX) {
+                            if (viewFlipper.getDisplayedChild() == 1)
+                                break;
+                            // set the required Animation type to ViewFlipper
+                            // The Next screen will come in form Right and current Screen will go OUT from Left
+                            viewFlipper.setInAnimation(getApplicationContext(), R.anim.in_from_right);
+                            viewFlipper.setOutAnimation(getApplicationContext(), R.anim.out_to_left);
+                            // Show The Previous Screen
+                            viewFlipper.showPrevious();
+
+                            refreshSpeechView(view);
+                        }
+                        break;
+                    }
+                }
+
+                return false;
             }
         });
 
+    }
+
+    private void refreshSpeechView(View view) {
+        CircleProgressBar bar = (CircleProgressBar) view.findViewById(R.id.custom_progressBar2);
+        TextView textView = (TextView) view.findViewById(R.id.percentView2);
+
+        ImageView leftDot = (ImageView) view.findViewById(R.id.left_circle);
+        ImageView rightDot = (ImageView) view.findViewById(R.id.right_circle);
+        leftDot.setImageResource(R.drawable.light_circle);
+        rightDot.setImageResource(R.drawable.dark_circle
+        );
+
+        bar.setProgress(0);
+
+        SharedPreferences settingData = getSharedPreferences(SettingsActivity.SHARED_PREFERENCES_KEY, MODE_PRIVATE);
+        int correct = settingData.getInt(SettingsActivity.CORRECT_SPEECH_KEY, 0);
+        int total = settingData.getInt(SettingsActivity.TOTAL_SPEECH_KEY, 0);
+        float percent = (float) correct / (float) total;
+        System.out.println(percent);
+        if (total == 0) {
+            bar.setProgressWithAnimation(0);
+        } else {
+            bar.setProgressWithAnimation(percent * 100);
+        }
+        String text = String.format("%d/%d", correct, total);
+        textView.setText(text);
+    }
+
+    public void refreshExerciseView(View view) {
+        CircleProgressBar bar = (CircleProgressBar) view.findViewById(R.id.custom_progressBar);
+        TextView textView = (TextView) view.findViewById(R.id.percentView);
+
+        ImageView leftDot = (ImageView) view.findViewById(R.id.left_circle);
+        ImageView rightDot = (ImageView) view.findViewById(R.id.right_circle);
+        leftDot.setImageResource(R.drawable.dark_circle);
+        rightDot.setImageResource(R.drawable.light_circle);
+
+        bar.setProgress(0);
+
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        int goal = Integer.parseInt(prefs.getString("exercise_time_key", "60"));
+
+        SharedPreferences settingData = getSharedPreferences(SettingsActivity.SHARED_PREFERENCES_KEY, MODE_PRIVATE);
+
+        long time = settingData.getLong(SettingsActivity.EXERCISE_TIME_KEY, 0);
+        long minutes = (long) (time * 1.66667e-5);
+        String text = String.format("%d/%d", minutes, goal);
+        textView.setText(text);
+        bar.setProgressWithAnimation(minutes / (float) goal * 100);
     }
 
     public View getViewByPosition(int pos, ListView listView) {
         final int firstListItemPosition = listView.getFirstVisiblePosition();
         final int lastListItemPosition = firstListItemPosition + listView.getChildCount() - 1;
 
-        if (pos < firstListItemPosition || pos > lastListItemPosition ) {
+        if (pos < firstListItemPosition || pos > lastListItemPosition) {
             return listView.getAdapter().getView(pos, null, listView);
         } else {
             final int childIndex = pos - firstListItemPosition;
@@ -257,6 +242,12 @@ public class MainActivity extends FragmentActivity implements ServiceConnection 
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_settings_access, menu);
         return true;
+    }
+
+    @Override
+    protected void onResume() {
+        listView.invalidateViews();
+        super.onResume();
     }
 
     @Override
@@ -278,75 +269,6 @@ public class MainActivity extends FragmentActivity implements ServiceConnection 
 
         return super.onOptionsItemSelected(item);
     }
-
-//    /**
-//     * fragement holding/controlling the circle progress bar on the main page
-//     */
-//    //TODO: write method to set progress bar
-//    public static class CircleProgressFragment extends Fragment {
-//
-//        public static CircleProgressBar circleProgressBar;
-//        public static TextView textView;
-//
-//
-//        public CircleProgressFragment() {
-//        }
-//
-//        @Override
-//        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-//                                 Bundle savedInstanceState) {
-//            View rootView = inflater.inflate(R.layout.fragment_cirlce_progress, container, false);
-//
-//            circleProgressBar = (CircleProgressBar) rootView.findViewById(R.id.custom_progressBar);
-//            circleProgressBar.setColor(0xFF29A629);
-//            circleProgressBar.setStrokeWidth(50);
-//
-//            textView = (TextView) rootView.findViewById(R.id.percentView);
-//            textView.setText("33%");
-//            textView.setTextColor(0xFF29A629);
-//
-//            return rootView;
-//        }
-//
-//        public static void setCircleProgress(int value) {
-//            circleProgressBar.setProgress(0);
-//            circleProgressBar.setProgressWithAnimation(value);
-//        }
-//    }
-//
-//    public static class SpeechCircleProgressFragment extends Fragment {
-//
-//        public static CircleProgressBar circleProgressBar;
-//        public static TextView textView;
-//
-//        public SpeechCircleProgressFragment() {
-//        }
-//
-//        @Override
-//        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-//                                 Bundle savedInstanceState) {
-//            View rootView = inflater.inflate(R.layout.fragment_cirlce_progress, container, false);
-//
-//            circleProgressBar = (CircleProgressBar) rootView.findViewById(R.id.custom_progressBar);
-//            circleProgressBar.setColor(0xFF0066FF);
-//            circleProgressBar.setStrokeWidth(50);
-//
-//            textView = (TextView) rootView.findViewById(R.id.percentView);
-//            textView.setText("67%");
-//            textView.setTextColor(0xFF0066FF);
-//
-//
-//            return rootView;
-//        }
-//
-//
-//
-//        public static void setCircleProgress(int value) {
-//            circleProgressBar.setProgress(0);
-//            circleProgressBar.setProgressWithAnimation(value);
-//        }
-//    }
-
 
     /**
      * Bind this Activity to TimerService
@@ -418,10 +340,7 @@ public class MainActivity extends FragmentActivity implements ServiceConnection 
     private void sendNewType(Double type) {
 
 
-
-
-
-
     }
 
- }
+}
+
