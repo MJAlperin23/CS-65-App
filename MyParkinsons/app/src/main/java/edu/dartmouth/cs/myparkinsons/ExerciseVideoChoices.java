@@ -101,7 +101,7 @@ public class ExerciseVideoChoices extends Activity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_exercise_video_choices, menu);
+        getMenuInflater().inflate(R.menu.menu_settings_access, menu);
         return true;
     }
 
@@ -114,6 +114,8 @@ public class ExerciseVideoChoices extends Activity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            Intent settingsActivity = new Intent(this, SettingsActivity.class);
+            startActivityForResult(settingsActivity, SettingsActivity.SETTINGS_ACTIVITY_KEY);
             return true;
         }
 
