@@ -70,5 +70,8 @@
     <string name="speech_alert_title">Speech Reminder Notification</string>
     <string name="speech_alert_summery">Enable/Disable the daily speech activity reminder.</string>
     <string name="exerciseMessage">Todays Exersice Progress:</string>
+    <string name="title_activity_exercise_video">ExerciseVideoActivity</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="title_activity_exercise_video_choices">ExerciseVideoChoices</string>
 
 </resources>

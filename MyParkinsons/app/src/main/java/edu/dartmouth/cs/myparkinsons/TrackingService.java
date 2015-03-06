@@ -279,23 +279,22 @@ public class TrackingService extends Service implements SensorEventListener {
 
             PowerManager powerManager = (PowerManager) getSystemService(POWER_SERVICE);
             // If you use API20 or more:
-//            if (powerManager.isInteractive()){
-//                if (isExercising) {
-//                    System.out.println("Switched to not exercising!!");
-//                    long time = Calendar.getInstance().getTimeInMillis();
-//                    long difference = time - lastExerciseChangedTime;
-//                    dailyExerciseTime += difference;
-//                    isExercising = false;
-//                }
-//                return;
-//            }
+            if (powerManager.isInteractive()){
+                if (isExercising) {
+                    System.out.println("Switched to not exercising!!");
+                    long time = Calendar.getInstance().getTimeInMillis();
+                    long difference = time - lastExerciseChangedTime;
+                    dailyExerciseTime += difference;
+                    isExercising = false;
+                }
+                return;
+            }
 
 
             double type = values[0];
             if (isExercising) {
                 if (type == 0) {
                     System.out.println("Switched to not exercising!!");
-//                    Toast.makeText(getApplicationContext(), "not exercising", Toast.LENGTH_SHORT).show();
                     Calendar c = Calendar.getInstance();
                     Calendar old = Calendar.getInstance();
                     old.setTimeInMillis(lastExerciseChangedTime);
@@ -322,7 +321,7 @@ public class TrackingService extends Service implements SensorEventListener {
                     spEdit.commit();
 
                     isExercising = false;
-                    if (c.get(Calendar.DAY_OF_MONTH) != old.get(Calendar.DAY_OF_MONTH)) {
+                    if (c.get(Calendar.DAY_OF_YEAR) != old.get(Calendar.DAY_OF_YEAR)) {
                         //New day add to database and clear data from prefs
                         int total = settingData.getInt(SettingsActivity.TOTAL_SPEECH_KEY, 0);
                         int correct = settingData.getInt(SettingsActivity.CORRECT_SPEECH_KEY, 0);
