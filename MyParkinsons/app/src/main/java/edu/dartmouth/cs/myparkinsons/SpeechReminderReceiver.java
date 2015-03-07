@@ -6,6 +6,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
@@ -34,7 +35,8 @@ public class SpeechReminderReceiver extends BroadcastReceiver {
         );
 
 
-        boolean allowNotification = settingData.getBoolean(SettingsActivity.ALLOW_TIME_ALERT_KEY, true);
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(c);
+        boolean allowNotification = prefs.getBoolean("speech_alert_toggle_switch", true);
 
         if(allowNotification) {
             // get notification builder

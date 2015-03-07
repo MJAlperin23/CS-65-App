@@ -58,8 +58,8 @@ public class SettingsActivity extends Activity implements TimePickerDialog.OnTim
     public static final String CORRECT_SPEECH_KEY = "correct_speech_key";
     public static final String EXERCISE_TIME_KEY = "exercise_time_key";
 
-    public SharedPreferences settingData;
-    public static SharedPreferences.Editor spEdit;
+//    public SharedPreferences settingData;
+//    public static SharedPreferences.Editor spEdit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,8 +68,8 @@ public class SettingsActivity extends Activity implements TimePickerDialog.OnTim
         getFragmentManager().beginTransaction()
                 .replace(android.R.id.content, new PrefsFragment()).commit();
 
-        settingData = getSharedPreferences(SHARED_PREFERENCES_KEY, MODE_PRIVATE);
-        spEdit = settingData.edit();
+//        settingData = getSharedPreferences(SHARED_PREFERENCES_KEY, MODE_PRIVATE);
+//        spEdit = settingData.edit();
 
         PreferenceManager.setDefaultValues(this, R.xml.settings_preferences, false);
     }
@@ -99,19 +99,6 @@ public class SettingsActivity extends Activity implements TimePickerDialog.OnTim
                     timeFragment.show(getFragmentManager(), "timePicker");
                     break;
 
-                case "speech_alert_toggle_switch":
-                    spEdit.putBoolean(SettingsActivity.ALLOW_TIME_ALERT_KEY, ((SwitchPreference) preference).isChecked());
-                    spEdit.commit();
-                    break;
-
-                case "store_data_toggle_switch":
-                    spEdit.putBoolean(SettingsActivity.SAVE_DATA_KEY, ((SwitchPreference) preference).isChecked());
-                    spEdit.commit();
-                    break;
-
-//                case "allow_accel_tracking_toggle":
-//                    spEdit.putBoolean(SettingsActivity.ACCEL_ENABLED_KEY, ((SwitchPreference) preference).isChecked());
-//                    break;
             }
 
             return super.onPreferenceTreeClick(preferenceScreen, preference);
