@@ -60,6 +60,9 @@ public class MainActivity extends FragmentActivity implements ServiceConnection 
     private float lastX;
     private float lastY;
 
+    private ExerciseLogArrayAdapter adapter;
+    private List<ExerciseItem> list;
+
 
     private ListView listView;
 
@@ -74,42 +77,8 @@ public class MainActivity extends FragmentActivity implements ServiceConnection 
         startService(new Intent(MainActivity.this, TrackingService.class));
         doBindService();
 
-        ExerciseItem[] items = new ExerciseItem[10];
-
-        DataSource dataSource = new DataSource(this);
-        dataSource.open();
-
-        Calendar c = Calendar.getInstance();
-        int currDay = c.get(Calendar.DAY_OF_YEAR);
-
-        for (int i = 0; i < 10; i++) {
-            Random rand = new Random();
-            long walking = Math.abs(rand.nextLong()) % 3600000;
-
-            c.set(Calendar.DAY_OF_YEAR, currDay - 10 + i);
-
-            int totalSpeech = (Math.abs(rand.nextInt()) % 12) + 1;
-            int totalCorrect = Math.abs(rand.nextInt()) % totalSpeech;
-
-
-            items[i] = new ExerciseItem(c, totalSpeech, totalCorrect, walking);
-//            dataSource.insert(items[i]);
-        }
-        List<ExerciseItem> list = new ArrayList<>();
-
-        //Insert two null items because the first two cards in the list are not history stuff
-        list.addAll(dataSource.fetchItems());
-        list.add(new ExerciseItem(null, 0, 0, 0));
-        list.add(new ExerciseItem(null, 0, 0, 0));
-
-        dataSource.close();
-        final ExerciseLogArrayAdapter adapter = new ExerciseLogArrayAdapter(this, R.layout.exercise_log_row, list);
-
+        list = new ArrayList<>();
         listView = (ListView) findViewById(R.id.card_listView);
-
-        listView.setAdapter(adapter);
-
-
 
         listView.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -171,6 +140,48 @@ public class MainActivity extends FragmentActivity implements ServiceConnection 
             }
         });
 
+    }
+
+    @Override
+    protected void onResume() {
+
+        if(list != null)
+            list.clear();
+
+        ExerciseItem[] items = new ExerciseItem[10];
+        DataSource dataSource = new DataSource(this);
+        dataSource.open();
+
+        Calendar c = Calendar.getInstance();
+        int currDay = c.get(Calendar.DAY_OF_YEAR);
+
+        for (int i = 0; i < 10; i++) {
+            Random rand = new Random();
+            long walking = Math.abs(rand.nextLong()) % 3600000;
+
+            c.set(Calendar.DAY_OF_YEAR, currDay - 10 + i);
+
+            int totalSpeech = (Math.abs(rand.nextInt()) % 12) + 1;
+            int totalCorrect = Math.abs(rand.nextInt()) % totalSpeech;
+
+
+            items[i] = new ExerciseItem(c, totalSpeech, totalCorrect, walking);
+  //          dataSource.insert(items[i]);
+        }
+
+
+        //Insert two null items because the first two cards in the list are not history stuff
+        list.addAll(dataSource.fetchItems());
+        list.add(new ExerciseItem(null, 0, 0, 0));
+        list.add(new ExerciseItem(null, 0, 0, 0));
+
+        dataSource.close();
+        adapter = new ExerciseLogArrayAdapter(this, R.layout.exercise_log_row, list);
+        listView.setAdapter(adapter);
+
+        listView.invalidateViews();
+
+        super.onResume();
     }
 
     private void refreshSpeechView(View view) {
@@ -249,12 +260,6 @@ public class MainActivity extends FragmentActivity implements ServiceConnection 
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_settings_access, menu);
         return true;
-    }
-
-    @Override
-    protected void onResume() {
-        listView.invalidateViews();
-        super.onResume();
     }
 
     @Override

@@ -20,6 +20,7 @@ import android.os.Message;
 import android.os.Messenger;
 import android.os.PowerManager;
 import android.os.RemoteException;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -277,20 +278,6 @@ public class TrackingService extends Service implements SensorEventListener {
         @Override
         protected void onProgressUpdate(Double... values) {
 
-//            PowerManager powerManager = (PowerManager) getSystemService(POWER_SERVICE);
-//            // If you use API20 or more:
-//            if (powerManager.isInteractive()){
-//                if (isExercising) {
-//                    System.out.println("Switched to not exercising!!");
-//                    long time = Calendar.getInstance().getTimeInMillis();
-//                    long difference = time - lastExerciseChangedTime;
-//                    dailyExerciseTime += difference;
-//                    isExercising = false;
-//                }
-//                return;
-//            }
-
-
             double type = values[0];
             if (isExercising) {
                 if (type == 0) {
@@ -331,9 +318,15 @@ public class TrackingService extends Service implements SensorEventListener {
                         spEdit.putInt(SettingsActivity.CORRECT_SPEECH_KEY, 0);
                         spEdit.putInt(SettingsActivity.TOTAL_SPEECH_KEY, 0);
                         DataSource dataSource = new DataSource(appContext);
-                        dataSource.open();
-                        dataSource.insert(item);
-                        dataSource.close();
+
+                        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(appContext);
+                        boolean allowDataInsert = prefs.getBoolean("store_data_toggle_switch", true);
+
+                        if(allowDataInsert) {
+                            dataSource.open();
+                            dataSource.insert(item);
+                            dataSource.close();
+                        }
 
                     }
                 }
