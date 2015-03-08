@@ -11,6 +11,9 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 
 public class ExerciseVideoChoices extends Activity {
 
@@ -34,10 +37,12 @@ public class ExerciseVideoChoices extends Activity {
         String[] videoKeys = new String[] {"Exercise One","Exercise Two", "Exercise Three",
                                 "Exercise Four", "Exercise Five", "Exercise Six"};
 
-        ArrayAdapter<String> videoKeyAdapter = new ArrayAdapter<String>(this,
-                R.layout.videolistlayout, videoKeys);
+        ArrayList<String> list = new ArrayList<String>();
+        list.addAll(Arrays.asList(videoKeys));
+        final VideoArrayAdapter adapter = new VideoArrayAdapter(this, R.layout.video_options_row, list);
 
-        videoOptions.setAdapter(videoKeyAdapter);
+
+        videoOptions.setAdapter(adapter);
 
         videoOptions.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
