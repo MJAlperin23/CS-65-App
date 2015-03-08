@@ -1,0 +1,155 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/welcome_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="edu.dartmouth.cs.myparkinsons.WelcomeActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <ViewFlipper
+            android:id="@+id/viewFlipper"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="1">
+
+
+            <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                tools:context="edu.dartmouth.cs.myparkinsons.CirlceProgressFragment">
+
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/welcome" />
+
+            </FrameLayout>
+
+            <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                tools:context="edu.dartmouth.cs.myparkinsons.CirlceProgressFragment">
+
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/homescreen_swipe" />
+
+
+            </FrameLayout>
+
+
+            <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                tools:context="edu.dartmouth.cs.myparkinsons.CirlceProgressFragment">
+
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/homescreen_tap_speech" />
+
+
+            </FrameLayout>
+
+            <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                tools:context="edu.dartmouth.cs.myparkinsons.CirlceProgressFragment">
+
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/homescreen_tap_exercise" />
+
+            </FrameLayout>
+
+            <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                tools:context="edu.dartmouth.cs.myparkinsons.CirlceProgressFragment">
+
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/history_help" />
+
+            </FrameLayout>
+
+
+        </ViewFlipper>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="15dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="25dp"
+            android:layout_weight="0"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/circle1"
+                android:layout_width="7dp"
+                android:layout_height="7dp"
+                android:layout_marginRight="2dp"
+                android:src="@drawable/dark_circle" />
+
+            <ImageView
+                android:id="@+id/circle2"
+                android:layout_width="7dp"
+                android:layout_height="7dp"
+                android:layout_marginLeft="2dp"
+                android:src="@drawable/light_circle" />
+
+            <ImageView
+                android:id="@+id/circle3"
+                android:layout_width="7dp"
+                android:layout_height="7dp"
+                android:layout_marginLeft="2dp"
+                android:src="@drawable/light_circle" />
+
+            <ImageView
+                android:id="@+id/circle4"
+                android:layout_width="7dp"
+                android:layout_height="7dp"
+                android:layout_marginLeft="2dp"
+                android:src="@drawable/light_circle" />
+
+            <ImageView
+                android:id="@+id/circle5"
+                android:layout_width="7dp"
+                android:layout_height="7dp"
+                android:layout_marginLeft="2dp"
+                android:src="@drawable/light_circle" />
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <Button
+        style="?android:attr/borderlessButtonStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right|bottom"
+        android:id="@+id/doneButton"
+        android:text="DONE" />
+
+</FrameLayout>

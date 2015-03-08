@@ -1,6 +1,7 @@
 package edu.dartmouth.cs.myparkinsons;
 
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.app.AlarmManager;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -62,6 +63,7 @@ import java.util.Random;
 public class MainActivity extends FragmentActivity implements ServiceConnection {
 
 
+    public static final String FIRST_TIME_KEY = "first_time";
     public static final String PROPERTY_REG_ID = "reg_id_field";
     public static final String PROPERTY_APP_VERSION = "app_version_field";
     private final static int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
@@ -144,9 +146,12 @@ public class MainActivity extends FragmentActivity implements ServiceConnection 
             Log.d(TAG, "regId: " + regId);
         }
 
-        // set up service
-        startService(new Intent(MainActivity.this, TrackingService.class));
-        doBindService();
+        if (!isMyServiceRunning(TrackingService.class)) {
+            // set up service
+            startService(new Intent(MainActivity.this, TrackingService.class));
+            doBindService();
+        }
+
 
 
         list = new ArrayList<>();
@@ -215,6 +220,23 @@ public class MainActivity extends FragmentActivity implements ServiceConnection 
     }
 
 
+    //http://stackoverflow.com/questions/600207/how-to-check-if-a-service-is-running-on-android
+    private boolean isMyServiceRunning(Class<?> serviceClass) {
+        ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (serviceClass.getName().equals(service.service.getClassName())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    protected void onDestroy() {
+        doUnbindService();
+        super.onDestroy();
+    }
+
     @Override
     protected void onResume() {
 
@@ -240,7 +262,7 @@ public class MainActivity extends FragmentActivity implements ServiceConnection 
 
 
             items[i] = new ExerciseItem(c, totalSpeech, totalCorrect, walking);
-            //          dataSource.insert(items[i]);
+//                      dataSource.insert(items[i]);
         }
 
 
@@ -362,6 +384,15 @@ public class MainActivity extends FragmentActivity implements ServiceConnection 
 
     @Override
     protected void onPostResume() {
+
+        SharedPreferences sharedPreferences = getSharedPreferences(SettingsActivity.SHARED_PREFERENCES_KEY, MODE_PRIVATE);
+        boolean isFirstTime = sharedPreferences.getBoolean(FIRST_TIME_KEY, true);
+
+        if (isFirstTime) {
+            Intent i = new Intent(this, WelcomeActivity.class);
+            startActivity(i);
+        }
+
         super.onPostResume();
     }
 
