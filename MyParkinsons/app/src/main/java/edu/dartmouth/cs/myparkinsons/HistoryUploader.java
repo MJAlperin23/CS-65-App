@@ -8,18 +8,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
-import android.content.Context;
-import android.util.Log;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
 
 // TODO: update for ExerciseItem object instead of MyRuns
 
@@ -64,23 +54,6 @@ public class HistoryUploader {
             j.put(FIELD_DATE, entry.getDayOfMonth());
             j.put(FIELD_MONTH, entry.getMonthOfYear());
             j.put(FIELD_YEAR, entry.getYear());
-
-
-//            JSONArray locationJsonArray = new JSONArray();
-//            Iterable<LatLng> ll = entry.getLocationList();
-//            if (ll != null) {
-//
-//                Iterator<LatLng> iter = ll.iterator();
-//                while (iter.hasNext()) {
-//                    JSONObject coord = new JSONObject();
-//                    LatLng point = iter.next();
-//                    coord.put(LAT, point.latitude);
-//                    coord.put(LONG, point.longitude);
-//                    locationJsonArray.put(coord);
-//                }
-//
-//            }
-//            j.put(FIELD_LOC_LIST, locationJsonArray);
             jsonArray.put(j);
 
         }

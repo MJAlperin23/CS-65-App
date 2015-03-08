@@ -56,7 +56,8 @@ import java.util.List;
 import java.util.Random;
 
 
-// TODO: import google play libraries, set up with API console
+// TODO: set up Google Play with API console
+// TODO: set up server addressing
 
 public class MainActivity extends FragmentActivity implements ServiceConnection {
 
@@ -88,6 +89,7 @@ public class MainActivity extends FragmentActivity implements ServiceConnection 
      * Substitute you own sender ID here. This is the project number you got
      * from the API Console.
      */
+    // TODO: update sender ID
     private String SENDER_ID = "THISISAFAKENUMBER";
 
     private IntentFilter mMessageIntentFilter;
@@ -97,11 +99,11 @@ public class MainActivity extends FragmentActivity implements ServiceConnection 
             Bundle extras = intent.getExtras();
             String msg = extras.getString("message");
 //            long id = Long.getLong(msg);
-            Log.d("MainActivity", "got request " + msg);
+            Log.d(TAG, "got request " + msg);
 
             // TODO: display prompt notification when doctor sends ping
             if (msg != null) {
-                Log.d("MainActivity", "Received message: " + msg);
+                Log.d(TAG, "Received message: " + msg);
 //                dataSource.open();
 //                dataSource.deleteEntry(msg);
 //                dataSource.close();
@@ -240,6 +242,7 @@ public class MainActivity extends FragmentActivity implements ServiceConnection 
 
     private void uploadData() {
 
+        dataSource = new DataSource(this);
         dataSource.open();
         List<ExerciseItem> entryList = dataSource.fetchItems();
         dataSource.close();
@@ -256,25 +259,7 @@ public class MainActivity extends FragmentActivity implements ServiceConnection 
             }
         };
 
-        uploadTask.execute();
-
-//        AsyncTask uploadTask = new AsyncTask<Object, Void, Void>() {
-//            @Override
-//            protected Void doInBackground(Object... params) {
-//                ArrayList<ExerciseEntry> entryList = (ArrayList<ExerciseEntry>) params[0];
-//                Void hello;
-//                hello = null;
-//                try {
-//                    historyUploader.updateHistory(getActivity(), entryList, regId);
-//                } catch (Exception ex) {
-//                    ex.printStackTrace();
-//
-//                }
-//                return hello;
-//            }
-//        };
-//
-//        uploadTask.execute((Object) entryList);
+        uploadTask.execute(entryList);
 
     }
 
