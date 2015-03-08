@@ -11,8 +11,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-// TODO: update for ExerciseItem object instead of MyRuns
-
 /**
  * Created by tdc on 2/24/15.
  */
