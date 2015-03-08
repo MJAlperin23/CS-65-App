@@ -44,7 +44,6 @@ public class ExerciseLogArrayAdapter extends ArrayAdapter<ExerciseItem> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View row = convertView;
-        CircleCardHolder circleHolder;
 
         if (position == 0) {
             LayoutInflater inflater = ((Activity) context).getLayoutInflater();
@@ -72,15 +71,16 @@ public class ExerciseLogArrayAdapter extends ArrayAdapter<ExerciseItem> {
             LayoutInflater inflater = ((Activity) context).getLayoutInflater();
             row = inflater.inflate(R.layout.circle_progress_row, parent, false);
 
-            circleHolder = new CircleCardHolder();
-            circleHolder.flipper = (ViewFlipper) row.findViewById(R.id.viewFlipper);
-            circleHolder.bar1 = (CircleProgressBar) row.findViewById(R.id.custom_progressBar);
-            circleHolder.bar2 = (CircleProgressBar) row.findViewById(R.id.custom_progressBar2);
-            circleHolder.progress1 = (TextView) row.findViewById(R.id.percentView);
-            circleHolder.progress2 = (TextView) row.findViewById(R.id.percentView2);
+            ViewFlipper flipper = (ViewFlipper) row.findViewById(R.id.viewFlipper);
+            CircleProgressBar bar1 = (CircleProgressBar) row.findViewById(R.id.custom_progressBar);
+            CircleProgressBar bar2 = (CircleProgressBar) row.findViewById(R.id.custom_progressBar2);
+            TextView progress1 = (TextView) row.findViewById(R.id.percentView);
+            TextView progress2 = (TextView) row.findViewById(R.id.percentView2);
 
-            circleHolder.bar1.setProgressWithAnimation(0);
-            circleHolder.bar2.setProgressWithAnimation(0);
+            TextView minutesLabel = (TextView) row.findViewById(R.id.minutes_label);
+
+            bar1.setProgressWithAnimation(0);
+            bar2.setProgressWithAnimation(0);
 
             SharedPreferences settingData = context.getSharedPreferences(SettingsActivity.SHARED_PREFERENCES_KEY, Context.MODE_PRIVATE);
 
@@ -89,32 +89,38 @@ public class ExerciseLogArrayAdapter extends ArrayAdapter<ExerciseItem> {
 
             long time = settingData.getLong(SettingsActivity.EXERCISE_TIME_KEY, 0);
             long minutes = (long) (time * 1.66667e-5);
-            
+
+            if (minutes == 1) {
+                minutesLabel.setText("Minute");
+            } else {
+                minutesLabel.setText("Minutes");
+            }
+
             //TODO - Format minute vs minutes!
             String text = String.format("%d/%d", minutes, goal);
-            circleHolder.bar1.setColor(0xFF29A629);
-            circleHolder.bar1.setStrokeWidth(50);
-            circleHolder.progress1.setText(text);
-            circleHolder.bar1.setProgressWithAnimation(minutes / (float) goal * 100);
+            bar1.setColor(0xFF29A629);
+            bar1.setStrokeWidth(50);
+            progress1.setText(text);
+            bar1.setProgressWithAnimation(minutes / (float) goal * 100);
 
-            circleHolder.bar2.setColor(0xFF0066FF);
-            circleHolder.bar2.setStrokeWidth(50);
+            bar2.setColor(0xFF0066FF);
+            bar2.setStrokeWidth(50);
             int correct = settingData.getInt(SettingsActivity.CORRECT_SPEECH_KEY, 0);
             int total = settingData.getInt(SettingsActivity.TOTAL_SPEECH_KEY, 0);
             float percent = (float) correct / (float) total;
             if (total == 0) {
-                circleHolder.bar2.setProgressWithAnimation(0);
+                bar2.setProgressWithAnimation(0);
             } else {
-                circleHolder.bar2.setProgressWithAnimation(percent * 100);
+                bar2.setProgressWithAnimation(percent * 100);
 
                 text = String.format("%d/%d\ncorrect", correct, total);
-                circleHolder.progress2.setText(text);
+                progress2.setText(text);
 
             }
         } else {
 
 
-            ExerciseItem item = data.get(position);
+            ExerciseItem item = data.get((data.size() - 1) - position);
 
             if (item == null) {
                 return row;
@@ -139,9 +145,20 @@ public class ExerciseLogArrayAdapter extends ArrayAdapter<ExerciseItem> {
 
             TextView date = (TextView) row.findViewById(R.id.dateTextView);
 
+            Calendar c1 = Calendar.getInstance(); // today
+            c1.add(Calendar.DAY_OF_YEAR, -1); // yesterday
+
             Calendar c = item.getDate();
-            SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
-            date.setText(format.format(c.getTime()));
+
+
+            if (c1.get(Calendar.YEAR) == c.get(Calendar.YEAR)
+                    && c1.get(Calendar.DAY_OF_YEAR) == c.get(Calendar.DAY_OF_YEAR)) {
+                date.setText("Yesterday");
+            } else {
+                SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
+                date.setText(format.format(c.getTime()));
+            }
+
 
             speechText.setText(String.format("%d/%d", item.getSpeechCorrectCount(), item.getSpeechDoneCount()));
             exerciseText.setText(String.format("%d/%d min", minutes, goal));
@@ -158,15 +175,6 @@ public class ExerciseLogArrayAdapter extends ArrayAdapter<ExerciseItem> {
 
 
         return row;
-    }
-
-
-    static class CircleCardHolder {
-        ViewFlipper flipper;
-        CircleProgressBar bar1;
-        CircleProgressBar bar2;
-        TextView progress1;
-        TextView progress2;
     }
 }
 

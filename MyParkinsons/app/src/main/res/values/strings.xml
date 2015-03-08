@@ -73,6 +73,7 @@
     <string name="title_activity_exercise_video">ExerciseVideoActivity</string>
     <string name="title_activity_maps">Map</string>
     <string name="title_activity_exercise_video_choices">ExerciseVideoChoices</string>
+    <string name="title_activity_new_video">NewVideoActivity</string>
     <string name="title_activity_video">VideoActivity</string>
 
 </resources>

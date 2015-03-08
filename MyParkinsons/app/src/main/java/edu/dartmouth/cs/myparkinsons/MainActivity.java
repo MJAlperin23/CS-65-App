@@ -148,30 +148,28 @@ public class MainActivity extends FragmentActivity implements ServiceConnection 
         dataSource = new DataSource(this);
         dataSource.open();
 
+        Calendar c = Calendar.getInstance();
+        int currDay = c.get(Calendar.DAY_OF_YEAR);
+
         for (int i = 0; i < 10; i++) {
             Random rand = new Random();
             long walking = Math.abs(rand.nextLong()) % 3600000;
-            int month = (rand.nextInt() % 12) + 1;
-            int day = (rand.nextInt() % 28) + 1;
-            int year = (rand.nextInt() % 2015) + 1;
-            Calendar calendar = Calendar.getInstance();
-            calendar.set(Calendar.MONTH, month);
-            calendar.set(Calendar.DAY_OF_MONTH, day);
-            calendar.set(Calendar.YEAR, year);
+
+            c.set(Calendar.DAY_OF_YEAR, currDay - 10 + i);
 
             int totalSpeech = (Math.abs(rand.nextInt()) % 12) + 1;
             int totalCorrect = Math.abs(rand.nextInt()) % totalSpeech;
 
 
-            items[i] = new ExerciseItem(calendar, totalSpeech, totalCorrect, walking);
+            items[i] = new ExerciseItem(c, totalSpeech, totalCorrect, walking);
 //            dataSource.insert(items[i]);
         }
         List<ExerciseItem> list = new ArrayList<>();
 
         //Insert two null items because the first two cards in the list are not history stuff
-        list.add(new ExerciseItem(null, 0, 0, 0));
-        list.add(new ExerciseItem(null, 0, 0, 0));
         list.addAll(dataSource.fetchItems());
+        list.add(new ExerciseItem(null, 0, 0, 0));
+        list.add(new ExerciseItem(null, 0, 0, 0));
 
         dataSource.close();
         final ExerciseLogArrayAdapter adapter = new ExerciseLogArrayAdapter(this, R.layout.exercise_log_row, list);
@@ -315,6 +313,8 @@ public class MainActivity extends FragmentActivity implements ServiceConnection 
         leftDot.setImageResource(R.drawable.dark_circle);
         rightDot.setImageResource(R.drawable.light_circle);
 
+        TextView minutesLabel = (TextView) view.findViewById(R.id.minutes_label);
+
         bar.setProgress(0);
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
@@ -324,6 +324,13 @@ public class MainActivity extends FragmentActivity implements ServiceConnection 
 
         long time = settingData.getLong(SettingsActivity.EXERCISE_TIME_KEY, 0);
         long minutes = (long) (time * 1.66667e-5);
+
+        if (minutes == 1) {
+            minutesLabel.setText("Minute");
+        } else {
+            minutesLabel.setText("Minutes");
+        }
+
         String text = String.format("%d/%d", minutes, goal);
         textView.setText(text);
         bar.setProgressWithAnimation(minutes / (float) goal * 100);
