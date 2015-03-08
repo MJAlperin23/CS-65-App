@@ -89,7 +89,7 @@ public class ExerciseLogArrayAdapter extends ArrayAdapter<ExerciseItem> {
 
             long time = settingData.getLong(SettingsActivity.EXERCISE_TIME_KEY, 0);
             long minutes = (long) (time * 1.66667e-5);
-            
+
             //TODO - Format minute vs minutes!
             String text = String.format("%d/%d", minutes, goal);
             circleHolder.bar1.setColor(0xFF29A629);
