@@ -49,6 +49,7 @@ import java.util.Random;
 public class MainActivity extends FragmentActivity implements ServiceConnection {
 
 
+    public static final String FIRST_TIME_KEY = "first_time";
     private Messenger serviceMessenger = null;
     boolean isBound;
     private final Messenger messenger = new Messenger(
@@ -93,7 +94,7 @@ public class MainActivity extends FragmentActivity implements ServiceConnection 
 
 
             items[i] = new ExerciseItem(c, totalSpeech, totalCorrect, walking);
-//            dataSource.insert(items[i]);
+            dataSource.insert(items[i]);
         }
         List<ExerciseItem> list = new ArrayList<>();
 
@@ -259,6 +260,15 @@ public class MainActivity extends FragmentActivity implements ServiceConnection 
 
     @Override
     protected void onPostResume() {
+
+        SharedPreferences sharedPreferences = getSharedPreferences(SettingsActivity.SHARED_PREFERENCES_KEY, MODE_PRIVATE);
+        boolean isFirstTime = sharedPreferences.getBoolean(FIRST_TIME_KEY, true);
+
+        if (isFirstTime) {
+            Intent i = new Intent(this, WelcomeActivity.class);
+            startActivity(i);
+        }
+
         super.onPostResume();
 
     }

@@ -291,13 +291,33 @@ public class TrackingService extends Service implements SensorEventListener {
 //            }
 
 
+            Calendar c = Calendar.getInstance();
+            Calendar old = Calendar.getInstance();
+            old.setTimeInMillis(lastExerciseChangedTime);
+
+            if (c.get(Calendar.HOUR_OF_DAY) != old.get(Calendar.HOUR_OF_DAY)) {
+                //New day add to database and clear data from prefs
+                int total = settingData.getInt(SettingsActivity.TOTAL_SPEECH_KEY, 0);
+                int correct = settingData.getInt(SettingsActivity.CORRECT_SPEECH_KEY, 0);
+                ExerciseItem item = new ExerciseItem(old, total, correct, dailyExerciseTime);
+                dailyExerciseTime = 0;
+                spEdit.putLong(SettingsActivity.EXERCISE_TIME_KEY, 0);
+                spEdit.putInt(SettingsActivity.CORRECT_SPEECH_KEY, 0);
+                spEdit.putInt(SettingsActivity.TOTAL_SPEECH_KEY, 0);
+                DataSource dataSource = new DataSource(appContext);
+                dataSource.open();
+                dataSource.insert(item);
+                dataSource.close();
+            }
+
+
             double type = values[0];
             if (isExercising) {
                 if (type == 0) {
                     System.out.println("Switched to not exercising!!");
-                    Calendar c = Calendar.getInstance();
-                    Calendar old = Calendar.getInstance();
-                    old.setTimeInMillis(lastExerciseChangedTime);
+//                    Calendar c = Calendar.getInstance();
+//                    Calendar old = Calendar.getInstance();
+//                    old.setTimeInMillis(lastExerciseChangedTime);
 
                     long time = c.getTimeInMillis();
                     long difference = time - lastExerciseChangedTime;
@@ -321,21 +341,21 @@ public class TrackingService extends Service implements SensorEventListener {
                     spEdit.commit();
 
                     isExercising = false;
-                    if (c.get(Calendar.DAY_OF_YEAR) != old.get(Calendar.DAY_OF_YEAR)) {
-                        //New day add to database and clear data from prefs
-                        int total = settingData.getInt(SettingsActivity.TOTAL_SPEECH_KEY, 0);
-                        int correct = settingData.getInt(SettingsActivity.CORRECT_SPEECH_KEY, 0);
-                        ExerciseItem item = new ExerciseItem(old, total, correct, dailyExerciseTime);
-                        dailyExerciseTime = 0;
-                        spEdit.putLong(SettingsActivity.EXERCISE_TIME_KEY, 0);
-                        spEdit.putInt(SettingsActivity.CORRECT_SPEECH_KEY, 0);
-                        spEdit.putInt(SettingsActivity.TOTAL_SPEECH_KEY, 0);
-                        DataSource dataSource = new DataSource(appContext);
-                        dataSource.open();
-                        dataSource.insert(item);
-                        dataSource.close();
-
-                    }
+//                    if (c.get(Calendar.HOUR_OF_DAY) != old.get(Calendar.HOUR_OF_DAY)) {
+//                        //New day add to database and clear data from prefs
+//                        int total = settingData.getInt(SettingsActivity.TOTAL_SPEECH_KEY, 0);
+//                        int correct = settingData.getInt(SettingsActivity.CORRECT_SPEECH_KEY, 0);
+//                        ExerciseItem item = new ExerciseItem(old, total, correct, dailyExerciseTime);
+//                        dailyExerciseTime = 0;
+//                        spEdit.putLong(SettingsActivity.EXERCISE_TIME_KEY, 0);
+//                        spEdit.putInt(SettingsActivity.CORRECT_SPEECH_KEY, 0);
+//                        spEdit.putInt(SettingsActivity.TOTAL_SPEECH_KEY, 0);
+//                        DataSource dataSource = new DataSource(appContext);
+//                        dataSource.open();
+//                        dataSource.insert(item);
+//                        dataSource.close();
+//
+//                    }
                 }
             } else {
                 if (type == 1 || type == 2) {       //walking or running
