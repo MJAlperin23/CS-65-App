@@ -20,6 +20,7 @@ import android.os.Message;
 import android.os.Messenger;
 import android.os.PowerManager;
 import android.os.RemoteException;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -296,7 +297,7 @@ public class TrackingService extends Service implements SensorEventListener {
             old.setTimeInMillis(lastExerciseChangedTime);
 
             if (c.get(Calendar.HOUR_OF_DAY) != old.get(Calendar.HOUR_OF_DAY)) {
-                //New day add to database and clear data from prefs
+                                //New day add to database and clear data from prefs
                 int total = settingData.getInt(SettingsActivity.TOTAL_SPEECH_KEY, 0);
                 int correct = settingData.getInt(SettingsActivity.CORRECT_SPEECH_KEY, 0);
                 ExerciseItem item = new ExerciseItem(old, total, correct, dailyExerciseTime);
@@ -305,9 +306,15 @@ public class TrackingService extends Service implements SensorEventListener {
                 spEdit.putInt(SettingsActivity.CORRECT_SPEECH_KEY, 0);
                 spEdit.putInt(SettingsActivity.TOTAL_SPEECH_KEY, 0);
                 DataSource dataSource = new DataSource(appContext);
-                dataSource.open();
-                dataSource.insert(item);
-                dataSource.close();
+
+                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(appContext);
+                boolean allowDataInsert = prefs.getBoolean("store_data_toggle_switch", true);
+
+                if(allowDataInsert) {
+                    dataSource.open();
+                    dataSource.insert(item);
+                    dataSource.close();
+                }
             }
 
 
@@ -356,6 +363,7 @@ public class TrackingService extends Service implements SensorEventListener {
 //                        dataSource.close();
 //
 //                    }
+
                 }
             } else {
                 if (type == 1 || type == 2) {       //walking or running

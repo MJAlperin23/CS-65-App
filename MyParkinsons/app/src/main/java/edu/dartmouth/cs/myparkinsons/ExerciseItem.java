@@ -40,4 +40,10 @@ public class ExerciseItem {
         return exerciseTime;
     }
 
+    public int getDayOfMonth() { return this.date.get(Calendar.DAY_OF_MONTH); }
+
+    public int getMonthOfYear() { return this.date.get(Calendar.MONTH); }
+
+    public int getYear() { return this.date.get(Calendar.YEAR); }
+
 }

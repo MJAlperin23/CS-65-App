@@ -70,7 +70,6 @@ public class DataSource {
     }
     public void removeItem(long id){
         database.delete(DbHelper.TABLE,DbHelper.COLUMN_ID + " = " + id, null);
-        close();
     }
     private ExerciseItem cursorToExerciseItem(Cursor cursor) {
         long id =  cursor.getLong(cursor.getColumnIndex(DbHelper.COLUMN_ID));
