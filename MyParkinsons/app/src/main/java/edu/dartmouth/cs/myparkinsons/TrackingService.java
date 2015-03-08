@@ -297,7 +297,7 @@ public class TrackingService extends Service implements SensorEventListener {
             old.setTimeInMillis(lastExerciseChangedTime);
 
             if (c.get(Calendar.HOUR_OF_DAY) != old.get(Calendar.HOUR_OF_DAY)) {
-                                //New day add to database and clear data from prefs
+                //New day add to database and clear data from prefs
                 int total = settingData.getInt(SettingsActivity.TOTAL_SPEECH_KEY, 0);
                 int correct = settingData.getInt(SettingsActivity.CORRECT_SPEECH_KEY, 0);
                 ExerciseItem item = new ExerciseItem(old, total, correct, dailyExerciseTime);
@@ -310,6 +310,8 @@ public class TrackingService extends Service implements SensorEventListener {
                 SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(appContext);
                 boolean allowDataInsert = prefs.getBoolean("store_data_toggle_switch", true);
 
+                lastExerciseChangedTime = c.getTimeInMillis();
+                isExercising = false;
                 if(allowDataInsert) {
                     dataSource.open();
                     dataSource.insert(item);
@@ -322,9 +324,6 @@ public class TrackingService extends Service implements SensorEventListener {
             if (isExercising) {
                 if (type == 0) {
                     System.out.println("Switched to not exercising!!");
-//                    Calendar c = Calendar.getInstance();
-//                    Calendar old = Calendar.getInstance();
-//                    old.setTimeInMillis(lastExerciseChangedTime);
 
                     long time = c.getTimeInMillis();
                     long difference = time - lastExerciseChangedTime;
@@ -346,23 +345,7 @@ public class TrackingService extends Service implements SensorEventListener {
 
                     }
                     spEdit.commit();
-
                     isExercising = false;
-//                    if (c.get(Calendar.HOUR_OF_DAY) != old.get(Calendar.HOUR_OF_DAY)) {
-//                        //New day add to database and clear data from prefs
-//                        int total = settingData.getInt(SettingsActivity.TOTAL_SPEECH_KEY, 0);
-//                        int correct = settingData.getInt(SettingsActivity.CORRECT_SPEECH_KEY, 0);
-//                        ExerciseItem item = new ExerciseItem(old, total, correct, dailyExerciseTime);
-//                        dailyExerciseTime = 0;
-//                        spEdit.putLong(SettingsActivity.EXERCISE_TIME_KEY, 0);
-//                        spEdit.putInt(SettingsActivity.CORRECT_SPEECH_KEY, 0);
-//                        spEdit.putInt(SettingsActivity.TOTAL_SPEECH_KEY, 0);
-//                        DataSource dataSource = new DataSource(appContext);
-//                        dataSource.open();
-//                        dataSource.insert(item);
-//                        dataSource.close();
-//
-//                    }
 
                 }
             } else {

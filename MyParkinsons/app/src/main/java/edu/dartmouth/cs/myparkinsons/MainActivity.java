@@ -1,6 +1,7 @@
 package edu.dartmouth.cs.myparkinsons;
 
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.app.AlarmManager;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -145,9 +146,13 @@ public class MainActivity extends FragmentActivity implements ServiceConnection 
             Log.d(TAG, "regId: " + regId);
         }
 
-        // set up service
-        startService(new Intent(MainActivity.this, TrackingService.class));
-        doBindService();
+        if (!isMyServiceRunning(TrackingService.class)) {
+            // set up service
+            startService(new Intent(MainActivity.this, TrackingService.class));
+            doBindService();
+        }
+
+
 
         list = new ArrayList<>();
         listView = (ListView) findViewById(R.id.card_listView);
@@ -215,6 +220,23 @@ public class MainActivity extends FragmentActivity implements ServiceConnection 
     }
 
 
+    //http://stackoverflow.com/questions/600207/how-to-check-if-a-service-is-running-on-android
+    private boolean isMyServiceRunning(Class<?> serviceClass) {
+        ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (serviceClass.getName().equals(service.service.getClassName())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    protected void onDestroy() {
+        doUnbindService();
+        super.onDestroy();
+    }
+
     @Override
     protected void onResume() {
 
@@ -240,7 +262,7 @@ public class MainActivity extends FragmentActivity implements ServiceConnection 
 
 
             items[i] = new ExerciseItem(c, totalSpeech, totalCorrect, walking);
-            //          dataSource.insert(items[i]);
+//                      dataSource.insert(items[i]);
         }
 
 
