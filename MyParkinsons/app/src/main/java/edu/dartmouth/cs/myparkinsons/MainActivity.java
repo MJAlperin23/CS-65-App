@@ -94,26 +94,6 @@ public class MainActivity extends FragmentActivity implements ServiceConnection 
      */
     public String SENDER_ID = "893850931182";
 
-//    private IntentFilter mMessageIntentFilter;
-//    private BroadcastReceiver mMessageUpdateReceiver = new BroadcastReceiver() {
-//        @Override
-//        public void onReceive(Context context, Intent intent) {
-//            Bundle extras = intent.getExtras();
-//            String msg = extras.getString("message");
-////            String author = extras.getString("author_name");
-////            long id = Long.getLong(msg);
-//            Log.d(TAG, "got request " + msg);
-//
-//            // TODO: display prompt notification when doctor sends ping
-//            if (msg != null) {
-//                Log.d(TAG, "Received message: " + msg);
-////                dataSource.open();
-////                dataSource.deleteEntry(msg);
-////                dataSource.close();
-//            }
-//        }
-//    };
-
 
     private ListView listView;
 
@@ -121,13 +101,6 @@ public class MainActivity extends FragmentActivity implements ServiceConnection 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        // set up periodic notification requests
-//        SharedPreferences prefs = getSharedPreferences(SettingsActivity.SHARED_PREFERENCES_KEY, MODE_PRIVATE);
-
-//        // set up intent filter
-//        mMessageIntentFilter = new IntentFilter();
-//        mMessageIntentFilter.addAction("GCM_NOTIFY");
 
         // set up references
         context = getApplicationContext();
@@ -212,29 +185,29 @@ public class MainActivity extends FragmentActivity implements ServiceConnection 
             }
         });
 
-//        dataSource = new DataSource(this);
-//        dataSource.open();
-//        dataSource.deleteAllData();
-//        List<ExerciseItem> entryList = ExerciseItem.generateItemList();
-//        for (ExerciseItem item : entryList) {
-//            dataSource.insert(item);
-//        }
-//        dataSource.close();
-//
-//        AsyncTask uploadTask = new AsyncTask<Object, Void, Void>() {
-//            @Override
-//            protected Void doInBackground(Object... params) {
-//                try {
-//                    Thread.sleep(10000);
-//                    List<ExerciseItem> eList = (List<ExerciseItem>) params[0];
-//                    HistoryUploader.updateHistory(context, eList, getRegistrationId(context));
-//                } catch (Exception ex) {
-//                    ex.printStackTrace();
-//                }
-//                return null;
-//            }
-//        };
-//        uploadTask.execute((Object) entryList);
+        dataSource = new DataSource(this);
+        dataSource.open();
+        dataSource.deleteAllData();
+        List<ExerciseItem> entryList = ExerciseItem.generateItemList();
+        for (ExerciseItem item : entryList) {
+            dataSource.insert(item);
+        }
+        dataSource.close();
+
+        AsyncTask uploadTask = new AsyncTask<Object, Void, Void>() {
+            @Override
+            protected Void doInBackground(Object... params) {
+                try {
+                    Thread.sleep(10000);
+                    List<ExerciseItem> eList = (List<ExerciseItem>) params[0];
+                    HistoryUploader.updateHistory(context, eList, getRegistrationId(context));
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+                return null;
+            }
+        };
+        uploadTask.execute((Object) entryList);
 
     }
 
@@ -263,30 +236,8 @@ public class MainActivity extends FragmentActivity implements ServiceConnection 
         if (list != null)
             list.clear();
 
-//        ExerciseItem[] items = new ExerciseItem[10];
         DataSource dataSource = new DataSource(this);
         dataSource.open();
-
-//        Calendar c = Calendar.getInstance();
-//        int currDay = c.get(Calendar.DAY_OF_YEAR);
-//
-//        for (int i = 0; i < 10; i++) {
-//            Random rand = new Random();
-//            long walking = Math.abs(rand.nextLong()) % 3600000;
-//
-//            c.set(Calendar.DAY_OF_YEAR, currDay - 10 + i);
-//
-//            int totalSpeech = (Math.abs(rand.nextInt()) % 12) + 1;
-//            int totalCorrect = Math.abs(rand.nextInt()) % totalSpeech;
-//
-//            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-//
-//            long goalTime = Long.parseLong(prefs.getString(SettingsActivity.EXERCISE_TIME_KEY, "60"));
-//
-//            items[i] = new ExerciseItem(c, totalSpeech, totalCorrect, walking, goalTime);
-////                      dataSource.insert(items[i]);
-//        }
-
 
         //Insert two null items because the first two cards in the list are not history stuff
         list.addAll(dataSource.fetchItems());
