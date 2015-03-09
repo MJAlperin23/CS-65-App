@@ -73,11 +73,11 @@ public class TrackingService extends Service implements SensorEventListener {
         public void onReceive(Context c, Intent intent) {
             Bundle extras = intent.getExtras();
             String msg = extras.getString("message");
-            String sender = extras.getString("from_name");
+//            String sender = extras.getString("from_name");
 
             // TODO: display prompt notification when doctor sends ping
             if (msg != null) {
-                Log.d(TAG, "Received message: " + msg + " from: " + sender);
+                Log.d(TAG, "Received message: " + msg);
                 // build intent
                 // build notification intent
                 Intent goIntent = new Intent(c, SpeechActivity.class);
@@ -90,7 +90,7 @@ public class TrackingService extends Service implements SensorEventListener {
                 NotificationCompat.Builder builder = new NotificationCompat.Builder(c);
 
                 // set notification parameters
-                builder.setContentTitle("Message from " + sender);
+                builder.setContentTitle("Doctor Alert");
                 builder.setContentText(msg);
                 builder.setSmallIcon(R.drawable.speech_pic);
                 builder.setAutoCancel(true);

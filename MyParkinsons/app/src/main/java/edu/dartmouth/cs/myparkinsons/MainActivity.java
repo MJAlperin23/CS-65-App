@@ -94,25 +94,25 @@ public class MainActivity extends FragmentActivity implements ServiceConnection 
      */
     public String SENDER_ID = "893850931182";
 
-    private IntentFilter mMessageIntentFilter;
-    private BroadcastReceiver mMessageUpdateReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            Bundle extras = intent.getExtras();
-            String msg = extras.getString("message");
-//            String author = extras.getString("author_name");
-//            long id = Long.getLong(msg);
-            Log.d(TAG, "got request " + msg);
-
-            // TODO: display prompt notification when doctor sends ping
-            if (msg != null) {
-                Log.d(TAG, "Received message: " + msg);
-//                dataSource.open();
-//                dataSource.deleteEntry(msg);
-//                dataSource.close();
-            }
-        }
-    };
+//    private IntentFilter mMessageIntentFilter;
+//    private BroadcastReceiver mMessageUpdateReceiver = new BroadcastReceiver() {
+//        @Override
+//        public void onReceive(Context context, Intent intent) {
+//            Bundle extras = intent.getExtras();
+//            String msg = extras.getString("message");
+////            String author = extras.getString("author_name");
+////            long id = Long.getLong(msg);
+//            Log.d(TAG, "got request " + msg);
+//
+//            // TODO: display prompt notification when doctor sends ping
+//            if (msg != null) {
+//                Log.d(TAG, "Received message: " + msg);
+////                dataSource.open();
+////                dataSource.deleteEntry(msg);
+////                dataSource.close();
+//            }
+//        }
+//    };
 
 
     private ListView listView;
@@ -125,9 +125,9 @@ public class MainActivity extends FragmentActivity implements ServiceConnection 
         // set up periodic notification requests
 //        SharedPreferences prefs = getSharedPreferences(SettingsActivity.SHARED_PREFERENCES_KEY, MODE_PRIVATE);
 
-        // set up intent filter
-        mMessageIntentFilter = new IntentFilter();
-        mMessageIntentFilter.addAction("GCM_NOTIFY");
+//        // set up intent filter
+//        mMessageIntentFilter = new IntentFilter();
+//        mMessageIntentFilter.addAction("GCM_NOTIFY");
 
         // set up references
         context = getApplicationContext();
@@ -212,29 +212,29 @@ public class MainActivity extends FragmentActivity implements ServiceConnection 
             }
         });
 
-        dataSource = new DataSource(this);
-        dataSource.open();
-        dataSource.deleteAllData();
-        List<ExerciseItem> entryList = ExerciseItem.generateItemList();
-        for (ExerciseItem item : entryList) {
-            dataSource.insert(item);
-        }
-        dataSource.close();
-
-        AsyncTask uploadTask = new AsyncTask<Object, Void, Void>() {
-            @Override
-            protected Void doInBackground(Object... params) {
-                try {
-                    Thread.sleep(10000);
-                    List<ExerciseItem> eList = (List<ExerciseItem>) params[0];
-                    HistoryUploader.updateHistory(context, eList, getRegistrationId(context));
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                }
-                return null;
-            }
-        };
-        uploadTask.execute((Object) entryList);
+//        dataSource = new DataSource(this);
+//        dataSource.open();
+//        dataSource.deleteAllData();
+//        List<ExerciseItem> entryList = ExerciseItem.generateItemList();
+//        for (ExerciseItem item : entryList) {
+//            dataSource.insert(item);
+//        }
+//        dataSource.close();
+//
+//        AsyncTask uploadTask = new AsyncTask<Object, Void, Void>() {
+//            @Override
+//            protected Void doInBackground(Object... params) {
+//                try {
+//                    Thread.sleep(10000);
+//                    List<ExerciseItem> eList = (List<ExerciseItem>) params[0];
+//                    HistoryUploader.updateHistory(context, eList, getRegistrationId(context));
+//                } catch (Exception ex) {
+//                    ex.printStackTrace();
+//                }
+//                return null;
+//            }
+//        };
+//        uploadTask.execute((Object) entryList);
 
     }
 
@@ -259,7 +259,7 @@ public class MainActivity extends FragmentActivity implements ServiceConnection 
     @Override
     protected void onResume() {
 
-        registerReceiver(mMessageUpdateReceiver, mMessageIntentFilter);
+//        registerReceiver(mMessageUpdateReceiver, mMessageIntentFilter);
         if (list != null)
             list.clear();
 
@@ -398,7 +398,7 @@ public class MainActivity extends FragmentActivity implements ServiceConnection 
 
     @Override
     protected void onPause() {
-        unregisterReceiver(mMessageUpdateReceiver);
+//        unregisterReceiver(mMessageUpdateReceiver);
         super.onPause();
     }
 
