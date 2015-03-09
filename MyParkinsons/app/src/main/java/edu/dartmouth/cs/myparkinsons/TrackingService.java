@@ -332,7 +332,7 @@ public class TrackingService extends Service implements SensorEventListener {
             Calendar old = Calendar.getInstance();
             old.setTimeInMillis(lastExerciseChangedTime);
 
-            if (c.get(Calendar.HOUR_OF_DAY) != old.get(Calendar.HOUR_OF_DAY)) {
+            if (c.get(Calendar.DAY_OF_YEAR) != old.get(Calendar.DAY_OF_YEAR)) {
                 if (isExercising) {
                     long time = c.getTimeInMillis();
                     long difference = time - lastExerciseChangedTime;
