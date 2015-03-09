@@ -283,6 +283,27 @@ public class TrackingService extends Service implements SensorEventListener {
             old.setTimeInMillis(lastExerciseChangedTime);
 
             if (c.get(Calendar.HOUR_OF_DAY) != old.get(Calendar.HOUR_OF_DAY)) {
+                if (isExercising) {
+                    long time = c.getTimeInMillis();
+                    long difference = time - lastExerciseChangedTime;
+
+
+                    dailyExerciseTime += difference;
+
+                    long previousTime = settingData.getLong(SettingsActivity.EXERCISE_TIME_KEY, 0);
+                    spEdit.putLong(SettingsActivity.EXERCISE_TIME_KEY, difference + previousTime);
+                    long date = settingData.getLong(SettingsActivity.CURRENT_DAY_KEY, 0);
+                    if (date == 0) {
+                        Calendar d = Calendar.getInstance();
+                        int day = d.get(Calendar.DAY_OF_MONTH);
+                        int month = d.get(Calendar.MONTH);
+                        int year = d.get(Calendar.YEAR);
+                        long theDate = year * 10000 + month * 100 + day;
+                        spEdit.putLong(SettingsActivity.CURRENT_DAY_KEY, theDate);
+
+                    }
+                    spEdit.commit();
+                }
                 //New day add to database and clear data from prefs
                 int total = settingData.getInt(SettingsActivity.TOTAL_SPEECH_KEY, 0);
                 int correct = settingData.getInt(SettingsActivity.CORRECT_SPEECH_KEY, 0);
