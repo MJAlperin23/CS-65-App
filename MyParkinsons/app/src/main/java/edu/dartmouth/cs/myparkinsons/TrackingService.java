@@ -296,7 +296,7 @@ public class TrackingService extends Service implements SensorEventListener {
             Calendar old = Calendar.getInstance();
             old.setTimeInMillis(lastExerciseChangedTime);
 
-            if (c.get(Calendar.HOUR_OF_DAY) != old.get(Calendar.HOUR_OF_DAY)) {
+            if (c.get(Calendar.MINUTE) != old.get(Calendar.MINUTE)) {
                 //New day add to database and clear data from prefs
                 int total = settingData.getInt(SettingsActivity.TOTAL_SPEECH_KEY, 0);
                 int correct = settingData.getInt(SettingsActivity.CORRECT_SPEECH_KEY, 0);
@@ -304,7 +304,7 @@ public class TrackingService extends Service implements SensorEventListener {
                 SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(appContext);
                 boolean allowDataInsert = prefs.getBoolean("store_data_toggle_switch", true);
 
-                long goalTime = (long) prefs.getInt(SettingsActivity.EXERCISE_TIME_KEY, 60);
+                long goalTime = Long.parseLong(prefs.getString(SettingsActivity.EXERCISE_TIME_KEY, "60"));
 
                 ExerciseItem item = new ExerciseItem(old, total, correct, dailyExerciseTime, goalTime);
                 dailyExerciseTime = 0;

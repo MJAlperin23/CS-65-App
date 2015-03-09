@@ -262,7 +262,7 @@ public class MainActivity extends FragmentActivity implements ServiceConnection 
 
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
 
-            long goalTime = (long) prefs.getInt(SettingsActivity.EXERCISE_TIME_KEY, 60);
+            long goalTime = Long.parseLong(prefs.getString(SettingsActivity.EXERCISE_TIME_KEY, "60"));
 
             items[i] = new ExerciseItem(c, totalSpeech, totalCorrect, walking, goalTime);
 //                      dataSource.insert(items[i]);
