@@ -9,9 +9,9 @@
     <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
 
-    <permission android:name="com.example.gcm.permission.C2D_MESSAGE"
+    <permission android:name="edu.dartmouth.cs.myparkinsons.permission.C2D_MESSAGE"
         android:protectionLevel="signature" />
-    <uses-permission android:name="com.example.gcm.permission.C2D_MESSAGE" />
+    <uses-permission android:name="edu.dartmouth.cs.myparkinsons.permission.C2D_MESSAGE" />
 
     <!--
  The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
@@ -82,6 +82,17 @@
             android:label="@string/app_name"
             android:screenOrientation="portrait">
         </activity>
+        <receiver
+            android:name=".GcmBroadcastReceiver"
+            android:permission="com.google.android.c2dm.permission.SEND" >
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+                <action android:name="com.google.android.c2dm.intent.REGISTRATION"/>
+                <category android:name="edu.dartmouth.cs.gcmdemo.android" />
+            </intent-filter>
+        </receiver>
+
+        <service android:name=".GCMIntentService" />
     </application>
 
 </manifest>
