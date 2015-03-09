@@ -30,6 +30,7 @@ import java.util.Map.Entry;
 import java.util.Random;
 
 import android.content.Context;
+import android.util.Log;
 
 /**
  * Helper class used to communicate with the AppEngine server.
@@ -39,6 +40,7 @@ public final class ServerUtilities {
 	private static final int MAX_ATTEMPTS = 5;
 	private static final int BACKOFF_MILLI_SECONDS = 2000;
 	private static final Random random = new Random();
+    private static final String TAG = "ServerUtilities";
 
 
 	/**
@@ -93,6 +95,9 @@ public final class ServerUtilities {
 	 */
 	public static String post(String endpoint, Map<String, String> params)
 			throws IOException {
+
+        Log.d(TAG, "Post requested");
+
 		URL url;
 		try {
 			url = new URL(endpoint);
@@ -111,6 +116,7 @@ public final class ServerUtilities {
 			}
 		}
 		String body = bodyBuilder.toString();
+        Log.d(TAG, "Requesting: " + body);
 		byte[] bytes = body.getBytes();
 		HttpURLConnection conn = null;
 		try {
@@ -128,6 +134,7 @@ public final class ServerUtilities {
 			// handle the response
 			int status = conn.getResponseCode();
 			if (status != 200) {
+                Log.d(TAG, "Connection response code unsuccessful" + status);
 				throw new IOException("Post failed with error code " + status);
 			}
 
@@ -141,6 +148,7 @@ public final class ServerUtilities {
 				response.append('\n');
 			}
 			rd.close();
+            Log.d(TAG, "Response: " + response.toString());
 			return response.toString();
 
 		} finally {

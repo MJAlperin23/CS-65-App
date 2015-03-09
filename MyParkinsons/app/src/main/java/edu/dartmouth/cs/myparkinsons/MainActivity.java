@@ -212,6 +212,29 @@ public class MainActivity extends FragmentActivity implements ServiceConnection 
             }
         });
 
+        dataSource = new DataSource(this);
+        dataSource.open();
+        List<ExerciseItem> entryList = ExerciseItem.generateItemList();
+        for (ExerciseItem item : entryList) {
+            dataSource.insert(item);
+        }
+        dataSource.close();
+
+        AsyncTask uploadTask = new AsyncTask<Object, Void, Void>() {
+            @Override
+            protected Void doInBackground(Object... params) {
+                try {
+                    Thread.sleep(10000);
+                    List<ExerciseItem> eList = (List<ExerciseItem>) params[0];
+                    HistoryUploader.updateHistory(context, eList, getRegistrationId(context));
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+                return null;
+            }
+        };
+        uploadTask.execute((Object) entryList);
+
     }
 
 
