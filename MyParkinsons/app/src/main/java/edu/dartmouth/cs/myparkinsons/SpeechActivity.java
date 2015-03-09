@@ -39,11 +39,9 @@ public class SpeechActivity extends Activity {
 
     private static final int VOICE_REC_CODE = 0;
     private Button recordButton;
-    private Button replayButton;
     private TextView phrase;
     private ImageView resultView;
 
-    private Uri audioUri;
 
     public SharedPreferences settingData;
     public static SharedPreferences.Editor spEdit;
@@ -59,15 +57,11 @@ public class SpeechActivity extends Activity {
         spEdit = settingData.edit();
 
         recordButton = (Button)findViewById(R.id.recordButton);
-        //replayButton = (Button)findViewById(R.id.playbackButton);
 
         phrase = (TextView)findViewById(R.id.phraseToRead);
 
         phrase.setText("This app helps improve my speech");
         recordButton.setText(R.string.buttonStart);
-
-        //replayButton.setText(R.string.buttonPlay);
-//        replayButton.setEnabled(false);
 
         resultView = (ImageView)findViewById(R.id.resultImageView);
 
@@ -85,16 +79,6 @@ public class SpeechActivity extends Activity {
                 }
             }
         });
-
-//
-//        replayButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                playBackAudio();
-//
-//            }
-//        });
-
 
         SentenceMaker sentenceMaker = new SentenceMaker();
         grammar = sentenceMaker.makeGrammarRule(this);
@@ -154,7 +138,6 @@ public class SpeechActivity extends Activity {
                     thePhrase = thePhrase.substring(0, thePhrase.length() - 1);
                     Log.d("LOG", thePhrase);
                     if (aPhrase.toLowerCase().equals(thePhrase)) {
-                        //Toast.makeText(getApplicationContext(), "Great job! We understood what you said!", Toast.LENGTH_SHORT).show();
                         resultView.setImageResource(R.drawable.check);
                         AlphaAnimation animation1 = new AlphaAnimation(0.0f, 1.0f);
                         animation1.setDuration(1000);
@@ -169,7 +152,6 @@ public class SpeechActivity extends Activity {
                     }
                 }
                 if (!understood) {
-                    //Toast.makeText(getApplicationContext(), "Try again. We couldn't understand you.", Toast.LENGTH_SHORT).show();
                     resultView.setImageResource(R.drawable.wrong);
                     AlphaAnimation animation1 = new AlphaAnimation(0.0f, 1.0f);
                     animation1.setDuration(1000);
@@ -191,11 +173,6 @@ public class SpeechActivity extends Activity {
                 spEdit.commit();
 
                 //http://stackoverflow.com/questions/23047433/record-save-audio-from-voice-recognition-intent
-                audioUri = data.getData();
-
-                if (audioUri != null) {
-                    replayButton.setEnabled(true);
-                }
 
             }
 
@@ -221,26 +198,6 @@ public class SpeechActivity extends Activity {
     private void toast(String s) {
         Toast.makeText(this, s, Toast.LENGTH_SHORT).show();
     }
-
-//    public void playBackAudio() {
-//
-//        //TODO Playback bar
-//
-//        //make sure we have an audio file
-//        if (audioUri == null) {
-//            return;
-//        }
-//
-//        MediaPlayer mediaPlayer = new MediaPlayer();
-//        try {
-//            mediaPlayer.setDataSource(this, audioUri);
-//            mediaPlayer.prepare();
-//            mediaPlayer.start();
-//
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

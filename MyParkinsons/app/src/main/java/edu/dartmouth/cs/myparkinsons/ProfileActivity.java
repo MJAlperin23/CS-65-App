@@ -68,29 +68,27 @@ public class ProfileActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
-        changePicButton = (Button)findViewById(R.id.changePhotoButton);
-        saveButton = (Button)findViewById(R.id.saveButton);
-        cancelButton = (Button)findViewById(R.id.cancelButton);
+        changePicButton = (Button) findViewById(R.id.changePhotoButton);
+        saveButton = (Button) findViewById(R.id.saveButton);
+        cancelButton = (Button) findViewById(R.id.cancelButton);
 
-        nameText = (EditText)findViewById(R.id.nameTextField);
-        emailText = (EditText)findViewById(R.id.emailTextField);
-        ageText = (EditText)findViewById(R.id.ageTextField);
-        cityText = (EditText)findViewById(R.id.cityTextField);
-        stateText = (EditText)findViewById(R.id.stateTextField);
+        nameText = (EditText) findViewById(R.id.nameTextField);
+        emailText = (EditText) findViewById(R.id.emailTextField);
+        ageText = (EditText) findViewById(R.id.ageTextField);
+        cityText = (EditText) findViewById(R.id.cityTextField);
+        stateText = (EditText) findViewById(R.id.stateTextField);
 
 
-        profilePic = (ImageView)findViewById(R.id.profileImageView);
+        profilePic = (ImageView) findViewById(R.id.profileImageView);
 
         loadUserData();
 
         //load saved image if there's saved instance state. Otherwise load the file from SD card
-        if (savedInstanceState != null)
-        {
+        if (savedInstanceState != null) {
             Uri uri_pic = savedInstanceState.getParcelable(URI_KEY);
             profilePic.setImageURI(uri_pic);
             profilePic.setImageBitmap((Bitmap) savedInstanceState.getParcelable("image"));
-        } else
-        {
+        } else {
             loadPicData(getString(R.string.profile_photo_file_name));
         }
 
@@ -138,13 +136,13 @@ public class ProfileActivity extends Activity {
     //Save image on device rotation
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        outState.putParcelable("image", ((BitmapDrawable)profilePic.getDrawable()).getBitmap());
+        outState.putParcelable("image", ((BitmapDrawable) profilePic.getDrawable()).getBitmap());
         super.onSaveInstanceState(outState);
 
     }
 
 
-    private void savePicData(){
+    private void savePicData() {
         // Commit all the changes into preference file
         // Save profile image into internal storage.
         profilePic.buildDrawingCache();
@@ -183,7 +181,6 @@ public class ProfileActivity extends Activity {
         preferencesEditor.putString(STATE_KEY, stateText.getText().toString());
 
 
-
         // Read which index the radio is checked.
 
         // edit this out and use as a debug example
@@ -203,7 +200,7 @@ public class ProfileActivity extends Activity {
 
 
     //load the user's data from shared preferences
-    private void loadUserData(){
+    private void loadUserData() {
 
         SharedPreferences preferences = getSharedPreferences(PREFERENCES_KEY, MODE_PRIVATE);
 
@@ -238,7 +235,7 @@ public class ProfileActivity extends Activity {
     }
 
     //load the profile picture from file
-    private void loadPicData(String filePath){
+    private void loadPicData(String filePath) {
         // Load profile photo from internal storage
         try {
             FileInputStream fis = openFileInput(filePath);
@@ -308,12 +305,11 @@ public class ProfileActivity extends Activity {
     }
 
     //Get the image from the intent and put it in imageView
-    private void setPicture(Intent data){
+    private void setPicture(Intent data) {
         Bundle extras = data.getExtras();
         Bitmap imageBitmap = (Bitmap) extras.get("data");
         profilePic.setImageBitmap(imageBitmap);
     }
-
 
 
     public void changePicDialogPressed(int index) {

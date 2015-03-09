@@ -21,7 +21,7 @@ public class SentenceMaker {
 
     private TextView text;
 
-    public HashMap<String, ArrayList<GrammarRule>>makeGrammarRule(Context context) {
+    public HashMap<String, ArrayList<GrammarRule>> makeGrammarRule(Context context) {
         HashMap<String, ArrayList<GrammarRule>> grammar = new HashMap<>();
 
         InputStream is = context.getResources().openRawResource(R.raw.englishfile);
@@ -31,7 +31,7 @@ public class SentenceMaker {
         String sCurrentLine;
         try {
             while ((sCurrentLine = bufferedReader.readLine()) != null) {
-                if (sCurrentLine.length() == 0 || sCurrentLine.substring(0,1).equals("#") || sCurrentLine.substring(0,1).equals("\n")) {
+                if (sCurrentLine.length() == 0 || sCurrentLine.substring(0, 1).equals("#") || sCurrentLine.substring(0, 1).equals("\n")) {
                     continue;
                 } else {
                     sCurrentLine.replace("\n", "");
@@ -123,30 +123,6 @@ public class SentenceMaker {
             ruleList.add(rule);
         }
     }
-
-//    private void makeSentence(final HashMap<String, ArrayList<GrammarRule>> grammar) {
-//        new AsyncTask<HashMap<String, ArrayList<GrammarRule>>, Void, String>() {
-//
-//            @Override
-//            protected String doInBackground(HashMap<String, ArrayList<GrammarRule>>... arg0) {
-//                ArrayList<GrammarRule> list = new ArrayList<>();
-//                getSentence(arg0[0], "S", list);
-//                StringBuilder builder = new StringBuilder();
-//                for (GrammarRule rule : list) {
-//                    builder.append(rule.terminal);
-//                    builder.append(" ");
-//
-//                }
-//
-//                return builder.toString();
-//            }
-//
-//            @Override
-//            protected void onPostExecute(String res) {
-//                text.setText(res);
-//            }
-//        }.execute(grammar);
-//    }
 
     public class GrammarRule {
 

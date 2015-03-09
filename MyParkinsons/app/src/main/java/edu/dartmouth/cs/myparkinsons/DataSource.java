@@ -18,7 +18,10 @@ public class DataSource {
     private DbHelper dbHelper;
     private static final String TAG = "DataSource";
 
-    public DataSource(Context context){dbHelper = new DbHelper(context);};
+    public DataSource(Context context) {
+        dbHelper = new DbHelper(context);
+    }
+
 
     public void open() throws SQLException {
         database = dbHelper.getWritableDatabase();
@@ -28,7 +31,7 @@ public class DataSource {
         dbHelper.close();
     }
 
-    public long insert(ExerciseItem item){
+    public long insert(ExerciseItem item) {
         ContentValues values = new ContentValues();
         values.put(DbHelper.COLUMN_DATE, item.getDate().getTimeInMillis());
         values.put(DbHelper.COLUMN_EXERCISE_TIME, item.getExerciseTime());
@@ -36,13 +39,14 @@ public class DataSource {
         values.put(DbHelper.COLUMN_SPEECH_CORRECT, item.getSpeechCorrectCount());
         values.put(DbHelper.COLUMN_EXERCISE_GOAL_TIME, item.getExerciseGoalTime());
 
-        long id = database.insert(DbHelper.TABLE,null,values);
+        long id = database.insert(DbHelper.TABLE, null, values);
         item.setId(id);
         return id;
     }
-    public ExerciseItem fetchItemByIndex(long id){
+
+    public ExerciseItem fetchItemByIndex(long id) {
         ExerciseItem item;
-        Cursor cursor = database.query(DbHelper.TABLE, DbHelper.allColumns, DbHelper.COLUMN_ID + " = " +id,null,null,null,null);
+        Cursor cursor = database.query(DbHelper.TABLE, DbHelper.allColumns, DbHelper.COLUMN_ID + " = " + id, null, null, null, null);
         cursor.moveToFirst();
         if (cursor.isAfterLast()) {
             return null;
@@ -53,7 +57,7 @@ public class DataSource {
     }
 
 
-    public List<ExerciseItem> fetchItems(){
+    public List<ExerciseItem> fetchItems() {
         List<ExerciseItem> items = new ArrayList<ExerciseItem>();
         if (!database.isOpen()) {
             database = dbHelper.getWritableDatabase();
@@ -69,11 +73,13 @@ public class DataSource {
         cursor.close();
         return items;
     }
-    public void removeItem(long id){
-        database.delete(DbHelper.TABLE,DbHelper.COLUMN_ID + " = " + id, null);
+
+    public void removeItem(long id) {
+        database.delete(DbHelper.TABLE, DbHelper.COLUMN_ID + " = " + id, null);
     }
+
     private ExerciseItem cursorToExerciseItem(Cursor cursor) {
-        long id =  cursor.getLong(cursor.getColumnIndex(DbHelper.COLUMN_ID));
+        long id = cursor.getLong(cursor.getColumnIndex(DbHelper.COLUMN_ID));
         long time = cursor.getLong(cursor.getColumnIndex(DbHelper.COLUMN_EXERCISE_TIME));
         int speechTotal = cursor.getInt(cursor.getColumnIndex(DbHelper.COLUMN_SPEECH_DONE));
         int speechCorrect = cursor.getInt(cursor.getColumnIndex(DbHelper.COLUMN_SPEECH_CORRECT));
@@ -94,7 +100,7 @@ public class DataSource {
         List<ExerciseItem> itemsList = fetchItems();
 
         open();
-        for(ExerciseItem entry: itemsList) {
+        for (ExerciseItem entry : itemsList) {
             removeItem(entry.getId());
         }
         close();
