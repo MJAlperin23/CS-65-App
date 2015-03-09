@@ -124,11 +124,9 @@ public class DataSource {
 
         List<ExerciseItem> itemsList = fetchItems();
 
-        open();
         for (ExerciseItem entry : itemsList) {
             removeItem(entry.getId());
         }
-        close();
     }
 
     /**

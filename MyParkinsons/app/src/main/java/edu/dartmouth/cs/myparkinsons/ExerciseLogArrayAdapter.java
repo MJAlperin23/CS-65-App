@@ -56,12 +56,12 @@ public class ExerciseLogArrayAdapter extends ArrayAdapter<ExerciseItem> {
             CircleButton speechButton = (CircleButton) row.findViewById(R.id.speech_button_id);
 
             // for debug/demo purposes
-            CircleButton fillButton = (CircleButton) row.findViewById(R.id.fill_button_id);
+//            CircleButton fillButton = (CircleButton) row.findViewById(R.id.fill_button_id);
 //            fillButton.setOnClickListener(new View.OnClickListener() {
 //                @Override
 //                public void onClick(View v) {
-//
-//                    DataSource dataSource = new DataSource(context);
+////
+//                    final DataSource dataSource = new DataSource(context);
 //                    dataSource.open();
 //                    List<ExerciseItem> entryList = ExerciseItem.generateItemList();
 //                    for (ExerciseItem item : entryList) {
