@@ -55,62 +55,6 @@ public class ExerciseLogArrayAdapter extends ArrayAdapter<ExerciseItem> {
             CircleButton exerciseButton = (CircleButton) row.findViewById(R.id.exercise_button_id);
             CircleButton speechButton = (CircleButton) row.findViewById(R.id.speech_button_id);
 
-            // for debug/demo purposes
-//            CircleButton fillButton = (CircleButton) row.findViewById(R.id.fill_button_id);
-//            fillButton.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-////
-//                    final DataSource dataSource = new DataSource(context);
-//                    dataSource.open();
-//                    List<ExerciseItem> entryList = ExerciseItem.generateItemList();
-//                    for (ExerciseItem item : entryList) {
-//                        dataSource.insert(item);
-//                    }
-//                    dataSource.close();
-//
-//                    AsyncTask uploadTask = new AsyncTask<Object, Void, Void>() {
-//                        @Override
-//                        protected Void doInBackground(Object... params) {
-//                            try {
-//                                List<ExerciseItem> eList = (List<ExerciseItem>) params[0];
-//                                HistoryUploader.updateHistory(context, eList, getRegistrationId());
-//                            } catch (Exception ex) {
-//                                ex.printStackTrace();
-//                            }
-//                            return null;
-//                        }
-//                    };
-//                    uploadTask.execute((Object) entryList);
-
-                    // update history
-//                    final
-//                    dataSource.insert(ExerciseItem.generateItem());
-
-//                    AsyncTask uploadTask = new AsyncTask<Object, Void, Void>() {
-//                        @Override
-//                        protected Void doInBackground(Object... params) {
-//
-//                            DataSource dataSource = new DataSource(context);
-//                            dataSource.open();
-//
-//                            List<ExerciseItem> entryList = (List<ExerciseItem>) params[0];
-//                            for (ExerciseItem item : entryList) {
-//                                dataSource.insert(item);
-//                                Log.d("ArrayAdapter", "Inserted item with id: " + item.getId());
-//                                try {
-//                                    Thread.sleep(1000);
-//                                } catch (InterruptedException e) {
-//                                    e.printStackTrace();
-//                                }
-//                            }
-//
-//                            dataSource.close();
-
-//                        }
-//                }
-//            });
-
             exerciseButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -176,8 +120,6 @@ public class ExerciseLogArrayAdapter extends ArrayAdapter<ExerciseItem> {
 
             }
         } else {
-
-
             ExerciseItem item = data.get((data.size() - 1) - position);
 
             if (item == null) {

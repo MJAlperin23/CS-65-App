@@ -94,24 +94,25 @@ public class MainActivity extends FragmentActivity implements ServiceConnection 
      */
     public String SENDER_ID = "893850931182";
 
-//    private IntentFilter mMessageIntentFilter;
-//    private BroadcastReceiver mMessageUpdateReceiver = new BroadcastReceiver() {
-//        @Override
-//        public void onReceive(Context context, Intent intent) {
-//            Bundle extras = intent.getExtras();
-//            String msg = extras.getString("message");
-////            long id = Long.getLong(msg);
-//            Log.d(TAG, "got request " + msg);
-//
-//            // TODO: display prompt notification when doctor sends ping
-//            if (msg != null) {
-//                Log.d(TAG, "Received message: " + msg);
-////                dataSource.open();
-////                dataSource.deleteEntry(msg);
-////                dataSource.close();
-//            }
-//        }
-//    };
+    private IntentFilter mMessageIntentFilter;
+    private BroadcastReceiver mMessageUpdateReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Bundle extras = intent.getExtras();
+            String msg = extras.getString("message");
+//            String author = extras.getString("author_name");
+//            long id = Long.getLong(msg);
+            Log.d(TAG, "got request " + msg);
+
+            // TODO: display prompt notification when doctor sends ping
+            if (msg != null) {
+                Log.d(TAG, "Received message: " + msg);
+//                dataSource.open();
+//                dataSource.deleteEntry(msg);
+//                dataSource.close();
+            }
+        }
+    };
 
 
     private ListView listView;
@@ -125,8 +126,8 @@ public class MainActivity extends FragmentActivity implements ServiceConnection 
 //        SharedPreferences prefs = getSharedPreferences(SettingsActivity.SHARED_PREFERENCES_KEY, MODE_PRIVATE);
 
         // set up intent filter
-//        mMessageIntentFilter = new IntentFilter();
-//        mMessageIntentFilter.addAction("GCM_NOTIFY");
+        mMessageIntentFilter = new IntentFilter();
+        mMessageIntentFilter.addAction("GCM_NOTIFY");
 
         // set up references
         context = getApplicationContext();
@@ -157,7 +158,6 @@ public class MainActivity extends FragmentActivity implements ServiceConnection 
             public boolean onTouch(View v, MotionEvent event) {
                 View view = getViewByPosition(1, listView);
                 ViewFlipper viewFlipper = (ViewFlipper) view.findViewById(R.id.viewFlipper);
-
 
                 switch (event.getAction()) {
                     // when user first touches the screen to swap
@@ -212,29 +212,29 @@ public class MainActivity extends FragmentActivity implements ServiceConnection 
             }
         });
 
-//        dataSource = new DataSource(this);
-//        dataSource.open();
-//        dataSource.deleteAllData();
-//        List<ExerciseItem> entryList = ExerciseItem.generateItemList();
-//        for (ExerciseItem item : entryList) {
-//            dataSource.insert(item);
-//        }
-//        dataSource.close();
-//
-//        AsyncTask uploadTask = new AsyncTask<Object, Void, Void>() {
-//            @Override
-//            protected Void doInBackground(Object... params) {
-//                try {
-//                    Thread.sleep(10000);
-//                    List<ExerciseItem> eList = (List<ExerciseItem>) params[0];
-//                    HistoryUploader.updateHistory(context, eList, getRegistrationId(context));
-//                } catch (Exception ex) {
-//                    ex.printStackTrace();
-//                }
-//                return null;
-//            }
-//        };
-//        uploadTask.execute((Object) entryList);
+        dataSource = new DataSource(this);
+        dataSource.open();
+        dataSource.deleteAllData();
+        List<ExerciseItem> entryList = ExerciseItem.generateItemList();
+        for (ExerciseItem item : entryList) {
+            dataSource.insert(item);
+        }
+        dataSource.close();
+
+        AsyncTask uploadTask = new AsyncTask<Object, Void, Void>() {
+            @Override
+            protected Void doInBackground(Object... params) {
+                try {
+                    Thread.sleep(10000);
+                    List<ExerciseItem> eList = (List<ExerciseItem>) params[0];
+                    HistoryUploader.updateHistory(context, eList, getRegistrationId(context));
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+                return null;
+            }
+        };
+        uploadTask.execute((Object) entryList);
 
     }
 
@@ -259,33 +259,33 @@ public class MainActivity extends FragmentActivity implements ServiceConnection 
     @Override
     protected void onResume() {
 
-//        registerReceiver(mMessageUpdateReceiver, mMessageIntentFilter);
+        registerReceiver(mMessageUpdateReceiver, mMessageIntentFilter);
         if (list != null)
             list.clear();
 
-        ExerciseItem[] items = new ExerciseItem[10];
+//        ExerciseItem[] items = new ExerciseItem[10];
         DataSource dataSource = new DataSource(this);
         dataSource.open();
 
-        Calendar c = Calendar.getInstance();
-        int currDay = c.get(Calendar.DAY_OF_YEAR);
-
-        for (int i = 0; i < 10; i++) {
-            Random rand = new Random();
-            long walking = Math.abs(rand.nextLong()) % 3600000;
-
-            c.set(Calendar.DAY_OF_YEAR, currDay - 10 + i);
-
-            int totalSpeech = (Math.abs(rand.nextInt()) % 12) + 1;
-            int totalCorrect = Math.abs(rand.nextInt()) % totalSpeech;
-
-            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-
-            long goalTime = Long.parseLong(prefs.getString(SettingsActivity.EXERCISE_TIME_KEY, "60"));
-
-            items[i] = new ExerciseItem(c, totalSpeech, totalCorrect, walking, goalTime);
-//                      dataSource.insert(items[i]);
-        }
+//        Calendar c = Calendar.getInstance();
+//        int currDay = c.get(Calendar.DAY_OF_YEAR);
+//
+//        for (int i = 0; i < 10; i++) {
+//            Random rand = new Random();
+//            long walking = Math.abs(rand.nextLong()) % 3600000;
+//
+//            c.set(Calendar.DAY_OF_YEAR, currDay - 10 + i);
+//
+//            int totalSpeech = (Math.abs(rand.nextInt()) % 12) + 1;
+//            int totalCorrect = Math.abs(rand.nextInt()) % totalSpeech;
+//
+//            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+//
+//            long goalTime = Long.parseLong(prefs.getString(SettingsActivity.EXERCISE_TIME_KEY, "60"));
+//
+//            items[i] = new ExerciseItem(c, totalSpeech, totalCorrect, walking, goalTime);
+////                      dataSource.insert(items[i]);
+//        }
 
 
         //Insert two null items because the first two cards in the list are not history stuff
@@ -301,28 +301,6 @@ public class MainActivity extends FragmentActivity implements ServiceConnection 
 
         super.onResume();
     }
-
-//    private void uploadData() {
-//
-//        dataSource = new DataSource(this);
-//        dataSource.open();
-//        List<ExerciseItem> entryList = dataSource.fetchItems();
-//        dataSource.close();
-//
-//        AsyncTask uploadTask = new AsyncTask<List, Void, Void>() {
-//            @Override
-//            protected Void doInBackground(List... params) {
-//
-//                List<ExerciseItem> entryList = (List<ExerciseItem>) params[0];
-//                HistoryUploader.updateHistory(context, entryList, regId);
-//
-//                Void v = null;
-//                return v;
-//            }
-//        };
-//
-//        uploadTask.execute(entryList);
-//    }
 
     private void refreshSpeechView(View view) {
         CircleProgressBar bar = (CircleProgressBar) view.findViewById(R.id.custom_progressBar2);
@@ -420,7 +398,7 @@ public class MainActivity extends FragmentActivity implements ServiceConnection 
 
     @Override
     protected void onPause() {
-//        unregisterReceiver(mMessageUpdateReceiver);
+        unregisterReceiver(mMessageUpdateReceiver);
         super.onPause();
     }
 
