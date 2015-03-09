@@ -332,8 +332,6 @@ public class TrackingService extends Service implements SensorEventListener {
                     long time = c.getTimeInMillis();
                     long difference = time - lastExerciseChangedTime;
 
-
-
                     dailyExerciseTime += difference;
 
                     long previousTime = settingData.getLong(SettingsActivity.EXERCISE_TIME_KEY, 0);

@@ -152,8 +152,6 @@ public class MainActivity extends FragmentActivity implements ServiceConnection 
             doBindService();
         }
 
-
-
         list = new ArrayList<>();
         listView = (ListView) findViewById(R.id.card_listView);
 
@@ -612,6 +610,7 @@ public class MainActivity extends FragmentActivity implements ServiceConnection 
             @Override
             protected void onPostExecute(String msg) {
                 Log.i(TAG, "gcm register msg: " + msg);
+
             }
         }.execute(null, null, null);
     }

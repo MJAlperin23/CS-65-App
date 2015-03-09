@@ -2,9 +2,11 @@ package edu.dartmouth.cs.myparkinsons;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.preference.PreferenceManager;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -17,11 +19,17 @@ public class DataSource {
     private SQLiteDatabase database;
     private DbHelper dbHelper;
     private static final String TAG = "DataSource";
+    private Context appContext;
+    private String regId;
 
-    public DataSource(Context context){dbHelper = new DbHelper(context);};
+    public DataSource(Context context){
+        dbHelper = new DbHelper(context);
+        appContext = context;
+    };
 
     public void open() throws SQLException {
         database = dbHelper.getWritableDatabase();
+        regId = getRegistrationId();
     }
 
     public void close() {
@@ -38,6 +46,10 @@ public class DataSource {
 
         long id = database.insert(DbHelper.TABLE,null,values);
         item.setId(id);
+
+        // upload item to server
+        HistoryUploader.insertItem(appContext, item, regId);
+
         return id;
     }
     public ExerciseItem fetchItemByIndex(long id){
@@ -98,5 +110,41 @@ public class DataSource {
             removeItem(entry.getId());
         }
         close();
+    }
+
+    /**
+     * Gets the current registration ID for application on GCM service.
+     * <p>
+     * If result is empty, the app needs to register.
+     *
+     * @return registration ID, or empty string if there is no existing
+     *         registration ID.
+     */
+    private String getRegistrationId() {
+        final SharedPreferences prefs = getGCMPreferences();
+        String registrationId = prefs.getString(MainActivity.PROPERTY_REG_ID, "");
+        if (registrationId.isEmpty()) {
+            return "";
+        }
+        // Check if app was updated; if so, it must clear the registration ID
+        // since the existing regID is not guaranteed to work with the new
+        // app version.
+//        int registeredVersion = prefs.getInt(PROPERTY_APP_VERSION,
+//                Integer.MIN_VALUE);
+//        int currentVersion = getAppVersion(context);
+//        if (registeredVersion != currentVersion) {
+//            return "";
+//        }
+        return registrationId;
+    }
+
+    /**
+     * @return Application's {@code SharedPreferences}.
+     */
+    private SharedPreferences getGCMPreferences() {
+        // This sample app persists the registration ID in shared preferences,
+        // but
+        // how you store the regID in your app is up to you.
+        return PreferenceManager.getDefaultSharedPreferences(appContext);
     }
 }

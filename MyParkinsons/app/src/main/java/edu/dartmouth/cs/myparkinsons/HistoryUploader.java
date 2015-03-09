@@ -39,24 +39,39 @@ public class HistoryUploader {
 
     }
 
-    private static JSONArray listToJsonArray(List<ExerciseItem> entryList) throws JSONException {
+    public static void insertItem(Context context, ExerciseItem item, String regId) {
+        try {
+            JSONObject jsonObject = itemToJsonObject(item);
+            Map<String, String> map = new HashMap<>();
+            map.put("entry", jsonObject.toString());
+            map.put("regId", regId);
+            String endpoint = context.getString(R.string.server_addr) + "append.do";
+            String result = ServerUtilities.post(endpoint, map);
+            Log.d("HistoryUploader", result);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
+    private static JSONArray listToJsonArray(List<ExerciseItem> entryList) throws JSONException {
         JSONArray jsonArray = new JSONArray();
 
         int len = entryList.size();
         for (int i = 0; i < len; i++) {
             ExerciseItem entry = entryList.get(i);
-
-            JSONObject j = new JSONObject();
-            j.put(FIELD_ID, entry.getId());
-            j.put(FIELD_DATE, entry.getDayOfMonth());
-            j.put(FIELD_MONTH, entry.getMonthOfYear());
-            j.put(FIELD_YEAR, entry.getYear());
-            jsonArray.put(j);
-
+            jsonArray.put(itemToJsonObject(entry));
         }
 
         return jsonArray;
+    }
+
+    private static JSONObject itemToJsonObject(ExerciseItem entry) throws JSONException {
+        JSONObject j = new JSONObject();
+        j.put(FIELD_ID, entry.getId());
+        j.put(FIELD_DATE, entry.getDayOfMonth());
+        j.put(FIELD_MONTH, entry.getMonthOfYear());
+        j.put(FIELD_YEAR, entry.getYear());
+        return j;
     }
 
 }
