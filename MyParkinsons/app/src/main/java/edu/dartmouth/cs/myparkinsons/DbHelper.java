@@ -13,6 +13,7 @@ public class DbHelper extends SQLiteOpenHelper {
     public static final String COLUMN_ID = "_id";
     public static final String COLUMN_DATE = "date";
     public static final String COLUMN_EXERCISE_TIME = "exercise_time";
+    public static final String COLUMN_EXERCISE_GOAL_TIME = "exercise_goal_time";
     public static final String COLUMN_SPEECH_DONE = "speech_done";
     public static final String COLUMN_SPEECH_CORRECT = "speech_correct";
     private static final String DATABASE_NAME = "exerciseItems.db";
@@ -25,6 +26,7 @@ public class DbHelper extends SQLiteOpenHelper {
             + COLUMN_ID + " integer primary key autoincrement, "
             + COLUMN_DATE + " datetime not null, "
             + COLUMN_EXERCISE_TIME + " integer, "
+            + COLUMN_EXERCISE_GOAL_TIME + " integer, "
             + COLUMN_SPEECH_DONE + " integer, "
             + COLUMN_SPEECH_CORRECT + " integer );";
 
