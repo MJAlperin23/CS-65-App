@@ -260,16 +260,19 @@ public class MainActivity extends FragmentActivity implements ServiceConnection 
             int totalSpeech = (Math.abs(rand.nextInt()) % 12) + 1;
             int totalCorrect = Math.abs(rand.nextInt()) % totalSpeech;
 
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
 
-            items[i] = new ExerciseItem(c, totalSpeech, totalCorrect, walking);
+            long goalTime = (long) prefs.getInt(SettingsActivity.EXERCISE_TIME_KEY, 60);
+
+            items[i] = new ExerciseItem(c, totalSpeech, totalCorrect, walking, goalTime);
 //                      dataSource.insert(items[i]);
         }
 
 
         //Insert two null items because the first two cards in the list are not history stuff
         list.addAll(dataSource.fetchItems());
-        list.add(new ExerciseItem(null, 0, 0, 0));
-        list.add(new ExerciseItem(null, 0, 0, 0));
+        list.add(new ExerciseItem(null, 0, 0, 0, 60));
+        list.add(new ExerciseItem(null, 0, 0, 0, 60));
 
         dataSource.close();
         adapter = new ExerciseLogArrayAdapter(this, R.layout.exercise_log_row, list);

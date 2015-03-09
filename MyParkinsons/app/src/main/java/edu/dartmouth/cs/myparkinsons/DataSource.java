@@ -34,6 +34,7 @@ public class DataSource {
         values.put(DbHelper.COLUMN_EXERCISE_TIME, item.getExerciseTime());
         values.put(DbHelper.COLUMN_SPEECH_DONE, item.getSpeechDoneCount());
         values.put(DbHelper.COLUMN_SPEECH_CORRECT, item.getSpeechCorrectCount());
+        values.put(DbHelper.COLUMN_EXERCISE_GOAL_TIME, item.getExerciseGoalTime());
 
         long id = database.insert(DbHelper.TABLE,null,values);
         item.setId(id);
@@ -77,11 +78,12 @@ public class DataSource {
         int speechTotal = cursor.getInt(cursor.getColumnIndex(DbHelper.COLUMN_SPEECH_DONE));
         int speechCorrect = cursor.getInt(cursor.getColumnIndex(DbHelper.COLUMN_SPEECH_CORRECT));
         long date = cursor.getLong(cursor.getColumnIndex(DbHelper.COLUMN_DATE));
+        long goalTime = cursor.getLong(cursor.getColumnIndex(DbHelper.COLUMN_EXERCISE_GOAL_TIME));
 
         Calendar cal = Calendar.getInstance();
         cal.setTimeInMillis(date);
 
-        ExerciseItem item = new ExerciseItem(cal, speechTotal, speechCorrect, time);
+        ExerciseItem item = new ExerciseItem(cal, speechTotal, speechCorrect, time, goalTime);
         item.setId(id);
 
         return item;
