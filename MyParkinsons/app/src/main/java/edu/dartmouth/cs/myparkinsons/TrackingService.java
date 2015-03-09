@@ -296,7 +296,7 @@ public class TrackingService extends Service implements SensorEventListener {
             Calendar old = Calendar.getInstance();
             old.setTimeInMillis(lastExerciseChangedTime);
 
-            if (c.get(Calendar.MINUTE) != old.get(Calendar.MINUTE)) {
+            if (c.get(Calendar.HOUR_OF_DAY) != old.get(Calendar.HOUR_OF_DAY)) {
                 //New day add to database and clear data from prefs
                 int total = settingData.getInt(SettingsActivity.TOTAL_SPEECH_KEY, 0);
                 int correct = settingData.getInt(SettingsActivity.CORRECT_SPEECH_KEY, 0);
