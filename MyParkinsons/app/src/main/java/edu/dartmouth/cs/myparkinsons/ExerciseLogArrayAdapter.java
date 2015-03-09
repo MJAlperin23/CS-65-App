@@ -57,17 +57,31 @@ public class ExerciseLogArrayAdapter extends ArrayAdapter<ExerciseItem> {
 
             // for debug/demo purposes
             CircleButton fillButton = (CircleButton) row.findViewById(R.id.fill_button_id);
-            fillButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                    DataSource dataSource = new DataSource(context);
-                    dataSource.open();
-                    List<ExerciseItem> entryList = ExerciseItem.generateItemList();
-                    for (ExerciseItem item : entryList) {
-                        dataSource.insert(item);
-                    }
-                    dataSource.close();
+//            fillButton.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//
+//                    DataSource dataSource = new DataSource(context);
+//                    dataSource.open();
+//                    List<ExerciseItem> entryList = ExerciseItem.generateItemList();
+//                    for (ExerciseItem item : entryList) {
+//                        dataSource.insert(item);
+//                    }
+//                    dataSource.close();
+//
+//                    AsyncTask uploadTask = new AsyncTask<Object, Void, Void>() {
+//                        @Override
+//                        protected Void doInBackground(Object... params) {
+//                            try {
+//                                List<ExerciseItem> eList = (List<ExerciseItem>) params[0];
+//                                HistoryUploader.updateHistory(context, eList, getRegistrationId());
+//                            } catch (Exception ex) {
+//                                ex.printStackTrace();
+//                            }
+//                            return null;
+//                        }
+//                    };
+//                    uploadTask.execute((Object) entryList);
 
                     // update history
 //                    final
@@ -94,8 +108,8 @@ public class ExerciseLogArrayAdapter extends ArrayAdapter<ExerciseItem> {
 //                            dataSource.close();
 
 //                        }
-                }
-            });
+//                }
+//            });
 
             exerciseButton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -220,5 +234,43 @@ public class ExerciseLogArrayAdapter extends ArrayAdapter<ExerciseItem> {
 
         return row;
     }
+
+    /**
+     * Gets the current registration ID for application on GCM service.
+     * <p>
+     * If result is empty, the app needs to register.
+     *
+     * @return registration ID, or empty string if there is no existing
+     *         registration ID.
+     */
+    private String getRegistrationId() {
+        final SharedPreferences prefs = getGCMPreferences();
+        String registrationId = prefs.getString(MainActivity.PROPERTY_REG_ID, "");
+        if (registrationId.isEmpty()) {
+            return "";
+        }
+        // Check if app was updated; if so, it must clear the registration ID
+        // since the existing regID is not guaranteed to work with the new
+        // app version.
+//        int registeredVersion = prefs.getInt(PROPERTY_APP_VERSION,
+//                Integer.MIN_VALUE);
+//        int currentVersion = getAppVersion(context);
+//        if (registeredVersion != currentVersion) {
+//            return "";
+//        }
+        return registrationId;
+    }
+
+    /**
+     * @return Application's {@code SharedPreferences}.
+     */
+    private SharedPreferences getGCMPreferences() {
+        // This sample app persists the registration ID in shared preferences,
+        // but
+        // how you store the regID in your app is up to you.
+        return PreferenceManager.getDefaultSharedPreferences(context);
+    }
 }
+
+
 

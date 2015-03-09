@@ -32,7 +32,7 @@ public class DataSource {
 
     public void open() throws SQLException {
         database = dbHelper.getWritableDatabase();
-        regId = getRegistrationId();
+//        regId = getRegistrationId();
     }
 
     public void close() {
@@ -51,21 +51,21 @@ public class DataSource {
         item.setId(id);
         Log.d("DataSource", "Inserted item id: " + item.getId());
 
-        // upload item to server
-        AsyncTask uploadTask = new AsyncTask<Object, Void, Void>() {
-            @Override
-            protected Void doInBackground(Object... params) {
-                ExerciseItem item = (ExerciseItem) params[0];
-                try {
-                    HistoryUploader.insertItem(appContext, item, regId);
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                }
-                return null;
-            }
-        };
+//        // upload item to server
+//        AsyncTask uploadTask = new AsyncTask<Object, Void, Void>() {
+//            @Override
+//            protected Void doInBackground(Object... params) {
+//                ExerciseItem item = (ExerciseItem) params[0];
+//                try {
+//                    HistoryUploader.insertItem(appContext, item, regId);
+//                } catch (Exception ex) {
+//                    ex.printStackTrace();
+//                }
+//                return null;
+//            }
+//        };
 
-        uploadTask.execute((Object) item);
+//        uploadTask.execute((Object) item);
         return id;
     }
 

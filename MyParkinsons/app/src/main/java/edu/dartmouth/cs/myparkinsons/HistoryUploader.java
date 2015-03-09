@@ -47,7 +47,7 @@ public class HistoryUploader {
             map.put("regId", regId);
             String endpoint = context.getString(R.string.server_addr) + "append.do";
             String result = ServerUtilities.post(endpoint, map);
-            Log.d("HistoryUploader", result);
+            Log.d("HistoryUploader", "Result: " + result);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -71,7 +71,12 @@ public class HistoryUploader {
         j.put(FIELD_DATE, entry.getDayOfMonth());
         j.put(FIELD_MONTH, entry.getMonthOfYear());
         j.put(FIELD_YEAR, entry.getYear());
+        j.put(FIELD_EXERCISE_TIME, entry.getExerciseTime());
+        j.put(FIELD_SPEECH_ATTEMPTS, entry.getSpeechDoneCount());
+        j.put(FIELD_SPEECH_CORRECT, entry.getSpeechCorrectCount());
         return j;
     }
+
+
 
 }
