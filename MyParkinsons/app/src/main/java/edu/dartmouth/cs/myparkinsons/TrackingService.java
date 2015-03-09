@@ -304,7 +304,7 @@ public class TrackingService extends Service implements SensorEventListener {
                 SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(appContext);
                 boolean allowDataInsert = prefs.getBoolean("store_data_toggle_switch", true);
 
-                long goalTime = (long) prefs.getInt(SettingsActivity.EXERCISE_TIME_KEY, 60);
+                long goalTime = Long.parseLong(prefs.getString(SettingsActivity.EXERCISE_TIME_KEY, "60"));
 
                 ExerciseItem item = new ExerciseItem(old, total, correct, dailyExerciseTime, goalTime);
                 dailyExerciseTime = 0;

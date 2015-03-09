@@ -126,8 +126,8 @@ public class ExerciseLogArrayAdapter extends ArrayAdapter<ExerciseItem> {
                 return row;
             }
 
-            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-            int goal = Integer.parseInt(prefs.getString("exercise_time_key", "60"));
+
+            int goal = (int) item.getExerciseGoalTime();
 
             long exerciseMillis = item.getExerciseTime();
             long minutes = (long) (exerciseMillis * 1.66667e-5);
