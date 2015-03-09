@@ -94,8 +94,7 @@ public class MainActivity extends FragmentActivity implements ServiceConnection 
      * Substitute you own sender ID here. This is the project number you got
      * from the API Console.
      */
-    // TODO: update sender ID
-    private String SENDER_ID = "248518763081";
+    public String SENDER_ID = "893850931182";
 
     private IntentFilter mMessageIntentFilter;
     private BroadcastReceiver mMessageUpdateReceiver = new BroadcastReceiver() {
