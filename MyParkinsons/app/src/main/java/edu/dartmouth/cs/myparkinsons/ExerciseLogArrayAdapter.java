@@ -4,9 +4,11 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -18,6 +20,7 @@ import android.widget.TextView;
 import android.widget.ViewFlipper;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -51,6 +54,48 @@ public class ExerciseLogArrayAdapter extends ArrayAdapter<ExerciseItem> {
 
             CircleButton exerciseButton = (CircleButton) row.findViewById(R.id.exercise_button_id);
             CircleButton speechButton = (CircleButton) row.findViewById(R.id.speech_button_id);
+
+            // for debug/demo purposes
+            CircleButton fillButton = (CircleButton) row.findViewById(R.id.fill_button_id);
+            fillButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    DataSource dataSource = new DataSource(context);
+                    dataSource.open();
+                    List<ExerciseItem> entryList = ExerciseItem.generateItemList();
+                    for (ExerciseItem item : entryList) {
+                        dataSource.insert(item);
+                    }
+                    dataSource.close();
+
+                    // update history
+//                    final
+//                    dataSource.insert(ExerciseItem.generateItem());
+
+//                    AsyncTask uploadTask = new AsyncTask<Object, Void, Void>() {
+//                        @Override
+//                        protected Void doInBackground(Object... params) {
+//
+//                            DataSource dataSource = new DataSource(context);
+//                            dataSource.open();
+//
+//                            List<ExerciseItem> entryList = (List<ExerciseItem>) params[0];
+//                            for (ExerciseItem item : entryList) {
+//                                dataSource.insert(item);
+//                                Log.d("ArrayAdapter", "Inserted item with id: " + item.getId());
+//                                try {
+//                                    Thread.sleep(1000);
+//                                } catch (InterruptedException e) {
+//                                    e.printStackTrace();
+//                                }
+//                            }
+//
+//                            dataSource.close();
+
+//                        }
+                }
+            });
 
             exerciseButton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -96,7 +141,6 @@ public class ExerciseLogArrayAdapter extends ArrayAdapter<ExerciseItem> {
                 minutesLabel.setText("Minutes");
             }
 
-            //TODO - Format minute vs minutes!
             String text = String.format("%d/%d", minutes, goal);
             bar1.setColor(0xFF29A629);
             bar1.setStrokeWidth(50);

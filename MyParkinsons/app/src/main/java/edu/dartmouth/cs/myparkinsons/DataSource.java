@@ -6,7 +6,9 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.AsyncTask;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -47,10 +49,23 @@ public class DataSource {
 
         long id = database.insert(DbHelper.TABLE, null, values);
         item.setId(id);
+        Log.d("DataSource", "Inserted item id: " + item.getId());
 
         // upload item to server
-        HistoryUploader.insertItem(appContext, item, regId);
+        AsyncTask uploadTask = new AsyncTask<Object, Void, Void>() {
+            @Override
+            protected Void doInBackground(Object... params) {
+                ExerciseItem item = (ExerciseItem) params[0];
+                try {
+                    HistoryUploader.insertItem(appContext, item, regId);
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+                return null;
+            }
+        };
 
+        uploadTask.execute((Object) item);
         return id;
     }
 

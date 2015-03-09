@@ -36,7 +36,18 @@
             app:cb_color="#FF0066FF"
             app:cb_pressedRingWidth="10dip"
             android:layout_weight="1"
-            android:layout_gravity="right"/>
+            android:layout_gravity="center"/>
+
+        <edu.dartmouth.cs.myparkinsons.CircleButton
+            android:id="@+id/fill_button_id"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@drawable/fill_pic"
+            app:cb_color="#ffffff00"
+            app:cb_pressedRingWidth="10dip"
+            android:layout_weight="1"
+            android:layout_gravity="right" />
+
 
 
     </LinearLayout>

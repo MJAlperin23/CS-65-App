@@ -56,9 +56,7 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Random;
 
-
-// TODO: set up Google Play with API console
-// TODO: set up server addressing
+// TODO: build stub to fill activities
 
 public class MainActivity extends FragmentActivity implements ServiceConnection {
 
@@ -280,27 +278,27 @@ public class MainActivity extends FragmentActivity implements ServiceConnection 
         super.onResume();
     }
 
-    private void uploadData() {
-
-        dataSource = new DataSource(this);
-        dataSource.open();
-        List<ExerciseItem> entryList = dataSource.fetchItems();
-        dataSource.close();
-
-        AsyncTask uploadTask = new AsyncTask<List, Void, Void>() {
-            @Override
-            protected Void doInBackground(List... params) {
-
-                List<ExerciseItem> entryList = (List<ExerciseItem>) params[0];
-                HistoryUploader.updateHistory(context, entryList, regId);
-
-                Void v = null;
-                return v;
-            }
-        };
-
-        uploadTask.execute(entryList);
-    }
+//    private void uploadData() {
+//
+//        dataSource = new DataSource(this);
+//        dataSource.open();
+//        List<ExerciseItem> entryList = dataSource.fetchItems();
+//        dataSource.close();
+//
+//        AsyncTask uploadTask = new AsyncTask<List, Void, Void>() {
+//            @Override
+//            protected Void doInBackground(List... params) {
+//
+//                List<ExerciseItem> entryList = (List<ExerciseItem>) params[0];
+//                HistoryUploader.updateHistory(context, entryList, regId);
+//
+//                Void v = null;
+//                return v;
+//            }
+//        };
+//
+//        uploadTask.execute(entryList);
+//    }
 
     private void refreshSpeechView(View view) {
         CircleProgressBar bar = (CircleProgressBar) view.findViewById(R.id.custom_progressBar2);
@@ -571,13 +569,13 @@ public class MainActivity extends FragmentActivity implements ServiceConnection 
             @Override
             protected String doInBackground(Void... params) {
                 String msg = "";
-              //  try {
+                try {
                     if (gcm == null) {
                         Log.d("Registration", "attempting to get google cloud messaging instance");
                         gcm = GoogleCloudMessaging.getInstance(context);
                         Log.d("Registration", "got new GCM instance");
                     }
-            //        regId = gcm.register(SENDER_ID);
+                    regId = gcm.register(SENDER_ID);
                     msg = "Device registered, registration ID=" + regId;
 
                     // You should send the registration ID to your server over
@@ -587,7 +585,7 @@ public class MainActivity extends FragmentActivity implements ServiceConnection 
                     // The request to your server should be authenticated if
                     // your app
                     // is using accounts.
-//                    ServerUtilities.sendRegistrationIdToBackend(context, regId);
+                    ServerUtilities.sendRegistrationIdToBackend(context, regId);
 
                     // For this demo: we don't need to send it because the
                     // device
@@ -596,13 +594,13 @@ public class MainActivity extends FragmentActivity implements ServiceConnection 
                     // message using the 'from' address in the message.
 
                     // Persist the regID - no need to register again.
-//                    storeRegistrationId(context, regId);
-//              / } catch (IOException ex) {
-//                    msg = "Error :" + ex.getMessage();
+                    storeRegistrationId(context, regId);
+                } catch (IOException ex) {
+                    msg = "Error :" + ex.getMessage();
 //                    // If there is an error, don't just keep trying to register.
 //                    // Require the user to click a button again, or perform
 //                    // exponential back-off.
-//                }
+                }
                 return msg;
             }
 
