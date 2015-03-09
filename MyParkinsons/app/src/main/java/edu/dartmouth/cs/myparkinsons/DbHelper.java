@@ -19,7 +19,7 @@ public class DbHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "exerciseItems.db";
     private static final int DATABASE_VERSION = 1;
 
-    public static final String[] allColumns = {COLUMN_ID,COLUMN_DATE,COLUMN_EXERCISE_TIME,COLUMN_SPEECH_DONE};
+    public static final String[] allColumns = {COLUMN_ID, COLUMN_DATE, COLUMN_EXERCISE_TIME, COLUMN_SPEECH_DONE};
     // Database creation sql statement
     private static final String DATABASE_CREATE = "create table if not exists "
             + TABLE + "("

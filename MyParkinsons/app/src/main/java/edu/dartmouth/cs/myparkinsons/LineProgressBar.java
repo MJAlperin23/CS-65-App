@@ -29,7 +29,7 @@ import android.view.animation.DecelerateInterpolator;
 
 /**
  * A subclass of {@link android.view.View} class for creating a custom circular progressBar
- *
+ * <p/>
  * Created by Pedram on 2015-01-06.
  */
 public class LineProgressBar extends View {
@@ -146,8 +146,6 @@ public class LineProgressBar extends View {
 
         //canvas.drawOval(rectF, backgroundPaint);
         canvas.drawRect(rectF, backgroundPaint);
-        //float angle = 360 * progress / max;
-        //canvas.drawArc(rectF, startAngle, angle, false, foregroundPaint);
         canvas.drawRect(rectF.left, rectF.top, rectF.right * (progress / max), rectF.bottom, foregroundPaint);
 
     }
@@ -157,7 +155,6 @@ public class LineProgressBar extends View {
 
         final int height = getDefaultSize(getSuggestedMinimumHeight(), heightMeasureSpec);
         final int width = getDefaultSize(getSuggestedMinimumWidth(), widthMeasureSpec);
-        //final int min = Math.min(width, height);
         setMeasuredDimension(width, height);
 
         rectF.set(0 + strokeWidth / 2, 0 + strokeWidth / 2, width - strokeWidth / 2, height - strokeWidth / 2);

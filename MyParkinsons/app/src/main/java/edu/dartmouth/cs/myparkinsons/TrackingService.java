@@ -80,7 +80,6 @@ public class TrackingService extends Service implements SensorEventListener {
     }
 
 
-
     public Queue<Double> getQueue() {
         return accQueue;
     }
@@ -179,6 +178,7 @@ public class TrackingService extends Service implements SensorEventListener {
      * Handle incoming messages from MainActivity
      */
     private class IncomingMessageHandler extends Handler { // Handler of
+
         // incoming messages
         // from clients.
         @Override
@@ -229,7 +229,7 @@ public class TrackingService extends Service implements SensorEventListener {
 
             for (int i = 0; i < re.length; i++) {
                 // Compute each coefficient
-                double mag = Math.sqrt(re[i] * re[i] + im[i]* im[i]);
+                double mag = Math.sqrt(re[i] * re[i] + im[i] * im[i]);
                 // Adding the computed FFT coefficient to the
                 // featVect
                 featVect.add(Double.valueOf(mag));
@@ -256,7 +256,7 @@ public class TrackingService extends Service implements SensorEventListener {
         @Override
         protected Void doInBackground(Void... params) {
 
-            while(true) {
+            while (true) {
                 if (isCancelled()) {
                     return null;
                 }
@@ -278,25 +278,32 @@ public class TrackingService extends Service implements SensorEventListener {
         @Override
         protected void onProgressUpdate(Double... values) {
 
-//            PowerManager powerManager = (PowerManager) getSystemService(POWER_SERVICE);
-//            // If you use API20 or more:
-//            if (powerManager.isInteractive()){
-//                if (isExercising) {
-//                    System.out.println("Switched to not exercising!!");
-//                    long time = Calendar.getInstance().getTimeInMillis();
-//                    long difference = time - lastExerciseChangedTime;
-//                    dailyExerciseTime += difference;
-//                    isExercising = false;
-//                }
-//                return;
-//            }
-
-
             Calendar c = Calendar.getInstance();
             Calendar old = Calendar.getInstance();
             old.setTimeInMillis(lastExerciseChangedTime);
 
             if (c.get(Calendar.HOUR_OF_DAY) != old.get(Calendar.HOUR_OF_DAY)) {
+                if (isExercising) {
+                    long time = c.getTimeInMillis();
+                    long difference = time - lastExerciseChangedTime;
+
+
+                    dailyExerciseTime += difference;
+
+                    long previousTime = settingData.getLong(SettingsActivity.EXERCISE_TIME_KEY, 0);
+                    spEdit.putLong(SettingsActivity.EXERCISE_TIME_KEY, difference + previousTime);
+                    long date = settingData.getLong(SettingsActivity.CURRENT_DAY_KEY, 0);
+                    if (date == 0) {
+                        Calendar d = Calendar.getInstance();
+                        int day = d.get(Calendar.DAY_OF_MONTH);
+                        int month = d.get(Calendar.MONTH);
+                        int year = d.get(Calendar.YEAR);
+                        long theDate = year * 10000 + month * 100 + day;
+                        spEdit.putLong(SettingsActivity.CURRENT_DAY_KEY, theDate);
+
+                    }
+                    spEdit.commit();
+                }
                 //New day add to database and clear data from prefs
                 int total = settingData.getInt(SettingsActivity.TOTAL_SPEECH_KEY, 0);
                 int correct = settingData.getInt(SettingsActivity.CORRECT_SPEECH_KEY, 0);
@@ -316,7 +323,7 @@ public class TrackingService extends Service implements SensorEventListener {
 
                 lastExerciseChangedTime = c.getTimeInMillis();
                 isExercising = false;
-                if(allowDataInsert) {
+                if (allowDataInsert) {
                     dataSource.open();
                     dataSource.insert(item);
                     dataSource.close();
@@ -331,6 +338,8 @@ public class TrackingService extends Service implements SensorEventListener {
 
                     long time = c.getTimeInMillis();
                     long difference = time - lastExerciseChangedTime;
+
+
 
                     dailyExerciseTime += difference;
 

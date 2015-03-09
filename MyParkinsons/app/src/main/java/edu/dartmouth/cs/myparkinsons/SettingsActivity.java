@@ -58,18 +58,12 @@ public class SettingsActivity extends Activity implements TimePickerDialog.OnTim
     public static final String CORRECT_SPEECH_KEY = "correct_speech_key";
     public static final String EXERCISE_TIME_KEY = "exercise_time_key";
 
-//    public SharedPreferences settingData;
-//    public static SharedPreferences.Editor spEdit;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         getFragmentManager().beginTransaction()
                 .replace(android.R.id.content, new PrefsFragment()).commit();
-
-//        settingData = getSharedPreferences(SHARED_PREFERENCES_KEY, MODE_PRIVATE);
-//        spEdit = settingData.edit();
 
         PreferenceManager.setDefaultValues(this, R.xml.settings_preferences, false);
     }
@@ -98,9 +92,7 @@ public class SettingsActivity extends Activity implements TimePickerDialog.OnTim
                     DialogFragment timeFragment = new TimePickerFragment();
                     timeFragment.show(getFragmentManager(), "timePicker");
                     break;
-
             }
-
             return super.onPreferenceTreeClick(preferenceScreen, preference);
         }
     }
@@ -167,9 +159,9 @@ public class SettingsActivity extends Activity implements TimePickerDialog.OnTim
         long timeSelectionMillis = cal.getTimeInMillis();
 
         setReminder(
-            timeSelectionMillis,
-            "MyParkinson's Speech Reminder",
-            "Did You Do Your Speech Activity Today?"
+                timeSelectionMillis,
+                "MyParkinson's Speech Reminder",
+                "Did You Do Your Speech Activity Today?"
         );
     }
 

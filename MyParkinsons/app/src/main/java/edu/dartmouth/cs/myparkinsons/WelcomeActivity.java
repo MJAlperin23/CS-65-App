@@ -60,7 +60,7 @@ public class WelcomeActivity extends Activity {
             }
         });
 
-        Button skipButton = (Button)findViewById(R.id.skipButton);
+        Button skipButton = (Button) findViewById(R.id.skipButton);
         skipButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -81,21 +81,17 @@ public class WelcomeActivity extends Activity {
 
     public boolean onTouchEvent(MotionEvent touchevent) {
 
-        switch (touchevent.getAction())
-        {
-            case MotionEvent.ACTION_DOWN:
-            {
+        switch (touchevent.getAction()) {
+            case MotionEvent.ACTION_DOWN: {
                 lastX = touchevent.getX();
                 break;
             }
 
-            case MotionEvent.ACTION_UP:
-            {
+            case MotionEvent.ACTION_UP: {
                 float currentX = touchevent.getX();
 
-                if (lastX < currentX)
-                {
-                    if (viewFlipper.getDisplayedChild()==0)
+                if (lastX < currentX) {
+                    if (viewFlipper.getDisplayedChild() == 0)
                         break;
 
                     viewFlipper.setInAnimation(this, R.anim.in_from_left);
@@ -104,9 +100,8 @@ public class WelcomeActivity extends Activity {
                     setSelectedImage(--selected);
                 }
 
-                if (lastX > currentX)
-                {
-                    if (viewFlipper.getDisplayedChild()==viewFlipper.getChildCount()-1)
+                if (lastX > currentX) {
+                    if (viewFlipper.getDisplayedChild() == viewFlipper.getChildCount() - 1)
                         break;
 
                     viewFlipper.setInAnimation(this, R.anim.in_from_right);
@@ -131,7 +126,7 @@ public class WelcomeActivity extends Activity {
         ImageView four = (ImageView) findViewById(R.id.circle4);
         ImageView five = (ImageView) findViewById(R.id.circle5);
         Button button = (Button) findViewById(R.id.doneButton);
-        Button skipButton = (Button)findViewById(R.id.skipButton);
+        Button skipButton = (Button) findViewById(R.id.skipButton);
 
         switch (i) {
             case 1:
@@ -181,94 +176,5 @@ public class WelcomeActivity extends Activity {
                 break;
         }
     }
-
-//        switch (touchevent.getAction()) {
-//
-//
-//
-//            case MotionEvent.ACTION_DOWN:
-//
-//                lastX = touchevent.getX();
-//
-//                break;
-//
-//            case MotionEvent.ACTION_UP:
-//
-//                float currentX = touchevent.getX();
-//
-//
-//
-//                // Handling left to right screen swap.
-//
-//                if (lastX < currentX) {
-//
-//
-//
-//                    // If there aren't any other children, just break.
-//
-//                    if (viewFlipper.getDisplayedChild() == 0)
-//
-//                    break;
-//
-//
-//
-//                    // Next screen comes in from left.
-//
-//                    viewFlipper.setInAnimation(this, R.anim.in_from_left);
-//
-//                    // Current screen goes out from right.
-//
-//                    viewFlipper.setOutAnimation(this, R.anim.out_to_right);
-//
-//
-//
-//                    // Display next screen.
-//
-//                    viewFlipper.showNext();
-//
-//                }
-//
-//
-//
-//                // Handling right to left screen swap.
-//
-//                if (lastX > currentX) {
-//
-//
-//
-//                    // If there is a child (to the left), kust break.
-//
-//                    if (viewFlipper.getDisplayedChild() == 1)
-//
-//                    break;
-//
-//
-//
-//                    // Next screen comes in from right.
-//
-//                    viewFlipper.setInAnimation(this, R.anim.in_from_right);
-//
-//                    // Current screen goes out from left.
-//
-//                    viewFlipper.setOutAnimation(this, R.anim.out_to_left);
-//
-//
-//
-//                    // Display previous screen.
-//
-//                    viewFlipper.showPrevious();
-//
-//                }
-//
-//                break;
-//
-//        }
-//
-//        return false;
-//
-//    }
-
-
-
 
 }

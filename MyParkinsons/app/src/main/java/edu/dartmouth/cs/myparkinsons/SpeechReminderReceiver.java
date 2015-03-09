@@ -12,7 +12,7 @@ import android.util.Log;
 
 /**
  * Created by tdc on 2/26/15
- *
+ * <p/>
  * Receiver for receiving Alarm Manager intent and firing a notification
  * to request the user to record speech.
  */
@@ -38,7 +38,7 @@ public class SpeechReminderReceiver extends BroadcastReceiver {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(c);
         boolean allowNotification = prefs.getBoolean("speech_alert_toggle_switch", true);
 
-        if(allowNotification) {
+        if (allowNotification) {
             // get notification builder
             NotificationCompat.Builder builder = new NotificationCompat.Builder(c);
 

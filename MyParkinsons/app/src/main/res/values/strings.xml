@@ -12,7 +12,7 @@
     <string name="speechCheckBox">Speech Training Done</string>
     <string name="title_activity_speech">SpeechActivity</string>
     <string name="phraseTitle">Read this phrase aloud:</string>
-    <string name="buttonStart">Start Recording</string>
+    <string name="buttonStart">Start Speech Exercise</string>
     <string name="buttonPlay">Play Recording</string>
     <string name="title_activity_settings">SettingsActivity</string>
     <string name="intent_preference_title">MyParkinson\'s Webpage</string>
